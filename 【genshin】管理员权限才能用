@@ -186,7 +186,7 @@ bSwitch=0
 }
 }
 return
-;按一下h键不停输入鼠标左键，再按一下停止。END--------------
+;END--------------
 
 
 
@@ -378,7 +378,7 @@ Expedition(x1, y1, x2, y2, x3, y3, xx1, yy1) {
 ; 5个探索派遣1080p
 ; F9::
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<派遣未完成召唤的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
+Text:="|<派遣未完成召回的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
 if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0, Text))
 {
   Return
@@ -396,7 +396,7 @@ Return
 ; 5个探索派遣4k
 F9::
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<派遣未完成召唤的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
+Text:="|<派遣未完成召回的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
 if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0, Text))
 {
   Return
