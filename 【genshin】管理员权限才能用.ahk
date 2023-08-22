@@ -17,6 +17,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;参数:
 bSwitch=0
 xh=1
+kalepaimon=1 ;是否禁用esc键，禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
 
 
 
@@ -78,6 +79,8 @@ xh:=1
 esc::
 ;if WinActive("原神") or WinActive("幻塔")
 {
+if(kalepaimon==1)
+{
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<派蒙菜单>*171$71.00000TU0000008000T00000008000S0000003s000w0000007s000s0000004M001k0000000Q001U0000000C00300000000C00300000000D00602000000C0000600000040000A000000A0000Q00000080000M000030E0000s000020U0001s00800100003w00Q00200007w00y00400007y01y0A80000DzU3w1sE0000TTU7sjU00000y7kDXy000001y00T7k000003w00wC0000003s01"
 if (ok:=FindText(X, Y, 0, 0, 204, 188, 0, 0, Text))
@@ -92,6 +95,13 @@ sleep 10
 send {esc up}
   ;Msgbox, The cursor is at X%xpos% Y%ypos% and is true.12
 return
+}
+}
+else if(kalepaimon==0)
+{
+send {esc down}
+sleep 10
+send {esc up}
 }
 }
 
@@ -192,6 +202,7 @@ return
 
 ;按一下x键持续按w前进，再按一次x键停止----------------------
 ~x::
+~`::
 ;双击x则激活x，用于x键下落，但是受不了200毫秒延迟，全部注释掉
     ; KeyWait, x, T0.05
     ; If Not ErrorLevel
@@ -237,10 +248,10 @@ Return
 ;if WinActive("原神") or WinActive("幻塔")
 {
 	xh:=1
-    KeyWait, w, T0.3
+    KeyWait, w, T0.1
     If Not ErrorLevel
     {
-        KeyWait, w, D T0.2
+        KeyWait, w, D T0.1
         If Not ErrorLevel
         {
             KeyWait, w
