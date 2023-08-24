@@ -14,12 +14,40 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #SingleInstance force
 
+I_Icon = klee.ico
+IfExist, %I_Icon%
+Menu, Tray, Icon, %I_Icon%
+help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    F9——完成5个探索派遣`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（激活鼠标/快捷元素爆发）
+
 ;参数:
 bSwitch=0
 xh=1
-kalepaimon=1 ;是否禁用esc键，禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
+kalepaimon=0  ;是否禁用esc键，禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
 
+if(A_IsAdmin)
+{
+MsgBox, 4, , %help2001%`n`n    Ctrl+Home——是否屏蔽派蒙菜单？`n    问：是否禁用"屏蔽派蒙菜单"：卡了派蒙跟随点'否'
+IfMsgBox yes
+{
+kalepaimon=0
+}
+else IfMsgBox no
+{
+kalepaimon=1
+}
+}
+else if not (A_IsAdmin)
+{
+MsgBox, 4, , %help2001%`n`n目前不处于管理员权限运行！`n是：继续   否：退出
+IfMsgBox yes
+{
 
+}
+else IfMsgBox no
+{
+Exitapp
+}
+}
 
 ;获取管理员权限
 full_command_line := DllCall("GetCommandLine", "str")
@@ -27,6 +55,17 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
 {
     try ; leads to having the script re-launching itself as administrator
     {
+	MsgBox, 4, , 大侠，你原神是用管理员权限启动的，`n本软件需要用管理员权限才可以在你原神内执行模拟键鼠功能。`n`n是否授予管理员权限？`n（建议以后使用快捷方式-高级-勾选以管理员运行）`n`n是：重启本软件   否：退出
+IfMsgBox yes
+{
+
+}
+else IfMsgBox no
+{
+Exitapp
+}
+	
+	
         if A_IsCompiled
             Run *RunAs "%A_ScriptFullPath%" /restart
         else
@@ -34,12 +73,6 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
     }
     ExitApp
 }
-I_Icon = klee.ico
-IfExist, %I_Icon%
-Menu, Tray, Icon, %I_Icon%
-
-
-
 
 
 ;重启
@@ -82,8 +115,8 @@ esc::
 if(kalepaimon==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<派蒙菜单>*171$71.00000TU0000008000T00000008000S0000003s000w0000007s000s0000004M001k0000000Q001U0000000C00300000000C00300000000D00602000000C0000600000040000A000000A0000Q00000080000M000030E0000s000020U0001s00800100003w00Q00200007w00y00400007y01y0A80000DzU3w1sE0000TTU7sjU00000y7kDXy000001y00T7k000003w00wC0000003s01"
-if (ok:=FindText(X, Y, 0, 0, 204, 188, 0, 0, Text))
+Text:="|<游戏内左下角的Enter>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU"
+if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
   return
@@ -115,10 +148,15 @@ return
 ~f::
 ;if WinActive("原神") or WinActive("幻塔")
 {
-    KeyWait, f, T0.3
+	if(bSwitch==1)
+	{
+		SetTimer, loopLbutton, Off
+		bSwitch=0
+	}
+    KeyWait, f, T0.2
     If Not ErrorLevel
     {
-        KeyWait, f, D T0.2
+        KeyWait, f, D T0.1
         If Not ErrorLevel
         {
             ;KeyWait, f
@@ -223,8 +261,8 @@ return
 ;if WinActive("原神") or WinActive("幻塔")
 {
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<派蒙菜单>*171$71.00000TU0000008000T00000008000S0000003s000w0000007s000s0000004M001k0000000Q001U0000000C00300000000C00300000000D00602000000C0000600000040000A000000A0000Q00000080000M000030E0000s000020U0001s00800100003w00Q00200007w00y00400007y01y0A80000DzU3w1sE0000TTU7sjU00000y7kDXy000001y00T7k000003w00wC0000003s01"
-if (ok:=FindText(X, Y, 0, 0, 204, 188, 0, 0, Text))
+Text:="|<游戏内左下角的Enter>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU"
+if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
   
@@ -343,11 +381,11 @@ return
 ; 鼠标侧键 1 等于前进，连按两下等于按住 w
 XButton1::
     Send {w down}
-    KeyWait, XButton1, T0.3
+    KeyWait, XButton1, T0.2
     If Not ErrorLevel
     {
         Send {w up}
-        KeyWait, XButton1, D T0.2
+        KeyWait, XButton1, D T0.1
         If Not ErrorLevel
         {
             Send {w down}
@@ -360,8 +398,37 @@ XButton1::
     }
 Return
 
-; 鼠标侧键 2 等于 F 键，按住等于按住 Alt 键显示鼠标
+; 鼠标侧键 2 等于 F 键，按住等于连点F键，双击并按住等于 Alt 键显示鼠标
 XButton2::
+	send {f}
+    KeyWait, XButton2, T0.3
+    If Not ErrorLevel
+    {
+        KeyWait, XButton2, D T0.1
+        If Not ErrorLevel
+        {
+            {
+				Send, {LAlt down}
+				KeyWait, XButton2
+				Send, {LAlt up}
+			}
+		}
+       }
+	Loop
+        {
+            If Not GetKeyState("XButton2", "P")
+            Break
+                Send {f down}
+				Sleep 10 ; try various milliseconds
+				Send {f up}
+
+                Sleep 100
+        }
+Return
+
+;鼠标侧键 2 等于 F 键，按住等于 Alt 键显示鼠标，双击并按住等于连点F键（已禁用）
+;XButton2::
+send {f}
     KeyWait, XButton2, T0.2
     If ErrorLevel
     {
@@ -369,9 +436,22 @@ XButton2::
         KeyWait, XButton2
         Send, {LAlt up}
     }
-    else
+	else If Not ErrorLevel
     {
-        Send f
+        KeyWait, XButton2, D T0.1
+        If Not ErrorLevel
+        {
+		Loop
+			{
+            If Not GetKeyState("XButton2", "P")
+            Break
+                Send {f down}
+				Sleep 10 ; try various milliseconds
+				Send {f up}
+
+                Sleep 100
+			}
+        }
     }
 Return
 
@@ -396,26 +476,17 @@ Expedition(x1, y1, x2, y2, x3, y3, xx1, yy1) {
     BlockInput, MouseMoveOff
 }
 
-; 5个探索派遣1080p
-; F9::
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<派遣未完成召回的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
-if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0, Text))
-{
-  Return
-}
-    ; 蒙德
-    Expedition(150, 165, 1063, 333, 300, 150, 1650, 1000)
-    Expedition(150, 165, 1176, 659, 300, 300, 1650, 1000)
-    ; 璃月
-    Expedition(150, 230, 724, 333, 300, 150, 1650, 1000)
-    Expedition(150, 230, 961, 454, 300, 300, 1650, 1000)
-    ; 稻妻
-    Expedition(150, 300, 1101, 283, 300, 150, 1650, 1000)
-Return
-
-; 5个探索派遣4k
+; 5个探索派遣
 F9::
+if(A_ScreenWidth==3840)
+{
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:="|<左上角探索>*130$71.63XsMDs00000Dy3UTzk00000Ts70TzU00003zUT0Tz000007y1z0Ty00000Dk7z0Dw3zUTzT0TzUDs7w0zWg1kDUDkDU3y0MDUTkzUy0Tk0Fz0zzzzk7y00zy1zzzs0000bzw1zzzk0007S00007zk000ww0000Dzzy07Vs0000TzzU1y3k0000zzw0Ty7zw0Tzzy07w0Dzk0Tzz00000Tz00zzy00000zw00zzw00005zk00zzs01UTvzU00zzzzz0zry000zzzty1sjk430zzz1w3kT0M70Tzw1s71"
+if (ok:=FindText(X, Y, 0, 0, 533, 151, 0, 0, Text))
+{
+  ; FindText().Click(X, Y, "L")
+
+sleep 100
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<派遣未完成召回的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
 if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0, Text))
@@ -430,6 +501,23 @@ if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0,
     Expedition(300, 460, 1922, 908, 600, 600, 3300, 2000)
     ; 稻妻
     Expedition(300, 600, 2202, 566, 600, 300, 3300, 2000)
+}
+}
+else if(A_ScreenWidth==1920)
+{
+    ; 蒙德
+    Expedition(150, 165, 1063, 333, 300, 150, 1650, 1000)
+    Expedition(150, 165, 1176, 659, 300, 300, 1650, 1000)
+    ; 璃月
+    Expedition(150, 230, 724, 333, 300, 150, 1650, 1000)
+    Expedition(150, 230, 961, 454, 300, 300, 1650, 1000)
+    ; 稻妻
+    Expedition(150, 300, 1101, 283, 300, 150, 1650, 1000)
+}
+else
+{
+	Msgbox, 目前只写了4k和1080p的分辨率哦，暂时不支持你的分辨率，请自己添加修改参数。
+}
 Return
 
 
