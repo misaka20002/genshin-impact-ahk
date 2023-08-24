@@ -14,19 +14,63 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 #SingleInstance force
 
+;设定：
+b_SmartOrFool=1  ;启用智能判断窗口位置功能，遇到bug自行关闭
+YouXiName=ahk_exe YuanShen.exe  ;国际服请修改此处
+
+
+;读取游戏窗口分辨率
+if WinExist(YouXiName)
+{
+	WinGet, zuidahuazuixiaohua,MinMax , %YouXiName%
+	;msgbox, %zuidahuazuixiaohua%
+	if (zuidahuazuixiaohua==-1)  ;如果最小化了
+	{
+	WinActivate , %YouXiName%
+	;sleep 100
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	;OutWidth:=A_ScreenWidth
+	}
+	else
+	{
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	}
+}
+else
+{
+OutWidth:=A_ScreenWidth
+}
+;msgbox, %OutWidth%  %zuidahuazuixiaohua%
+
 I_Icon = klee.ico
 IfExist, %I_Icon%
 Menu, Tray, Icon, %I_Icon%
-help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    F9——完成5个探索派遣`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（激活鼠标/快捷元素爆发）
+help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    请在原神设置将落下键改为n，或启动本软件双击x为下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（激活鼠标/快捷元素爆发）
 
-;参数:
+;内置参数:
 bSwitch=0
 xh=1
 kalepaimon=0  ;是否禁用esc键，禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
 
+;if(A_ScreenWidth==3840)
+if(OutWidth>3800) and (OutWidth<3900)
+{
+zuoxiajiaoEnter="|<Enter4k>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU"
+quedingQuanQuan="|<按钮圈圈O4k>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UTzzzw10Tzzzy10zzzzy10zzzzy10zzzzz10zzzzz00zzzzz00zzzzz00zzzzz10zzzzy10zzzzy1UTzzzy1UTzzzw1UDzzzw3kDzzzs3k7zzzk7s3zzzk7s1zzz0Dw0zzy0Dy0Dzw0TU"
+}
+else if(OutWidth>1900) and (OutWidth<1950)
+{
+zuoxiajiaoEnter="|<Enter1080p>*163$55.zy0000000Tz003U00070003k0003U000s0001k0LVzVs2Ms1zszlz7STwSSD1lnzjyD73Usttr07XVkwSw3U3lksTzS1k1ssQDzD0s0wQC7U7UTySC71kHkDzD73wztk7zbXVw7sk4"
+quedingQuanQuan="|<quanquan1080p>*138$41.3zzzzz0Dzzzzz0Tzzzzz1zzkDzy3zy07zyDzs03zwTzVz3zxzyDz3zvzszz7zrzlzz7zzz7zyDzzyDzyTzzwTzwzzzszztzzzlzznzzzXzzbzzzbzyDzzz7zwzyzz7zlzwzy7z7ztzy3sTznzy01zz3zz0Dzy7zzzzzs7zzzzzV"
+}
+else
+{
+b_SmartOrFool=0
+}
+
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n    Ctrl+Home——是否屏蔽派蒙菜单？`n    问：是否禁用"屏蔽派蒙菜单"：卡了派蒙跟随点'否'
+MsgBox, 4, , %help2001%`n`n分辨率：%OutWidth%`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随点'否'
 IfMsgBox yes
 {
 kalepaimon=0
@@ -74,6 +118,9 @@ Exitapp
     ExitApp
 }
 
+;激活游戏
+WinActivate , %YouXiName%
+
 
 ;重启
 ^home::
@@ -89,7 +136,7 @@ return
 
 
 
-#if WinActive("ahk_exe YuanShen.exe") or WinActive("幻塔2077")
+#if WinActive(YouXiName) or WinActive("幻塔2077")
 
 
 
@@ -115,8 +162,8 @@ esc::
 if(kalepaimon==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<游戏内左下角的Enter>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU"
-if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text))
+Text:=zuoxiajiaoEnter
+if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
   return
@@ -153,7 +200,7 @@ return
 		SetTimer, loopLbutton, Off
 		bSwitch=0
 	}
-    KeyWait, f, T0.2
+    KeyWait, f, T0.1
     If Not ErrorLevel
     {
         KeyWait, f, D T0.1
@@ -192,9 +239,17 @@ Return
 
 
 ;按一下鼠标中间键（元素视野alt点左上角的图标激活）开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消--------------------
+~h::
 MButton::
 ;if WinActive("原神") or WinActive("幻塔")
 {
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:=zuoxiajiaoEnter
+if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
+{
+  ; FindText().Click(X, Y, "L")
+  
+
 if(bSwitch==0)
 {
 send {Lbutton}
@@ -205,6 +260,7 @@ else if(bSwitch==1)
 {
 SetTimer, loopLbutton, Off
 bSwitch=0
+}
 }
 }
 return
@@ -261,8 +317,8 @@ return
 ;if WinActive("原神") or WinActive("幻塔")
 {
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<游戏内左下角的Enter>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU"
-if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text))
+Text:=zuoxiajiaoEnter
+if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
   
@@ -353,7 +409,7 @@ tab::
 ;if WinActive("原神") or WinActive("幻塔")
 {
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<按钮圈圈O>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UTzzzw10Tzzzy10zzzzy10zzzzy10zzzzz10zzzzz00zzzzz00zzzzz00zzzzz10zzzzy10zzzzy1UTzzzy1UTzzzw1UDzzzw3kDzzzs3k7zzzk7s3zzzk7s1zzz0Dw0zzy0Dy0Dzw0TU"
+Text:=quedingQuanQuan
 if (ok:=FindText(X, Y, 2021-150000, 1515-150000, 2021+150000, 1515+150000, 0, 0, Text))
 {
 MouseGetPos, xpos, ypos, winid
@@ -455,41 +511,72 @@ send {f}
     }
 Return
 
-; 5个探索派遣
+; 5个探索派遣   ;仍在维护中
 Expedition(x1, y1, x2, y2, x3, y3, xx1, yy1) {
     BlockInput, MouseMove
-    MouseMove, x1, y1
+    MouseMove, x1*v_fenbianlvbeilv, y1*v_fenbianlvbeilv
     Sleep 50
     Click
-    MouseMove, x2, y2
+    MouseMove, x2*v_fenbianlvbeilv, y2*v_fenbianlvbeilv
     Sleep 50
     Click
-	MouseMove, xx1, yy1
+	MouseMove, xx1*v_fenbianlvbeilv, yy1*v_fenbianlvbeilv
     Click
     Sleep 250
     Click
     Sleep 250
     Click
-    MouseMove, x3, y3
+    MouseMove, x3*v_fenbianlvbeilv, y3*v_fenbianlvbeilv
     Sleep 50
     Click
     BlockInput, MouseMoveOff
 }
 
+;F9::   ;仍在维护中
+if WinExist(YouXiName)
+{
+	WinGet, zuidahuazuixiaohua,MinMax , %YouXiName%
+	;msgbox, %zuidahuazuixiaohua%
+	if (zuidahuazuixiaohua==-1)  ;如果最小化了
+	{
+	WinActivate , %YouXiName%
+	;sleep 100
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	;OutWidth:=A_ScreenWidth
+	}
+	else
+	{
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	}
+}
+;msgbox, OutWidth=%OutWidth%
+v_fenbianlvbeilv:=OutWidth/1920
+;msgbox, v_fenbianlvbeilv=%v_fenbianlvbeilv%
+
+    ; 蒙德
+    Expedition(150, 165, 1063, 333, 300, 150, 1650, 1000)
+    Expedition(150, 165, 1176, 659, 300, 300, 1650, 1000)
+    ; 璃月
+    Expedition(150, 230, 724, 333, 300, 150, 1650, 1000)
+    Expedition(150, 230, 961, 454, 300, 300, 1650, 1000)
+    ; 稻妻
+    Expedition(150, 300, 1101, 283, 300, 150, 1650, 1000)
+return
+	
 ; 5个探索派遣
-F9::
-if(A_ScreenWidth==3840)
+;F9::   ;仍在维护中
+if(OutWidth==3840)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<左上角探索>*130$71.63XsMDs00000Dy3UTzk00000Ts70TzU00003zUT0Tz000007y1z0Ty00000Dk7z0Dw3zUTzT0TzUDs7w0zWg1kDUDkDU3y0MDUTkzUy0Tk0Fz0zzzzk7y00zy1zzzs0000bzw1zzzk0007S00007zk000ww0000Dzzy07Vs0000TzzU1y3k0000zzw0Ty7zw0Tzzy07w0Dzk0Tzz00000Tz00zzy00000zw00zzw00005zk00zzs01UTvzU00zzzzz0zry000zzzty1sjk430zzz1w3kT0M70Tzw1s71"
-if (ok:=FindText(X, Y, 0, 0, 533, 151, 0, 0, Text))
+if (ok:=FindText(X, Y, 0, 0, 533, 151, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
 
 sleep 100
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<派遣未完成召回的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
-if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0, Text))
+if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0, Text)) or !(b_SmartOrFool)
 {
   Return
 }
