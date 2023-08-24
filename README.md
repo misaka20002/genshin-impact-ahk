@@ -19,7 +19,8 @@ Tab 键为图像识别原神内的圈圈图标，例如右下角的按钮/弹窗
 
 ## 鼠标侧键实例1
 
-![image](https://github.com/misaka20002/genshin-impact-ahk/assets/40714502/7d731307-8f5b-4518-8008-b01c6f84e094)
+![image](https://github.com/misaka20002/genshin-impact-ahk/assets/40714502/7755de0e-91cc-4dd1-9c7d-2322b34e3faa)
+
 
 ## 使用方法
 
