@@ -348,7 +348,7 @@ Return
         KeyWait, w, D T0.1
         If Not ErrorLevel
         {
-            KeyWait, w
+            KeyWait, w, T0.1
             Send {w down}
 			xh:=-1
         }
@@ -441,16 +441,19 @@ XButton1::
     If Not ErrorLevel
     {
         Send {w up}
+		xh:=1
         KeyWait, XButton1, D T0.1
         If Not ErrorLevel
         {
             Send {w down}
+			xh:=-1
         }
     }
     Else
     {
         KeyWait, XButton1
         Send {w up}
+		xh:=1
     }
 Return
 
