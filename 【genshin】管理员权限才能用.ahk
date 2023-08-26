@@ -2,6 +2,10 @@
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+#SingleInstance force
+I_Icon = klee.ico
+IfExist, %I_Icon%
+Menu, Tray, Icon, %I_Icon%
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;	^	〔Ctrl〕鍵
 ;	!	〔Alt〕鍵
@@ -12,11 +16,23 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ;	$	抑制该按键
 ;	::	字符串, 如::ch::china
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-#SingleInstance force
 
-;设定：
-b_SmartOrFool=1  ;启用智能判断窗口位置功能，遇到bug自行关闭
-YouXiName=ahk_exe YuanShen.exe  ;国际服请修改此处
+
+
+;用户设定：
+b_SmartOrFool=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
+YouXiName=ahk_exe YuanShen.exe  ;国际服请修改此处为genshin.exe
+ShuangJiX=0    ;启动双击X键为触发一次x，0禁用/1启用，用于下落，x键有0.2s延迟不舒服，建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
+
+
+
+
+
+
+
+
+
+
 
 
 ;读取游戏窗口分辨率
@@ -42,10 +58,7 @@ OutWidth:=A_ScreenWidth
 }
 ;msgbox, %OutWidth%  %zuidahuazuixiaohua%
 
-I_Icon = klee.ico
-IfExist, %I_Icon%
-Menu, Tray, Icon, %I_Icon%
-help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    请在原神设置将落下键改为n，或启动本软件双击x为下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（激活鼠标/快捷元素爆发）
+help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    请在原神设置将落下键改为n，或启动本软件双击x下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（显示鼠标/快捷元素爆发）
 
 ;内置参数:
 bSwitch=0
@@ -239,13 +252,13 @@ Return
 
 
 ;按一下鼠标中间键（元素视野alt点左上角的图标激活）开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消--------------------
-~h::
+;~h::
 MButton::
 ;if WinActive("原神") or WinActive("幻塔")
 {
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:=zuoxiajiaoEnter
-if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
+;t1:=A_TickCount, Text:=X:=Y:=""
+;Text:=zuoxiajiaoEnter
+;if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
   
@@ -280,10 +293,10 @@ return
 
 ;连点鼠标后也可以按鼠标左键或空格键取消
 ~Lbutton::
-~space::
+~Space::
 ;if WinActive("原神") or WinActive("幻塔")
 {
- if(bSwitch==1)
+if(bSwitch==1)
 {
 SetTimer, loopLbutton, Off
 bSwitch=0
@@ -293,27 +306,27 @@ return
 ;END--------------
 
 
-
 ;按一下x键持续按w前进，再按一次x键停止----------------------
 ~x::
 ~`::
-;双击x则激活x，用于x键下落，但是受不了200毫秒延迟，全部注释掉
-    ; KeyWait, x, T0.05
-    ; If Not ErrorLevel
-    ; {
-        ; KeyWait, x, D T0.05
-        ; If Not ErrorLevel
-        ; {
-            ; Send {x down}
-			; sleep 50
-			; Send {x up}
-			; xh:=-1
-			; send {w up}
-        ; }
-    ; }
-;需要在原神设置里把原来的x落下键改为n，不然就使用s+space跳下来吧~
-;需要在原神设置里把原来的x落下键改为n，不然就使用s+space跳下来吧~
-;需要在原神设置里把原来的x落下键改为n，不然就使用s+space跳下来吧~
+;双击x则激活x，用于x键下落，但是受不了200毫秒延迟
+if(ShuangJiX==1)
+{
+    KeyWait, x, T0.1
+    If Not ErrorLevel
+    {
+        KeyWait, x, D T0.1
+        If Not ErrorLevel
+        {
+            Send {x down}
+			sleep 50
+			Send {x up}
+			xh:=-1
+			send {w up}
+        }
+    }
+}
+;需要在原神设置里把原来的x落下键改为n
 ;if WinActive("原神") or WinActive("幻塔")
 {
 t1:=A_TickCount, Text:=X:=Y:=""
