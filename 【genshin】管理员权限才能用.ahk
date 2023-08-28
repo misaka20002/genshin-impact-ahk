@@ -38,6 +38,7 @@ ShuangJiX=0    ;启动双击X键为触发一次x，0禁用/1启用，用于下�
 ;读取游戏窗口分辨率
 if WinExist(YouXiName)
 {
+	helpyouxiyiqidong=已
 	WinGet, zuidahuazuixiaohua,MinMax , %YouXiName%
 	;msgbox, %zuidahuazuixiaohua%
 	if (zuidahuazuixiaohua==-1)  ;如果最小化了
@@ -55,10 +56,12 @@ if WinExist(YouXiName)
 else
 {
 OutWidth:=A_ScreenWidth
+OutHeight:=A_ScreenHeight
+helpyouxiyiqidong=未
 }
 ;msgbox, %OutWidth%  %zuidahuazuixiaohua%
 
-help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    请在原神设置将落下键改为n，或启动本软件双击x下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（显示鼠标/快捷元素爆发）
+help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    ctrl+F9——5个探索派遣`n    请在原神设置将落下键改为n，或启动本软件双击x下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（显示鼠标/快捷元素爆发）
 
 ;内置参数:
 bSwitch=0
@@ -68,13 +71,17 @@ kalepaimon=0  ;是否禁用esc键，禁用派蒙菜单 用于卡bug卡出派蒙�
 ;if(A_ScreenWidth==3840)
 if(OutWidth>3800) and (OutWidth<3900)
 {
-zuoxiajiaoEnter="|<Enter4k>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU"
-quedingQuanQuan="|<按钮圈圈O4k>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UTzzzw10Tzzzy10zzzzy10zzzzy10zzzzz10zzzzz00zzzzz00zzzzz00zzzzz10zzzzy10zzzzy1UTzzzy1UTzzzw1UDzzzw3kDzzzs3k7zzzk7s3zzzk7s1zzz0Dw0zzy0Dy0Dzw0TU"
+youshangjiaodetouxiang="|<右上角的主角头像图标4k>*227$66.00000000100000000000U0000000000k0000000000E0000000000E0080000000E00Q0000000M00Q0000000M00w0000000M00w0000000Q00y0000000Q00zU300000Q00tk3U0000C00kw3k0000600kTzk0000701kDzk00003U1k3zs00003k1k0zs00001sXk07w00070yXk03w000Dzzbk00w000Dzzzk00w000Dzzzk00Q000Dzwzk00Q000TzsU"
+zuoxiajiaoEnter="|<Enter4k>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU|<左下角的enter在有对话框时4k>*154$71.0100007s0000000000Dk0000000000TU0000000000z00000000001y0000000wzkDzw1zU00DzzkTzkDzk00Tzzkzz0zDnzkTsTUTU1w7rzUTUz0z07kDzz0z0z1y0DUTU01y1y3w0z0T003w3w7s1y0y007s7sDk3zzw00DkDkTU7zzs00TUTUz0Dzzk00z0z1y0TU0001y1y3w0z00003w3w7s1y00067s7sDk1y03zwDkDkTU3y0zzsTUTUzz3zzjzUz0y0zy3zyTz1w1w0zk3zs001k300000y1"
+quedingQuanQuan="|<按钮圈圈O4k>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UTzzzw10Tzzzy10zzzzy10zzzzy10zzzzz10zzzzz00zzzzz00zzzzz00zzzzz10zzzzy10zzzzy1UTzzzy1UTzzzw1UDzzzw3kDzzzs3k7zzzk7s3zzzk7s1zzz0Dw0zzy0Dy0Dzw0TU|<>*114$41.s3zzz0DUDzzz0D0Tzzz0Q1zzzz0s7zzzy0UDzzzy10Tzzzw01zzzzw03zzzzs07zzzzk0DzzzzU0Tzzzz00zzzzy01zzzzw03zzzzs07zzzzk07zzzz0EDzzzy1UTzzzs30TzzzkD0Tzzz0S0Tzzw0y0Tzzk3w0Tzz0Dw0Dzs0T"
+youxiajiaoditutubiao="|<右下地图的图标4k>*121$38.U0zzk0M0Tzw0607zzU103zzw0E0zzz000Dzzk003zzw000zzz000Dzzk1U3zzw0M0Tzy0707zzU1k0zzk0w07zs0DU0zw07s03w01z00000zs0000Tz0000Dzk0003zy0001zzk000zzw000DzzU007zzw003zs"
 }
 else if(OutWidth>1900) and (OutWidth<1950)
 {
-zuoxiajiaoEnter="|<Enter1080p>*163$55.zy0000000Tz003U00070003k0003U000s0001k0LVzVs2Ms1zszlz7STwSSD1lnzjyD73Usttr07XVkwSw3U3lksTzS1k1ssQDzD0s0wQC7U7UTySC71kHkDzD73wztk7zbXVw7sk4"
-quedingQuanQuan="|<quanquan1080p>*138$41.3zzzzz0Dzzzzz0Tzzzzz1zzkDzy3zy07zyDzs03zwTzVz3zxzyDz3zvzszz7zrzlzz7zzz7zyDzzyDzyTzzwTzwzzzszztzzzlzznzzzXzzbzzzbzyDzzz7zwzyzz7zlzwzy7z7ztzy3sTznzy01zz3zz0Dzy7zzzzzs7zzzzzV"
+youshangjiaodetouxiang="|<右上角的主角头像图标1080p>*232$25.0002000100000000800050002U001g800Fy008T0003U0M0k0D080DU407k203s103g0Y3m0y1k0z1kE"
+zuoxiajiaoEnter="|<Enter1080p>*163$55.zy0000000Tz003U00070003k0003U000s0001k0LVzVs2Ms1zszlz7STwSSD1lnzjyD73Usttr07XVkwSw3U3lksTzS1k1ssQDzD0s0wQC7U7UTySC71kHkDzD73wztk7zbXVw7sk4|<左下角的enter在有对话框时1080p>*163$48.zs000000w001k000w001k000w001s000w1zXyDnbzttlkQvzzstlkMtnw0stkwtkw0stkztkw0stkw1kw0stks1kzsstsQNkzsskyDlUU"
+quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zzs7zz0zzs7zy4TzlVzwCDz3kTkT007w03zs1zU|<>*114$21.zUDzk0Ts01y3w7kzsQDzXXzy8zzl7zy8zzs7zz0zzs7zy8TzlXzwADz3kzkT0s7w01zs0zzszw"
+youxiajiaoditutubiao="|<右下地图的图标1080p>*121$19.w07w01w00Q0061w31z11zk0zs0Tw0Dy23y31z1UC0s00y00zU0zk0Tw0Tz0TzUTzsDzyDzzjz"
 }
 else
 {
@@ -83,7 +90,7 @@ b_SmartOrFool=0
 
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n分辨率：%OutWidth%`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随点'否'
+MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随点'否'
 IfMsgBox yes
 {
 kalepaimon=0
@@ -176,7 +183,7 @@ if(kalepaimon==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=zuoxiajiaoEnter
-if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
+if (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
   return
@@ -258,7 +265,7 @@ MButton::
 {
 ;t1:=A_TickCount, Text:=X:=Y:=""
 ;Text:=zuoxiajiaoEnter
-;if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
+;if (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
   
@@ -331,7 +338,7 @@ if(ShuangJiX==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=zuoxiajiaoEnter
-if (ok:=FindText(X, Y, 0, 960, 380, 2160, 0, 0, Text)) or !(b_SmartOrFool)
+if (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
   
@@ -423,13 +430,30 @@ tab::
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=quedingQuanQuan
-if (ok:=FindText(X, Y, 2021-150000, 1515-150000, 2021+150000, 1515+150000, 0, 0, Text))
+if (ok:=FindText(X, Y, OutWidth/2+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
 {
 MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
   ;Msgbox, The cursor is at X%xpos% Y%ypos% and is true.
   sleep 100
   click, %xpos%, %ypos%, 0
+}
+else 
+{
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:=youxiajiaoditutubiao
+;X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text
+if (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+{
+MouseGetPos, xpos, ypos, winid
+  FindText().Click(X, Y, "L")
+    sleep 100
+  click, %xpos%, %ypos%, 0
+}
+else
+{
+click
+}
 }
 }
 return
@@ -527,28 +551,38 @@ send {f}
     }
 Return
 
-; 5个探索派遣   ;仍在维护中
+; 5个探索派遣
 Expedition(x1, y1, x2, y2, x3, y3, xx1, yy1) {
     BlockInput, MouseMove
-    MouseMove, x1*v_fenbianlvbeilv, y1*v_fenbianlvbeilv
+    MouseMove, x1*v_fenbianlvbeilv+OutX, y1*v_fenbianlvbeilv+OutY
     Sleep 50
     Click
-    MouseMove, x2*v_fenbianlvbeilv, y2*v_fenbianlvbeilv
+    MouseMove, x2*v_fenbianlvbeilv+OutX, y2*v_fenbianlvbeilv+OutY
     Sleep 50
     Click
-	MouseMove, xx1*v_fenbianlvbeilv, yy1*v_fenbianlvbeilv
+	MouseMove, xx1*v_fenbianlvbeilv+OutX, yy1*v_fenbianlvbeilv+OutY
     Click
     Sleep 250
     Click
     Sleep 250
     Click
-    MouseMove, x3*v_fenbianlvbeilv, y3*v_fenbianlvbeilv
+    MouseMove, x3*v_fenbianlvbeilv+OutX, y3*v_fenbianlvbeilv+OutY
     Sleep 50
     Click
     BlockInput, MouseMoveOff
 }
 
-;F9::   ;仍在维护中
+^F9::   ;根据分辨率自适应倍数→v_fenbianlvbeilv
+MsgBox, 4, , 执行5个探索派遣，根据分辨率自适应倍数，遇到bug请全屏。 (Press YES or NO)
+IfMsgBox No
+{
+	WinActivate , %YouXiName%
+    return
+}
+IfMsgBox Yes
+{
+
+}
 if WinExist(YouXiName)
 {
 	WinGet, zuidahuazuixiaohua,MinMax , %YouXiName%
@@ -580,7 +614,7 @@ v_fenbianlvbeilv:=OutWidth/1920
 return
 	
 ; 5个探索派遣
-;F9::   ;仍在维护中
+;^F9::   ;自动判断4k或1080p，不用这个了,,,作废！
 if(OutWidth==3840)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
