@@ -73,14 +73,14 @@ if(OutWidth>3800) and (OutWidth<3900)
 {
 youshangjiaodetouxiang="|<右上角的主角头像图标4k>*227$66.00000000100000000000U0000000000k0000000000E0000000000E0080000000E00Q0000000M00Q0000000M00w0000000M00w0000000Q00y0000000Q00zU300000Q00tk3U0000C00kw3k0000600kTzk0000701kDzk00003U1k3zs00003k1k0zs00001sXk07w00070yXk03w000Dzzbk00w000Dzzzk00w000Dzzzk00Q000Dzwzk00Q000TzsU"
 zuoxiajiaoEnter="|<Enter4k>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU|<左下角的enter在有对话框时4k>*154$71.0100007s0000000000Dk0000000000TU0000000000z00000000001y0000000wzkDzw1zU00DzzkTzkDzk00Tzzkzz0zDnzkTsTUTU1w7rzUTUz0z07kDzz0z0z1y0DUTU01y1y3w0z0T003w3w7s1y0y007s7sDk3zzw00DkDkTU7zzs00TUTUz0Dzzk00z0z1y0TU0001y1y3w0z00003w3w7s1y00067s7sDk1y03zwDkDkTU3y0zzsTUTUzz3zzjzUz0y0zy3zyTz1w1w0zk3zs001k300000y1"
-quedingQuanQuan="|<按钮圈圈O4k>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UTzzzw10Tzzzy10zzzzy10zzzzy10zzzzz10zzzzz00zzzzz00zzzzz00zzzzz10zzzzy10zzzzy1UTzzzy1UTzzzw1UDzzzw3kDzzzs3k7zzzk7s3zzzk7s1zzz0Dw0zzy0Dy0Dzw0TU|<>*114$41.s3zzz0DUDzzz0D0Tzzz0Q1zzzz0s7zzzy0UDzzzy10Tzzzw01zzzzw03zzzzs07zzzzk0DzzzzU0Tzzzz00zzzzy01zzzzw03zzzzs07zzzzk07zzzz0EDzzzy1UTzzzs30TzzzkD0Tzzz0S0Tzzw0y0Tzzk3w0Tzz0Dw0Dzs0T"
+quedingQuanQuan="|<按钮圈圈O4k>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UTzzzw10Tzzzy10zzzzy10zzzzy10zzzzz10zzzzz00zzzzz00zzzzz00zzzzz10zzzzy10zzzzy1UTzzzy1UTzzzw1UDzzzw3kDzzzs3k7zzzk7s3zzzk7s1zzz0Dw0zzy0Dy0Dzw0TU|<按钮圈圈2O4k>*114$41.s3zzz0DUDzzz0D0Tzzz0Q1zzzz0s7zzzy0UDzzzy10Tzzzw01zzzzw03zzzzs07zzzzk0DzzzzU0Tzzzz00zzzzy01zzzzw03zzzzs07zzzzk07zzzz0EDzzzy1UTzzzs30TzzzkD0Tzzz0S0Tzzw0y0Tzzk3w0Tzz0Dw0Dzs0T"
 youxiajiaoditutubiao="|<右下地图的图标4k>*121$38.U0zzk0M0Tzw0607zzU103zzw0E0zzz000Dzzk003zzw000zzz000Dzzk1U3zzw0M0Tzy0707zzU1k0zzk0w07zs0DU0zw07s03w01z00000zs0000Tz0000Dzk0003zy0001zzk000zzw000DzzU007zzw003zs"
 }
 else if(OutWidth>1900) and (OutWidth<1950)
 {
 youshangjiaodetouxiang="|<右上角的主角头像图标1080p>*232$25.0002000100000000800050002U001g800Fy008T0003U0M0k0D080DU407k203s103g0Y3m0y1k0z1kE"
 zuoxiajiaoEnter="|<Enter1080p>*163$55.zy0000000Tz003U00070003k0003U000s0001k0LVzVs2Ms1zszlz7STwSSD1lnzjyD73Usttr07XVkwSw3U3lksTzS1k1ssQDzD0s0wQC7U7UTySC71kHkDzD73wztk7zbXVw7sk4|<左下角的enter在有对话框时1080p>*163$48.zs000000w001k000w001k000w001s000w1zXyDnbzttlkQvzzstlkMtnw0stkwtkw0stkztkw0stkw1kw0stks1kzsstsQNkzsskyDlUU"
-quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zzs7zz0zzs7zy4TzlVzwCDz3kTkT007w03zs1zU|<>*114$21.zUDzk0Ts01y3w7kzsQDzXXzy8zzl7zy8zzs7zz0zzs7zy8TzlXzwADz3kzkT0s7w01zs0zzszw"
+quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zzs7zz0zzs7zy4TzlVzwCDz3kTkT007w03zs1zU|<按钮圈圈2O1080p>*114$21.zUDzk0Ts01y3w7kzsQDzXXzy8zzl7zy8zzs7zz0zzs7zy8TzlXzwADz3kzkT0s7w01zs0zzszw"
 youxiajiaoditutubiao="|<右下地图的图标1080p>*121$19.w07w01w00Q0061w31z11zk0zs0Tw0Dy23y31z1UC0s00y00zU0zk0Tw0Tz0TzUTzsDzyDzzjz"
 }
 else
@@ -90,7 +90,7 @@ b_SmartOrFool=0
 
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随点'否'
+MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%)`n(游戏窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
 IfMsgBox yes
 {
 kalepaimon=0
@@ -341,7 +341,6 @@ Text:=zuoxiajiaoEnter
 if (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
-  
 
 if (xh==1)
 {
@@ -426,11 +425,21 @@ return
 
 ;tab键按一下圈圈
 tab::
+	if(bSwitch==1)
+	{
+		SetTimer, loopLbutton, Off
+		bSwitch=0
+	}
+	if(xh==-1)
+	{
+		send {w up}
+		xh:=1
+	}
 ;if WinActive("原神") or WinActive("幻塔")
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=quedingQuanQuan
-if (ok:=FindText(X, Y, OutWidth/2+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+if (ok:=FindText(X, Y, OutWidth/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
 {
 MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
@@ -443,7 +452,7 @@ else
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=youxiajiaoditutubiao
 ;X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text
-if (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+if (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
 {
 MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
@@ -462,7 +471,7 @@ return
 ; `::
 ; t1:=A_TickCount, Text:=X:=Y:=""
 ; Text:="|<弹出框的叉叉按钮X>*90$37.k0Dz01w03z01z00z01zk0D01zw0301zz0001zzk001zzw001zzz001zzzk01zzzw01zzzy00zzzz00Dzzz003zzz000zzz000Dzz0003zz0000zz01k0Dz01w03z01z00z01zk0D01zw0301zz0101zzk0E|<地图右上角的叉叉>*148$54.zzzw0DzzzwTzy0TzyDMDzz0zzw607zzVzzs001zzzzzU000zzzzz0000Tzzzy0000Dzzzw00007zzzs00003zzzk00001zzzU00000zzz000000zzz000000zzz000000zzz000001zzzU00003zzzk00007zzzs0000Dzzzw0000Tzzzy0000zzzzz0001zzzzzU007zzVzzs0MDzz0zzw6wTzy0TzyDU"
-; if (ok:=FindText(X, Y, 1204-150000, 1515-150000, 1204+150000, 1515+150000, 0, 0, Text))
+; if (ok:=FindText(X, Y, 1204-150000, 1515-150000, 1204+150000, 1515+150000, 0, 0, Text)) or !(b_SmartOrFool)
 ; {
 ; MouseGetPos, xpos, ypos, winid
   ; FindText().Click(X, Y, "L")
@@ -551,43 +560,13 @@ send {f}
     }
 Return
 
-; 5个探索派遣
-Expedition(x1, y1, x2, y2, x3, y3, xx1, yy1) {
-    BlockInput, MouseMove
-    MouseMove, x1*v_fenbianlvbeilv+OutX, y1*v_fenbianlvbeilv+OutY
-    Sleep 50
-    Click
-    MouseMove, x2*v_fenbianlvbeilv+OutX, y2*v_fenbianlvbeilv+OutY
-    Sleep 50
-    Click
-	MouseMove, xx1*v_fenbianlvbeilv+OutX, yy1*v_fenbianlvbeilv+OutY
-    Click
-    Sleep 250
-    Click
-    Sleep 250
-    Click
-    MouseMove, x3*v_fenbianlvbeilv+OutX, y3*v_fenbianlvbeilv+OutY
-    Sleep 50
-    Click
-    BlockInput, MouseMoveOff
-}
-
-^F9::   ;根据分辨率自适应倍数→v_fenbianlvbeilv
-MsgBox, 4, , 执行5个探索派遣，根据分辨率自适应倍数，遇到bug请全屏。 (Press YES or NO)
-IfMsgBox No
-{
-	WinActivate , %YouXiName%
-    return
-}
-IfMsgBox Yes
-{
-
-}
+; 探索派遣函数  ;findtext默认是相对屏幕位置查找的,而AHK默认(CoordMode)是相对活动窗口执行命令的,两相互独立
+TansuoPaiqian(diqux, diquy, didianx, didiany, fenpeijuesex, fenpeijuesey, tanxianshichang20hours) {
 if WinExist(YouXiName)
 {
 	WinGet, zuidahuazuixiaohua,MinMax , %YouXiName%
 	;msgbox, %zuidahuazuixiaohua%
-	if (zuidahuazuixiaohua==-1)  ;如果最小化了
+	if (zuidahuazuixiaohua==-1)  ;如果最小化了先最大化
 	{
 	WinActivate , %YouXiName%
 	;sleep 100
@@ -599,63 +578,87 @@ if WinExist(YouXiName)
 	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
 	}
 }
-;msgbox, OutWidth=%OutWidth%
-v_fenbianlvbeilv:=OutWidth/1920
-;msgbox, v_fenbianlvbeilv=%v_fenbianlvbeilv%
-
-    ; 蒙德
-    Expedition(150, 165, 1063, 333, 300, 150, 1650, 1000)
-    Expedition(150, 165, 1176, 659, 300, 300, 1650, 1000)
-    ; 璃月
-    Expedition(150, 230, 724, 333, 300, 150, 1650, 1000)
-    Expedition(150, 230, 961, 454, 300, 300, 1650, 1000)
-    ; 稻妻
-    Expedition(150, 300, 1101, 283, 300, 150, 1650, 1000)
-return
+	v_fenbianlvbeilv:=OutWidth/1920  ;分辨率缩放,注意赋值要用:=而不是=
+	;msgbox, v_fenbianlvbeilv=%v_fenbianlvbeilv%  OutWidth=%OutWidth%  OutX=%OutX%
 	
-; 5个探索派遣
-;^F9::   ;自动判断4k或1080p，不用这个了,,,作废！
-if(OutWidth==3840)
-{
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<左上角探索>*130$71.63XsMDs00000Dy3UTzk00000Ts70TzU00003zUT0Tz000007y1z0Ty00000Dk7z0Dw3zUTzT0TzUDs7w0zWg1kDUDkDU3y0MDUTkzUy0Tk0Fz0zzzzk7y00zy1zzzs0000bzw1zzzk0007S00007zk000ww0000Dzzy07Vs0000TzzU1y3k0000zzw0Ty7zw0Tzzy07w0Dzk0Tzz00000Tz00zzy00000zw00zzw00005zk00zzs01UTvzU00zzzzz0zry000zzzty1sjk430zzz1w3kT0M70Tzw1s71"
-if (ok:=FindText(X, Y, 0, 0, 533, 151, 0, 0, Text)) or !(b_SmartOrFool)
-{
-  ; FindText().Click(X, Y, "L")
 
+    BlockInput, MouseMove
+    MouseMove, diqux*v_fenbianlvbeilv, diquy*v_fenbianlvbeilv ;移动到地区
+    Sleep 150
+    Click
+	sleep 50
+	
+    MouseMove, didianx*v_fenbianlvbeilv, didiany*v_fenbianlvbeilv ;移动到地点
+    Sleep 150
+    Click
+	sleep 50
+
+	MouseMove, 1610*v_fenbianlvbeilv, 1040*v_fenbianlvbeilv ;移动到右下角点2次
+	Sleep 150
+    Click
+	;sleep 50
+    Sleep 250  ;等待点击屏幕
+    Click
+	sleep 50
+	
+	if(tanxianshichang20hours==1)
+	{
+	;msgbox, tanxianshichang20hours=%tanxianshichang20hours%
+	MouseMove, 1770*v_fenbianlvbeilv, 700*v_fenbianlvbeilv ;鼠标将探险时长调到20小时
+    Sleep 150
+    Click	
+	sleep 50
+	}
+	
+	MouseMove, 1610*v_fenbianlvbeilv, 1040*v_fenbianlvbeilv ;移动到右下角点1次
+	Sleep 150
+    Click
+	sleep 50
+	
+	;msgbox , fenpeijuese
+	MouseMove, fenpeijuesex*v_fenbianlvbeilv, fenpeijuesey*v_fenbianlvbeilv ;分配角色
+	Sleep 150
+    Click
+
+	sleep 200
+    BlockInput, MouseMoveOff
+}
+
+; 执行5个探索派遣函数
+^F9::   ;根据分辨率自适应倍数→v_fenbianlvbeilv
+tanxianshichang20hours=0
+MsgBox, 3, , 执行5个探索派遣，根据分辨率自适应倍数，遇到bug请全屏，支持16:9屏幕。`n  (YES-执行/NO-终止/Cancel-执行并把探险时长调到20小时)
+IfMsgBox No
+{
+	WinActivate , %YouXiName%
+    return
+}
+IfMsgBox Yes
+{
+WinActivate , %YouXiName%
 sleep 100
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<派遣未完成召回的禁止图标>*90$71.zw0zzzs001zzzs1zzzU0E3zzzk7zzy01k7zzz0Tzzs07k7zzy0zzzU0TUDzzw1zzy01z0Tzzk3zzs07z0TzzU7zzU0Ty0zzz0Tzy01zw1zzy0zzs07zs3zzw1zzU0Tzk7zzs3zy01zzUDzzk7zs07zz0TzzUDzU0Tzy0zzz0Dy01zzw1zzy0Ts07zzs3zzy0zU0TzzUDzzw1y01zzz0Tzzw3s07zzy0zzzs3U0Tzzs3zzzk201zzzk7zzzU007zzz0DzzzU00Tzzw0zzzzU01zzzs1zzzz007zzzU7zz"
-if (ok:=FindText(X, Y, 3202-150000, 2041-150000, 3202+150000, 2041+150000, 0, 0, Text)) or !(b_SmartOrFool)
+}
+IfMsgBox, Cancel
 {
-  Return
+tanxianshichang20hours=1
+WinActivate , %YouXiName%
+sleep 100
 }
     ; 蒙德
-    Expedition(300, 330, 2126, 666, 600, 300, 3300, 2000)
-    Expedition(300, 330, 2352, 1318, 600, 600, 3300, 2000)
+    TansuoPaiqian(150, 181, 1037, 339, 300, 160, tanxianshichang20hours)
+    TansuoPaiqian(150, 181, 1156, 663, 300, 310, tanxianshichang20hours)
     ; 璃月
-    Expedition(300, 460, 1448, 666, 600, 300, 3300, 2000)
-    Expedition(300, 460, 1922, 908, 600, 600, 3300, 2000)
-    ; 稻妻
-    Expedition(300, 600, 2202, 566, 600, 300, 3300, 2000)
-}
-}
-else if(A_ScreenWidth==1920)
-{
-    ; 蒙德
-    Expedition(150, 165, 1063, 333, 300, 150, 1650, 1000)
-    Expedition(150, 165, 1176, 659, 300, 300, 1650, 1000)
-    ; 璃月
-    Expedition(150, 230, 724, 333, 300, 150, 1650, 1000)
-    Expedition(150, 230, 961, 454, 300, 300, 1650, 1000)
-    ; 稻妻
-    Expedition(150, 300, 1101, 283, 300, 150, 1650, 1000)
-}
-else
-{
-	Msgbox, 目前只写了4k和1080p的分辨率哦，暂时不支持你的分辨率，请自己添加修改参数。
-}
-Return
+    TansuoPaiqian(150, 252, 724, 333, 300, 160, tanxianshichang20hours)
+    TansuoPaiqian(150, 252, 961, 454, 300, 310, tanxianshichang20hours)
+	;TansuoPaiqian(150, 252, 706, 826, 300, 310, tanxianshichang20hours)  ;莲蓬松茸
+	;稻妻
+	;TansuoPaiqian(150, 324, 919, 354, 300, 310, tanxianshichang20hours)  ;稻妻堇瓜
+    ; 须弥
+    TansuoPaiqian(150, 397, 878, 565, 300, 160, tanxianshichang20hours)  ;墩墩桃松果
+    ; 枫丹
+    ;TansuoPaiqian(150, 468, 876, 467, 300, 160, tanxianshichang20hours)  ;汐藻	
+return
+
 
 
 
@@ -686,6 +689,70 @@ findtext91:
 ;
 ;===========================================
 ;*/
+;/*
+;===========================================
+;  FindText - 屏幕抓字生成字库工具与找字函数
+;  https://autohotkey.com/boards/viewtopic.php?f=6&t=17834
+;
+;  脚本作者 : FeiYue
+;  最新版本 : 8.9
+;  更新时间 : 2022-05-28
+;
+;  用法:  (需要最新版本 AHK v1.1.31+)
+;  1. 将本脚本保存为“FindText.ahk”并复制到AHK程序的Lib子目录中
+;  2. 抓图并生成调用FindText()的代码
+;     2.1 方式一：直接点击“抓图”按钮
+;     2.2 方式二：先设定截屏热键，使用热键截屏，再点击“截屏抓图”按钮
+;  3. 测试一下调用的代码是否成功:直接点击“测试”按钮
+;  4. 复制调用的代码到自己的脚本中
+;     4.1 方式一：直接点击“复制”按钮，然后粘贴到自己的脚本中（不推荐）
+;     4.2 方式二：取消“附加FindText()函数”的选框，然后点击“复制”按钮，
+;         然后粘贴到自己的脚本中，然后在自己的脚本开头加上一行:
+;         #Include <FindText>  ; Lib目录中必须有FindText.ahk
+;  5. 多色查找模式可以一定程度上适应图像的放大缩小，也可以找图
+;  6. 这个库还可以用于快速截屏、获取颜色、写入颜色、编辑后另存图片
+;  7. 如果要调用FindTextClass类中的函数，请用无参数的FindText()获取默认对象
+;
+;===========================================
+;*/
+
+;--------------------------------
+;  FindText - 屏幕找字函数
+;--------------------------------
+;  返回变量 := FindText(
+;      OutputX --> 保存返回的X坐标的变量名称
+;    , OutputY --> 保存返回的Y坐标的变量名称
+;    , X1 --> 查找范围的左上角X坐标
+;    , Y1 --> 查找范围的左上角Y坐标
+;    , X2 --> 查找范围的右下角X坐标
+;    , Y2 --> 查找范围的右下角Y坐标
+;    , err1 --> 文字的黑点容错百分率（0.1=10%）
+;    , err0 --> 背景的白点容错百分率（0.1=10%）
+;    , Text --> 由工具生成的查找图像的数据，可以一次查找多个，用“|”分隔
+;    , ScreenShot --> 是否截屏，为0则使用上一次的截屏数据
+;    , FindAll --> 是否搜索所有位置，为0则找到一个位置就返回
+;    , JoinText --> 如果想组合查找，可以为1，或者是要查找单词的数组
+;    , offsetX --> 组合图像的每个字和前一个字的最大横向间隔
+;    , offsetY --> 组合图像的每个字和前一个字的最大高低间隔
+;    , dir --> 查找的方向，有上、下、左、右、中心9种
+;    , zoomW --> 图像宽度的缩放百分率（1.0=100%）
+;    , zoomH --> 图像高度的缩放百分率（1.0=100%）
+;  )
+;
+;  返回变量 --> 如果没找到结果会返回0。否则返回一个二级数组，
+;      第一级是每个结果对象，第二级是结果对象的具体信息数组:
+;      { 1:左上角X, 2:左上角Y, 3:图像宽度W, 4:图像高度H
+;        , x:中心点X, y:中心点Y, id:图像识别文本 }
+;  坐标都是相对于屏幕，颜色使用RGB格式
+;
+;  如果 OutputX 等于 "wait" 或 "wait1" 意味着等待图像出现，
+;  如果 OutputX 等于 "wait0" 意味着等待图像消失
+;  此时 OutputY 设置等待时间的秒数，如果小于0则无限等待
+;  如果超时则返回0，意味着失败，如果等待图像出现成功，则返回位置数组
+;  如果等待图像消失成功，则返回 1
+;  例1: FindText(X:="wait", Y:=3, 0,0,0,0,0,0,Text)   ; 等待3秒等图像出现
+;  例2: FindText(X:="wait0", Y:=-1, 0,0,0,0,0,0,Text) ; 无限等待等图像消失
+;--------------------------------
 
 
 if (!A_IsCompiled && A_LineFile=A_ScriptFullPath)
