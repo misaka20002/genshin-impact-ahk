@@ -156,7 +156,7 @@ return
 
 
 
-#if WinActive(YouXiName) or WinActive("幻塔2077")
+#if WinActive(YouXiName) or WinActive("幻塔2077") or WinActive("ahk_exe StarRail.exe")
 
 
 
@@ -183,7 +183,7 @@ if(kalepaimon==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=zuoxiajiaoEnter
-if (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
+if !(b_SmartOrFool) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
   return
@@ -263,9 +263,6 @@ Return
 MButton::
 ;if WinActive("原神") or WinActive("幻塔")
 {
-;t1:=A_TickCount, Text:=X:=Y:=""
-;Text:=zuoxiajiaoEnter
-;if (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
 {
   ; FindText().Click(X, Y, "L")
   
@@ -338,10 +335,10 @@ if(ShuangJiX==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=zuoxiajiaoEnter
-if (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
+if !(b_SmartOrFool) or (WinActive("ahk_exe StarRail.exe")) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
-
+;msgbox, b_SmartOrFool=%b_SmartOrFool%
 if (xh==1)
 {
 send {w down}
@@ -439,7 +436,7 @@ tab::
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=quedingQuanQuan
-if (ok:=FindText(X, Y, OutWidth/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
+if !(b_SmartOrFool) or (ok:=FindText(X, Y, OutWidth/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
 {
 MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
@@ -452,7 +449,7 @@ else
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=youxiajiaoditutubiao
 ;X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text
-if (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text)) or !(b_SmartOrFool)
+if !(b_SmartOrFool) or (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
 {
 MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
@@ -466,19 +463,6 @@ click
 }
 }
 return
-
-;~键按一下叉叉，读两个图片意外的延迟大，改用esc吧，注释掉了
-; `::
-; t1:=A_TickCount, Text:=X:=Y:=""
-; Text:="|<弹出框的叉叉按钮X>*90$37.k0Dz01w03z01z00z01zk0D01zw0301zz0001zzk001zzw001zzz001zzzk01zzzw01zzzy00zzzz00Dzzz003zzz000zzz000Dzz0003zz0000zz01k0Dz01w03z01z00z01zk0D01zw0301zz0101zzk0E|<地图右上角的叉叉>*148$54.zzzw0DzzzwTzy0TzyDMDzz0zzw607zzVzzs001zzzzzU000zzzzz0000Tzzzy0000Dzzzw00007zzzs00003zzzk00001zzzU00000zzz000000zzz000000zzz000000zzz000001zzzU00003zzzk00007zzzs0000Dzzzw0000Tzzzy0000zzzzz0001zzzzzU007zzVzzs0MDzz0zzw6wTzy0TzyDU"
-; if (ok:=FindText(X, Y, 1204-150000, 1515-150000, 1204+150000, 1515+150000, 0, 0, Text)) or !(b_SmartOrFool)
-; {
-; MouseGetPos, xpos, ypos, winid
-  ; FindText().Click(X, Y, "L")
-  ; sleep 100
-  ; click, %xpos%, %ypos%, 0
-; }
-; return
 
 ; 鼠标侧键 1 等于前进，连按两下等于按住 w
 XButton1::
@@ -651,10 +635,10 @@ sleep 100
     TansuoPaiqian(150, 252, 724, 333, 300, 160, tanxianshichang20hours)
     TansuoPaiqian(150, 252, 961, 454, 300, 310, tanxianshichang20hours)
 	;TansuoPaiqian(150, 252, 706, 826, 300, 310, tanxianshichang20hours)  ;莲蓬松茸
-	;稻妻
-	;TansuoPaiqian(150, 324, 919, 354, 300, 310, tanxianshichang20hours)  ;稻妻堇瓜
+	; 稻妻
+	TansuoPaiqian(150, 324, 919, 354, 300, 310, tanxianshichang20hours)  ;稻妻堇瓜
     ; 须弥
-    TansuoPaiqian(150, 397, 878, 565, 300, 160, tanxianshichang20hours)  ;墩墩桃松果
+    ;TansuoPaiqian(150, 397, 878, 565, 300, 160, tanxianshichang20hours)  ;墩墩桃松果
     ; 枫丹
     ;TansuoPaiqian(150, 468, 876, 467, 300, 160, tanxianshichang20hours)  ;汐藻	
 return
