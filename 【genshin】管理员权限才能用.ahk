@@ -22,7 +22,7 @@ Menu, Tray, Icon, %I_Icon%
 ;用户设定：
 b_SmartOrFool=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
 YouXiName=ahk_exe YuanShen.exe  ;国际服请修改此处为genshin.exe
-ShuangJiX=0    ;启动双击X键为触发一次x，0禁用/1启用，用于下落，x键有0.2s延迟不舒服，建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
+ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
 
 
 
@@ -313,22 +313,15 @@ return
 ;按一下x键持续按w前进，再按一次x键停止----------------------
 ~x::
 ~`::
-;双击x则激活x，用于x键下落，但是受不了200毫秒延迟
-if(ShuangJiX==1)
+;长按x则激活x，用于x键下落，但是受不了200毫秒延迟
+if(ChangAnX==1)
 {
-    KeyWait, x, T0.1
-    If Not ErrorLevel
-    {
-        KeyWait, x, D T0.1
-        If Not ErrorLevel
-        {
-            Send {x down}
-			sleep 50
-			Send {x up}
-			xh:=-1
-			send {w up}
-        }
-    }
+	KeyWait, x
+	If (A_TimeSinceThisHotkey > 300)
+	{
+		SetTimer, ChangAnXsendx, -1
+		return
+	}
 }
 ;需要在原神设置里把原来的x落下键改为n
 ;if WinActive("原神") or WinActive("幻塔")
@@ -352,6 +345,12 @@ send {w up}
 }
 }
 Return
+
+ChangAnXsendx:
+	Send {x down}
+	sleep 50
+	Send {x up}
+return
 
 ; 点两下 w 按住 w
 ~w::
@@ -636,7 +635,7 @@ sleep 100
     TansuoPaiqian(150, 252, 961, 454, 300, 310, tanxianshichang20hours)
 	;TansuoPaiqian(150, 252, 706, 826, 300, 310, tanxianshichang20hours)  ;莲蓬松茸
 	; 稻妻
-	TansuoPaiqian(150, 324, 919, 354, 300, 310, tanxianshichang20hours)  ;稻妻堇瓜
+	TansuoPaiqian(150, 324, 919, 354, 300, 160, tanxianshichang20hours)  ;稻妻堇瓜
     ; 须弥
     ;TansuoPaiqian(150, 397, 878, 565, 300, 160, tanxianshichang20hours)  ;墩墩桃松果
     ; 枫丹
