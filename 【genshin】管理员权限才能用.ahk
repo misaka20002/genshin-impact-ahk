@@ -20,7 +20,7 @@ Menu, Tray, Icon, %I_Icon%
 
 
 ;用户设定：
-b_SmartOrFool=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
+b_UseFindText=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
 YouXiName=ahk_exe YuanShen.exe  ;国际服请修改此处为genshin.exe
 ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
 
@@ -75,22 +75,28 @@ youshangjiaodetouxiang="|<右上角的主角头像图标4k>*227$66.0000000010000
 zuoxiajiaoEnter="|<Enter4k>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU|<左下角的enter在有对话框时4k>*154$71.0100007s0000000000Dk0000000000TU0000000000z00000000001y0000000wzkDzw1zU00DzzkTzkDzk00Tzzkzz0zDnzkTsTUTU1w7rzUTUz0z07kDzz0z0z1y0DUTU01y1y3w0z0T003w3w7s1y0y007s7sDk3zzw00DkDkTU7zzs00TUTUz0Dzzk00z0z1y0TU0001y1y3w0z00003w3w7s1y00067s7sDk1y03zwDkDkTU3y0zzsTUTUzz3zzjzUz0y0zy3zyTz1w1w0zk3zs001k300000y1"
 quedingQuanQuan="|<按钮圈圈O4k>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UTzzzw10Tzzzy10zzzzy10zzzzy10zzzzz10zzzzz00zzzzz00zzzzz00zzzzz10zzzzy10zzzzy1UTzzzy1UTzzzw1UDzzzw3kDzzzs3k7zzzk7s3zzzk7s1zzz0Dw0zzy0Dy0Dzw0TU|<按钮圈圈2O4k>*114$41.s3zzz0DUDzzz0D0Tzzz0Q1zzzz0s7zzzy0UDzzzy10Tzzzw01zzzzw03zzzzs07zzzzk0DzzzzU0Tzzzz00zzzzy01zzzzw03zzzzs07zzzzk07zzzz0EDzzzy1UTzzzs30TzzzkD0Tzzz0S0Tzzw0y0Tzzk3w0Tzz0Dw0Dzs0T"
 youxiajiaoditutubiao="|<右下地图的图标4k>*121$38.U0zzk0M0Tzw0607zzU103zzw0E0zzz000Dzzk003zzw000zzz000Dzzk1U3zzw0M0Tzy0707zzU1k0zzk0w07zs0DU0zw07s03w01z00000zs0000Tz0000Dzk0003zy0001zzk000zzw000DzzU007zzw003zs"
+duihuatubiao="|<对话图标最下一个4k>*200$71.zzU0000000zzzy00000000Tzzk00000000TzzU00000000Tzy000000000Tzs000000000TzU000000000Ty0000000000zw0000000000zk0000000000z00000000001y00000000001s00000000003k00000000003U0000000000700000000000A00000000000M00000000000U01s01s03s01007s0Ds0Ds0200Ts0Ts0zs0400zs1zk1zk0803zk3zk3zU0E03zU7z07z00U07z07y0Dy01"
+fubendetiaoguowenzi="|<副本中右上角的跳过文字4k>*200$71.zy0Dzzzzzwzzzy0zzzzzzszzzw1zzzzzzkzzzs3zzzzzzUzzzk7zzzzzz0TjzUDzzzzzz0TTz0Tzzzzzz0STy0zzzzzzzUATw1zzzzzzXU8Ts3zzzzzy3U0zk7zzzzzs3k0zUDzzzzz01k0z0Tzzzzs0000y0zzzzzk0031w1zzzzzU0073s3zzzzzk0QDjk7zzzzzk1kTzUDzzzzzsD0zz0Tzzzzzss3zy0zzzzzzzUDzw1zzzzzzy1zzk3zzzzzzk7s007zzzzzz0Tk00Dzzzzzy3zk00zzzzzzwDz"
+wenbendianjirenyiweizi="|<文字：点击任意位置关闭4k>*86$71.000000zUC000000001z0Tzzw000003w0zzzzzzzzzzs1y7zjzzzzzzU3kDzE00007z07UTyU0000Dw0DUzt00000Ts0T0zm1zzz0zU0y1zY3zzy1y21y3z800003wA3w3wE00007ws7w7sU0000DzkDsDl0zzzUTzUTsT21zzz0zz0zkS400003zy1zkw800007zw3zVsE0001zzs7zVUUzkTyDzkDzX001UTkDzUTz6403UTUTz0zzM887UTUTy1zzkkkDVzUTw3zzVVUTvnUzs400070zz7Uzk8001"
 }
 else if(OutWidth>1900) and (OutWidth<1950)
 {
 youshangjiaodetouxiang="|<右上角的主角头像图标1080p>*232$25.0002000100000000800050002U001g800Fy008T0003U0M0k0D080DU407k203s103g0Y3m0y1k0z1kE"
 zuoxiajiaoEnter="|<Enter1080p>*163$55.zy0000000Tz003U00070003k0003U000s0001k0LVzVs2Ms1zszlz7STwSSD1lnzjyD73Usttr07XVkwSw3U3lksTzS1k1ssQDzD0s0wQC7U7UTySC71kHkDzD73wztk7zbXVw7sk4|<左下角的enter在有对话框时1080p>*163$48.zs000000w001k000w001k000w001s000w1zXyDnbzttlkQvzzstlkMtnw0stkwtkw0stkztkw0stkw1kw0stks1kzsstsQNkzsskyDlUU"
-quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zzs7zz0zzs7zy4TzlVzwCDz3kTkT007w03zs1zU|<按钮圈圈2O1080p>*114$21.zUDzk0Ts01y3w7kzsQDzXXzy8zzl7zy8zzs7zz0zzs7zy8TzlXzwADz3kzkT0s7w01zs0zzszw"
+quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zzs7zz0zzs7zy4TzlVzwCDz3kTkT007w03zs1zU|<按钮圈圈2O1080p>*114$21.zUDzk0Ts01y3w7kzsQDzXXzy8zzl7zy8zzs7zz0zzs7zy8TzlXzwADz3kzkT0s7w01zs0zzszw|<之前的失效了这个是新的右下1080p>*116$29.zzzzzzzzzzzw7zzz03zzw01zzkS1zz3z1zwDzXzszz3zVzz7z7zyDyDzyDwTzwTszzszlzzXzXzz7zXzyDz3zszz3zVzz1w7zz00Tzz03zzzUTzzzzzzzzzzz"
 youxiajiaoditutubiao="|<右下地图的图标1080p>*121$19.w07w01w00Q0061w31z11zk0zs0Tw0Dy23y31z1UC0s00y00zU0zk0Tw0Tz0TzUTzsDzyDzzjz"
+duihuatubiao="|<对话图标最下一个1080p>*200$36.zU001zy0000Tw0000Ds00007k00007k00003U00001U00001U000010A1UA10S3kS00S7ky00S3ky00S3kQ0U00001U00001U00001k00003s00007s0000Dw0000Dy0000zz0001zzk003zzy003zU"
+fubendetiaoguowenzi=0
+wenbendianjirenyiweizi="|<>*80$71.zzzzzzzzzzzzzzzzzzzzzzzzzzzXzyD7zzzzUT007wS7y0000w007syDwMX0Tz3VzW01s00szy73z401k01lz000QCzDzlzXzzzzsMyT0077z007UlszU000S00D1Xly0000w00Q3bXw00szs00v77Ds01lzlzlyDATk03XzU03wSMzU077z037syHz00CDw2D7lw7y00QTs6CDXyTw0001WDmD401U0003C0CS003003zzy0zwzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 }
 else
 {
-b_SmartOrFool=0
+b_UseFindText=0
 }
 
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%)`n(游戏窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
+MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
 IfMsgBox yes
 {
 kalepaimon=0
@@ -177,13 +183,24 @@ xh:=1
 
 ;禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
 esc::
-;if WinActive("原神") or WinActive("幻塔")
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:=duihuatubiao
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*5+OutX, OutHeight/2+OutY, OutWidth/4*3+OutX, OutHeight+OutY, 0, 0, Text,,,,,,9))
+{
+  MouseGetPos, xpos, ypos, winid
+  FindText().Click(X, Y, "L")
+  sleep 100
+  click, %xpos%, %ypos%, 1
+  sleep 500
+  click, %xpos%, %ypos%, 1
+}
+else
 {
 if(kalepaimon==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=zuoxiajiaoEnter
-if !(b_SmartOrFool) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
+if !(b_UseFindText) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
   return
@@ -204,7 +221,6 @@ sleep 10
 send {esc up}
 }
 }
-
 return
 
 ;禁用抽卡界面，转为好友界面
@@ -328,10 +344,10 @@ if(ChangAnX==1)
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=zuoxiajiaoEnter
-if !(b_SmartOrFool) or (WinActive("ahk_exe StarRail.exe")) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
+if !(b_UseFindText) or (WinActive("ahk_exe StarRail.exe")) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
-;msgbox, b_SmartOrFool=%b_SmartOrFool%
+;msgbox, b_UseFindText=%b_UseFindText%
 if (xh==1)
 {
 send {w down}
@@ -435,7 +451,7 @@ tab::
 {
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=quedingQuanQuan
-if !(b_SmartOrFool) or (ok:=FindText(X, Y, OutWidth/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
 {
 MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
@@ -448,16 +464,40 @@ else
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:=youxiajiaoditutubiao
 ;X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text
-if !(b_SmartOrFool) or (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
 {
-MouseGetPos, xpos, ypos, winid
+  MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
-    sleep 100
+  sleep 100
+  click, %xpos%, %ypos%, 0
+}
+else
+{
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:=fubendetiaoguowenzi
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
+{
+  MouseGetPos, xpos, ypos, winid
+  FindText().Click(X, Y, "L")
+  sleep 100
+  click, %xpos%, %ypos%, 0
+}
+else
+{
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:=wenbendianjirenyiweizi
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*3+OutX, OutHeight/2+OutY, OutWidth/8*5+OutX, OutHeight+OutY, 0, 0, Text))
+{
+  MouseGetPos, xpos, ypos, winid
+  FindText().Click(X, Y, "L")
+  sleep 100
   click, %xpos%, %ypos%, 0
 }
 else
 {
 click
+}
+}
 }
 }
 }
