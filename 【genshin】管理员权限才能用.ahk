@@ -21,7 +21,7 @@ Menu, Tray, Icon, %I_Icon%
 
 ;用户设定：
 b_UseFindText=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
-YouXiName=ahk_exe YuanShen.exe  ;国际服请修改此处为genshin.exe
+yuanshenName=ahk_exe YuanShen.exe  ;国际服请修改此处为genshin.exe
 ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
 
 
@@ -36,21 +36,21 @@ ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落
 
 
 ;读取游戏窗口分辨率
-if WinExist(YouXiName)
+if WinExist(yuanshenName)
 {
 	helpyouxiyiqidong=已
-	WinGet, zuidahuazuixiaohua,MinMax , %YouXiName%
+	WinGet, zuidahuazuixiaohua,MinMax , %yuanshenName%
 	;msgbox, %zuidahuazuixiaohua%
 	if (zuidahuazuixiaohua==-1)  ;如果最小化了
 	{
-	WinActivate , %YouXiName%
+	WinActivate , %yuanshenName%
 	;sleep 100
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
 	;OutWidth:=A_ScreenWidth
 	}
 	else
 	{
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
 	}
 }
 else
@@ -61,7 +61,7 @@ helpyouxiyiqidong=未
 }
 ;msgbox, %OutWidth%  %zuidahuazuixiaohua%
 
-help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——好友界面`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    ctrl+F9——5个探索派遣`n    请在原神设置将落下键改为n，或启动本软件双击x下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（显示鼠标/快捷元素爆发）
+help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——媒体播放/暂停`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    ESC键——点击对话时最下选项`n    ctrl+F9——5个探索派遣`n    请在原神设置将落下键改为n，或启动本软件双击x下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（显示鼠标/快捷元素爆发）
 
 ;内置参数:
 bSwitch=0
@@ -77,7 +77,7 @@ quedingQuanQuan="|<按钮圈圈O4k>*115$42.s1zzzUDs3zzzk7k7zzzs3kDzzzs3UDzzzw3UT
 youxiajiaoditutubiao="|<右下地图的图标4k>*121$38.U0zzk0M0Tzw0607zzU103zzw0E0zzz000Dzzk003zzw000zzz000Dzzk1U3zzw0M0Tzy0707zzU1k0zzk0w07zs0DU0zw07s03w01z00000zs0000Tz0000Dzk0003zy0001zzk000zzw000DzzU007zzw003zs"
 duihuatubiao="|<对话图标最下一个4k>*200$71.zzU0000000zzzy00000000Tzzk00000000TzzU00000000Tzy000000000Tzs000000000TzU000000000Ty0000000000zw0000000000zk0000000000z00000000001y00000000001s00000000003k00000000003U0000000000700000000000A00000000000M00000000000U01s01s03s01007s0Ds0Ds0200Ts0Ts0zs0400zs1zk1zk0803zk3zk3zU0E03zU7z07z00U07z07y0Dy01"
 fubendetiaoguowenzi="|<副本中右上角的跳过文字4k>*200$71.zy0Dzzzzzwzzzy0zzzzzzszzzw1zzzzzzkzzzs3zzzzzzUzzzk7zzzzzz0TjzUDzzzzzz0TTz0Tzzzzzz0STy0zzzzzzzUATw1zzzzzzXU8Ts3zzzzzy3U0zk7zzzzzs3k0zUDzzzzz01k0z0Tzzzzs0000y0zzzzzk0031w1zzzzzU0073s3zzzzzk0QDjk7zzzzzk1kTzUDzzzzzsD0zz0Tzzzzzss3zy0zzzzzzzUDzw1zzzzzzy1zzk3zzzzzzk7s007zzzzzz0Tk00Dzzzzzy3zk00zzzzzzwDz"
-wenbendianjirenyiweizi="|<文字：点击任意位置关闭4k>*86$71.000000zUC000000001z0Tzzw000003w0zzzzzzzzzzs1y7zjzzzzzzU3kDzE00007z07UTyU0000Dw0DUzt00000Ts0T0zm1zzz0zU0y1zY3zzy1y21y3z800003wA3w3wE00007ws7w7sU0000DzkDsDl0zzzUTzUTsT21zzz0zz0zkS400003zy1zkw800007zw3zVsE0001zzs7zVUUzkTyDzkDzX001UTkDzUTz6403UTUTz0zzM887UTUTy1zzkkkDVzUTw3zzVVUTvnUzs400070zz7Uzk8001"
+dianjirenyiweizhiguanbi="|<文字：点击任意位置关闭4k>*86$71.000000zUC000000001z0Tzzw000003w0zzzzzzzzzzs1y7zjzzzzzzU3kDzE00007z07UTyU0000Dw0DUzt00000Ts0T0zm1zzz0zU0y1zY3zzy1y21y3z800003wA3w3wE00007ws7w7sU0000DzkDsDl0zzzUTzUTsT21zzz0zz0zkS400003zy1zkw800007zw3zVsE0001zzs7zVUUzkTyDzkDzX001UTkDzUTz6403UTUTz0zzM887UTUTy1zzkkkDVzUTw3zzVVUTvnUzs400070zz7Uzk8001"
 }
 else if(OutWidth>1900) and (OutWidth<1950)
 {
@@ -87,16 +87,21 @@ quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zz
 youxiajiaoditutubiao="|<右下地图的图标1080p>*121$19.w07w01w00Q0061w31z11zk0zs0Tw0Dy23y31z1UC0s00y00zU0zk0Tw0Tz0TzUTzsDzyDzzjz"
 duihuatubiao="|<对话图标最下一个1080p>*200$36.zU001zy0000Tw0000Ds00007k00007k00003U00001U00001U000010A1UA10S3kS00S7ky00S3ky00S3kQ0U00001U00001U00001k00003s00007s0000Dw0000Dy0000zz0001zzk003zzy003zU"
 fubendetiaoguowenzi=0
-wenbendianjirenyiweizi="|<>*80$71.zzzzzzzzzzzzzzzzzzzzzzzzzzzXzyD7zzzzUT007wS7y0000w007syDwMX0Tz3VzW01s00szy73z401k01lz000QCzDzlzXzzzzsMyT0077z007UlszU000S00D1Xly0000w00Q3bXw00szs00v77Ds01lzlzlyDATk03XzU03wSMzU077z037syHz00CDw2D7lw7y00QTs6CDXyTw0001WDmD401U0003C0CS003003zzy0zwzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+dianjirenyiweizhiguanbi="|<>*80$71.zzzzzzzzzzzzzzzzzzzzzzzzzzzXzyD7zzzzUT007wS7y0000w007syDwMX0Tz3VzW01s00szy73z401k01lz000QCzDzlzXzzzzsMyT0077z007UlszU000S00D1Xly0000w00Q3bXw00szs00v77Ds01lzlzlyDATk03XzU03wSMzU077z037syHz00CDw2D7lw7y00QTs6CDXyTw0001WDmD401U0003C0CS003003zzy0zwzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 }
 else
 {
 b_UseFindText=0
 }
 
+if !WinExist(yuanshenName)
+{
+b_UseFindText=0
+}
+
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
+MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
 IfMsgBox yes
 {
 kalepaimon=0
@@ -145,7 +150,7 @@ Exitapp
 }
 
 ;激活游戏
-WinActivate , %YouXiName%
+WinActivate , %yuanshenName%
 
 
 ;重启
@@ -159,10 +164,17 @@ Goto findtext91
 return
 
 
+;设置需要兼容的游戏
+#if WinActive(yuanshenName) or WinActive("幻塔2077") or WinActive("ahk_exe StarRail.exe")
 
 
 
-#if WinActive(YouXiName) or WinActive("幻塔2077") or WinActive("ahk_exe StarRail.exe")
+
+
+
+
+
+
 
 
 
@@ -189,10 +201,10 @@ if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*5+OutX, OutHeight/2+OutY, 
 {
   MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
-  sleep 100
-  click, %xpos%, %ypos%, 1
-  sleep 500
-  click, %xpos%, %ypos%, 1
+  sleep 200
+  FindText().Click(X, Y-OutHeight/14, "L",0)
+;  sleep 400
+;  click, %xpos%, %ypos%, 1
 }
 else
 {
@@ -224,8 +236,9 @@ send {esc up}
 return
 
 ;禁用抽卡界面，转为好友界面
-F3::o
+F3::Media_Play_Pause
 return
+;键盘上的Fn+F5,F6,F7分别为上一个、下一个、暂停
 
 ;按着下面那个键不停输入f；双击F则开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消
 ~f::
@@ -301,10 +314,10 @@ return
 loopLbutton:
 ;if WinActive("原神") or WinActive("幻塔")
 {
-	Random, vloopPeriod, 200, 500
+	Random, vloopPeriod, 200, 400
 	SetTimer, loopLbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
 		Send {lbutton down}
-Random, vAnXiaShiChang, 3, 8
+Random, vAnXiaShiChang, 5, 7
 		Sleep %vAnXiaShiChang% ;按下时长
 		Send {lbutton up}
 }
@@ -442,11 +455,11 @@ tab::
 		SetTimer, loopLbutton, Off
 		bSwitch=0
 	}
-	if(xh==-1)
-	{
-		send {w up}
-		xh:=1
-	}
+	; if(xh==-1)
+	; {
+		; send {w up}
+		; xh:=1
+	; }
 ;if WinActive("原神") or WinActive("幻塔")
 {
 t1:=A_TickCount, Text:=X:=Y:=""
@@ -474,8 +487,8 @@ if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY
 else
 {
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:=fubendetiaoguowenzi
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
+Text:=dianjirenyiweizhiguanbi
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*3+OutX, OutHeight/2+OutY, OutWidth/8*5+OutX, OutHeight+OutY, 0, 0, Text))
 {
   MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
@@ -485,13 +498,22 @@ if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+O
 else
 {
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:=wenbendianjirenyiweizi
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*3+OutX, OutHeight/2+OutY, OutWidth/8*5+OutX, OutHeight+OutY, 0, 0, Text))
+Text:="|<浓缩树脂图标4k>*196$71.zy000CM1zzzxzz008Qk3zzzvzy000xU3zzzrzw001zU7zzzzzk000TUDzzzzy0000T0zzzzzk060061zzzzw0Dy0043zzzzk1zw0003zzzy0Dzs0007zzzwT8000007zzzsy000000Dzzzxs000000Dzzxs0000000TzzvUU00zy00TzzrVzkDzz00zzzjzz1zzzU0zzzTzw7zzzU1zzwzzkzzzzU1zztzy3zzzzU1zzXzU7zzzzU3zz7y0TzzzzU3zwDk1zzzzz03zsT07zzzzz03zUw1zzzzzz03z1"
+if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+100, 0, 0, Text))
 {
   MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
+  sleep 600
+  FindText().Click(X, Y, "L")
+  sleep 1000
+  t1:=A_TickCount, Text:=X:=Y:=""
+Text:=fubendetiaoguowenzi ;副本的跳过文字
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
+{
+  FindText().Click(X, Y, "L")
   sleep 100
   click, %xpos%, %ypos%, 0
+}
 }
 else
 {
@@ -502,6 +524,60 @@ click
 }
 }
 return
+
+
+~a::
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:="|<队伍选择界面左箭头>*222$35.zzw007zzk00Tzy000zzs007zz000Tzw001zzk007zy000zzk003zzU00Dzw001zzU003zz0007zzU00DzzU00DzzU007zzk007zzs003zzs003zzs003zzw003zzw001zzy003zzy001zzy001"
+if (b_UseFindText) and (ok:=FindText(X, Y, 135-100, 1080-100, 135+100, 1080+100, 0, 0, Text))
+{
+  FindText().Click(X, Y, "L")
+}
+return
+
+~d::
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:="|<队伍选择界面右箭头>*222$36.U00Dzzk007zzs001zzw001zzz000Tzz0007zzk003zzs001zzw000Tzz000DzzU003zzk000zzk000zzU003zz000Dzw000Tzs001zzk003zz0007zz000Tzw001zzs001zzk007zzU00Tzz000zzzU"
+if (b_UseFindText) and (ok:=FindText(X, Y, 3705-100, 1080-100, 3705+100, 1080+100, 0, 0, Text))
+{
+  FindText().Click(X, Y, "L")
+}
+return
+
+~e::
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:="|<被冰住按space解封>*174$71.00003zs000zy00003zU003zw00003y000Dzs00003s000zzk000000003zzU30000000Dzz0TU000000zzy1zU000003zzw7zU00000DzzsTzU00000zzzlzzU00003zzzbzzU0000DzzzTzzU0000zzzzzzzU0003zzzzzzz0000Dzzzzzzz0000Tzzzzzzz0000zzzzTzzy0001zzzyzzzs0003zzzlzzzU0003zzzXzzy00003zzw7zzs00003zzsDzzU00003zz0Tzy000003zy0zzs000003zk1"
+sleep 300
+if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
+{
+  ; FindText().Click(X, Y, "L")
+  loop, 8
+  {
+	send {space down}
+	sleep 5
+	send {space up}
+	sleep 50
+  }
+}
+else
+{
+sleep 500
+if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
+{
+  ; FindText().Click(X, Y, "L")
+  loop, 8
+  {
+	send {space down}
+	sleep 5
+	send {space up}
+	sleep 50
+  }
+}
+}
+return
+
+
+
 
 ; 鼠标侧键 1 等于前进，连按两下等于按住 w
 XButton1::
@@ -585,20 +661,20 @@ Return
 
 ; 探索派遣函数  ;findtext默认是相对屏幕位置查找的,而AHK默认(CoordMode)是相对活动窗口执行命令的,两相互独立
 TansuoPaiqian(diqux, diquy, didianx, didiany, fenpeijuesex, fenpeijuesey, tanxianshichang20hours) {
-if WinExist(YouXiName)
+if WinExist(yuanshenName)
 {
-	WinGet, zuidahuazuixiaohua,MinMax , %YouXiName%
+	WinGet, zuidahuazuixiaohua,MinMax , %yuanshenName%
 	;msgbox, %zuidahuazuixiaohua%
 	if (zuidahuazuixiaohua==-1)  ;如果最小化了先最大化
 	{
-	WinActivate , %YouXiName%
+	WinActivate , %yuanshenName%
 	;sleep 100
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
 	;OutWidth:=A_ScreenWidth
 	}
 	else
 	{
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %YouXiName%
+	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
 	}
 }
 	v_fenbianlvbeilv:=OutWidth/1920  ;分辨率缩放,注意赋值要用:=而不是=
@@ -653,18 +729,18 @@ tanxianshichang20hours=0
 MsgBox, 3, , 执行5个探索派遣，根据分辨率自适应倍数，遇到bug请全屏，支持16:9屏幕。`n  (YES-执行/NO-终止/Cancel-执行并把探险时长调到20小时)
 IfMsgBox No
 {
-	WinActivate , %YouXiName%
+	WinActivate , %yuanshenName%
     return
 }
 IfMsgBox Yes
 {
-WinActivate , %YouXiName%
+WinActivate , %yuanshenName%
 sleep 100
 }
 IfMsgBox, Cancel
 {
 tanxianshichang20hours=1
-WinActivate , %YouXiName%
+WinActivate , %yuanshenName%
 sleep 100
 }
     ; 蒙德
