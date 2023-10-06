@@ -503,9 +503,9 @@ if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+10
 {
   MouseGetPos, xpos, ypos, winid
   FindText().Click(X, Y, "L")
-  sleep 600
+  sleep 800
   FindText().Click(X, Y, "L")
-  sleep 1000
+  sleep 900
   t1:=A_TickCount, Text:=X:=Y:=""
 Text:=fubendetiaoguowenzi ;副本的跳过文字
 if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
@@ -528,8 +528,8 @@ return
 
 ~a::
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<队伍选择界面左箭头>*222$35.zzw007zzk00Tzy000zzs007zz000Tzw001zzk007zy000zzk003zzU00Dzw001zzU003zz0007zzU00DzzU00DzzU007zzk007zzs003zzs003zzs003zzw003zzw001zzy003zzy001zzy001"
-if (b_UseFindText) and (ok:=FindText(X, Y, 135-100, 1080-100, 135+100, 1080+100, 0, 0, Text))
+Text:="|<队伍选择界面左箭头4k>*228$34.zzs00Tzz003zzs00zzw00DzzU00zzw00Dzz001zzs00Dzz001zzk00Tzw001zzk007zzk00Tzzk00TzzU01zzz001zzz003zzy003zzw00Dzzw007zzw007zzk00Tzzk00zzzk00zzz002"
+if (ok:=FindText(X, Y, 136-50, 1081-50, 136+50, 1081+50, 0, 0, Text))
 {
   FindText().Click(X, Y, "L")
 }
@@ -537,8 +537,8 @@ return
 
 ~d::
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<队伍选择界面右箭头>*222$36.U00Dzzk007zzs001zzw001zzz000Tzz0007zzk003zzs001zzw000Tzz000DzzU003zzk000zzk000zzU003zz000Dzw000Tzs001zzk003zz0007zz000Tzw001zzs001zzk007zzU00Tzz000zzzU"
-if (b_UseFindText) and (ok:=FindText(X, Y, 3705-100, 1080-100, 3705+100, 1080+100, 0, 0, Text))
+Text:="|<队伍选择界面右箭头4k>*228$34.001zzz003zzy003zzs007zzs00Dzzs00Dzzk00DzzU00zzzU00zzz000zzy001zzw003zzs003zzU00Dzw003zzU00Tzs007zzU00zzs00Dzz000zzs00Dzy003zzU00Tzy003zzk00zzy"
+if (ok:=FindText(X, Y, 3704-50, 1079-50, 3704+50, 1079+50, 0, 0, Text))
 {
   FindText().Click(X, Y, "L")
 }
@@ -546,7 +546,7 @@ return
 
 ~e::
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<被冰住按space解封>*174$71.00003zs000zy00003zU003zw00003y000Dzs00003s000zzk000000003zzU30000000Dzz0TU000000zzy1zU000003zzw7zU00000DzzsTzU00000zzzlzzU00003zzzbzzU0000DzzzTzzU0000zzzzzzzU0003zzzzzzz0000Dzzzzzzz0000Tzzzzzzz0000zzzzTzzy0001zzzyzzzs0003zzzlzzzU0003zzzXzzy00003zzw7zzs00003zzsDzzU00003zz0Tzy000003zy0zzs000003zk1"
+Text:="|<被冰住按space解封4k>*174$71.00003zs000zy00003zU003zw00003y000Dzs00003s000zzk000000003zzU30000000Dzz0TU000000zzy1zU000003zzw7zU00000DzzsTzU00000zzzlzzU00003zzzbzzU0000DzzzTzzU0000zzzzzzzU0003zzzzzzz0000Dzzzzzzz0000Tzzzzzzz0000zzzzTzzy0001zzzyzzzs0003zzzlzzzU0003zzzXzzy00003zzw7zzs00003zzsDzzU00003zz0Tzy000003zy0zzs000003zk1"
 sleep 300
 if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
 {
@@ -743,7 +743,7 @@ tanxianshichang20hours=1
 WinActivate , %yuanshenName%
 sleep 100
 }
-    ; 蒙德
+    ; 蒙德(1080p下地区选择x,y,探索点x,y,派遣人物x,y,是否重置探险时长调到20小时)
     TansuoPaiqian(150, 181, 1037, 339, 300, 160, tanxianshichang20hours)
     TansuoPaiqian(150, 181, 1156, 663, 300, 310, tanxianshichang20hours)
     ; 璃月
