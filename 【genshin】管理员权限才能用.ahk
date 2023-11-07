@@ -1,4 +1,4 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -101,7 +101,7 @@ b_UseFindText=0
 
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
+MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
 IfMsgBox yes
 {
 kalepaimon=0
@@ -235,10 +235,10 @@ send {esc up}
 }
 return
 
-;禁用抽卡界面，转为好友界面
+;禁用抽卡界面
 F3::Media_Play_Pause
 return
-;键盘上的Fn+F5,F6,F7分别为上一个、下一个、暂停
+;功能同键盘上的Fn+F5,F6,F7分别为上一个、下一个、暂停
 
 ;按着下面那个键不停输入f；双击F则开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消
 ~f::
@@ -517,7 +517,19 @@ if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+O
 }
 else
 {
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:="|<替换按钮（右下角4k>*211$71.z00zk0DzzTwDy01zU0TzzzkTzzzzzkzzzz1zzzzzzVzzzw7zzzzzz3zzzzzzzzzzy0Tvzzzzzzzzw0zzzzzz07zk01zjzzzzUDzk03zTzzzzUzzk07yDzzzzXzzk0Dzztzzzzzzs0Tzznznzzlzs0zzzbz1zz1zw3zzzDzzzzzzyzzzyTzzzzzzvzzDwzzzzzzzrzwTtzzzzzzXjzzzzzzzzzz0Dzzzzzs007y0Tzzzzzk00Dw0vzzzzzU00Ts07zzzzzzzzzk0Dw03zzzzzzU0Ts0Dzzzzzz00zk0Tz"
+if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/2+OutX, OutHeight/4*3+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+{
+  MouseGetPos, xpos, ypos, winid
+  FindText().Click(X, Y, "L")
+  sleep 100
+  click, %xpos%, %ypos%, 0
+}
+else
+{
 click
+}
 }
 }
 }
@@ -561,7 +573,7 @@ if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
 }
 else
 {
-sleep 500
+sleep 700
 if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
