@@ -18,11 +18,15 @@ Menu, Tray, Icon, %I_Icon%
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-
-;用户设定：
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+;用户设定config：
 b_UseFindText=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
-yuanshenName=ahk_exe YuanShen.exe  ;国际服请修改此处为genshin.exe
+gamename=YuanShen.exe	;国际服请修改此处为genshin.exe
+YuanShenLocal=G:\Genshin Impact\Genshin Impact Game\ ;YuanShen.exe或genshin.exe的位置
+3DMigotoLocal=G:\3dm\ ;3DMigoto Loader.exe,的位置
 ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
@@ -35,6 +39,10 @@ ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落
 
 
 
+
+yuanshenName:="ahk_exe "+(gamename)
+v_isReloadByStartGameFromHere=0
+ReloadByStartGameFromHere:
 ;读取游戏窗口分辨率
 if WinExist(yuanshenName)
 {
@@ -99,12 +107,39 @@ if !WinExist(yuanshenName)
 b_UseFindText=0
 }
 
+if (v_isReloadByStartGameFromHere==0)
+{
 if(A_IsAdmin)
 {
 MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
 IfMsgBox yes
 {
 kalepaimon=0
+	if !WinExist(yuanshenName)
+	{
+		MsgBox, 4, ,原神未启动，是否启动原神？`n  启动原神后本程序会自动重启`n（需要自行配置原神位置）
+		IfMsgBox yes
+		{
+			Run, 3DMigoto Loader.exe, %3DMigotoLocal%, UseErrorLevel
+			sleep 2000
+			run, %gamename%, %YuanShenLocal%, UseErrorLevel
+			if (ErrorLevel = "ERROR")
+			{
+				MsgBox, 请设置原神.exe的运行位置
+				exitapp
+			}
+			v_isReloadByStartGameFromHere=1
+			loop, 60  ;等待120s YuanShen.exe启动
+			{
+				if WinActive(yuanshenName)
+				{
+					break
+				}
+				sleep 2000
+			}
+			goto ReloadByStartGameFromHere
+		}
+	}
 }
 else IfMsgBox no
 {
@@ -147,6 +182,7 @@ Exitapp
             Run *RunAs "%A_AhkPath%" /restart "%A_ScriptFullPath%"
     }
     ExitApp
+}
 }
 
 ;激活游戏
@@ -314,7 +350,7 @@ return
 loopLbutton:
 ;if WinActive("原神") or WinActive("幻塔")
 {
-	Random, vloopPeriod, 200, 400
+	Random, vloopPeriod, 100, 200
 	SetTimer, loopLbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
 		Send {lbutton down}
 Random, vAnXiaShiChang, 5, 7
@@ -341,7 +377,6 @@ return
 
 ;按一下x键持续按w前进，再按一次x键停止----------------------
 ~x::
-~`::
 ;长按x则激活x，用于x键下落，但是受不了200毫秒延迟
 if(ChangAnX==1)
 {
@@ -371,6 +406,21 @@ else
 xh:=1
 send {w up}
 }
+}
+}
+Return
+
+~`::
+{
+if (xh==1)
+{
+send {w down}
+xh:=-1
+}
+else
+{
+xh:=1
+send {w up}
 }
 }
 Return
@@ -505,7 +555,7 @@ if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+10
   FindText().Click(X, Y, "L")
   sleep 800
   FindText().Click(X, Y, "L")
-  sleep 900
+  sleep 950 ;等待本的 跳过文字 出现
   t1:=A_TickCount, Text:=X:=Y:=""
 Text:=fubendetiaoguowenzi ;副本的跳过文字
 if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
