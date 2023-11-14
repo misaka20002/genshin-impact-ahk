@@ -6,6 +6,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 I_Icon = klee.ico
 IfExist, %I_Icon%
 Menu, Tray, Icon, %I_Icon%
+v_isReloadByStartGameFromHere=0
+ReloadByStartGameFromHere:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;	^	〔Ctrl〕鍵
 ;	!	〔Alt〕鍵
@@ -21,10 +23,15 @@ Menu, Tray, Icon, %I_Icon%
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ;用户设定config：
+;游戏路径
+Gamename=YuanShen.exe ;国际服请修改此处为genshin.exe
+YuanShenLocal=G:\Genshin Impact\Genshin Impact Game\ ;YuanShen.exe或genshin.exe的路径。
+;3DMigoto
+3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
+;FanHeXie
+FanHeXieLocal=F:\desktop\打ち止め\反和谐\ ;反和谐"loader.exe"的路径，如果不需要可不填写，若已运行3DMigoto则不会运行。
+;游戏内设置
 b_UseFindText=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
-gamename=YuanShen.exe	;国际服请修改此处为genshin.exe
-YuanShenLocal=G:\Genshin Impact\Genshin Impact Game\ ;YuanShen.exe或genshin.exe的位置
-3DMigotoLocal=G:\3dm\ ;3DMigoto Loader.exe,的位置
 ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -40,9 +47,7 @@ ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落
 
 
 
-yuanshenName:="ahk_exe "+(gamename)
-v_isReloadByStartGameFromHere=0
-ReloadByStartGameFromHere:
+yuanshenName:="ahk_exe "+(Gamename)
 ;读取游戏窗口分辨率
 if WinExist(yuanshenName)
 {
@@ -115,35 +120,50 @@ MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%Ou
 IfMsgBox yes
 {
 kalepaimon=0
-	if !WinExist(yuanshenName)
-	{
-		MsgBox, 4, ,原神未启动，是否启动原神？`n  启动原神后本程序会自动重启`n（需要自行配置原神位置）
-		IfMsgBox yes
-		{
-			Run, 3DMigoto Loader.exe, %3DMigotoLocal%, UseErrorLevel
-			sleep 2000
-			run, %gamename%, %YuanShenLocal%, UseErrorLevel
-			if (ErrorLevel = "ERROR")
-			{
-				MsgBox, 请设置原神.exe的运行位置
-				exitapp
-			}
-			v_isReloadByStartGameFromHere=1
-			loop, 60  ;等待120s YuanShen.exe启动
-			{
-				if WinActive(yuanshenName)
-				{
-					break
-				}
-				sleep 2000
-			}
-			goto ReloadByStartGameFromHere
-		}
-	}
 }
 else IfMsgBox no
 {
 kalepaimon=1
+}
+
+if !WinExist(yuanshenName)
+{
+	MsgBox, 4, ,原神未启动，是否启动原神？`n  （编辑本ahk文件设置原神路径）
+	IfMsgBox, yes
+	{
+		Run, 3DMigoto Loader.exe, %3DMigotoLocal%, UseErrorLevel
+		if (ErrorLevel = "ERROR")
+		{
+			run, loader.exe, %FanHeXieLocal%, UseErrorLevel
+			if !(ErrorLevel = "ERROR")
+			{
+				goto, WaitForYuanShenStart
+			}
+		}
+		sleep 2000
+		run, %Gamename%, %YuanShenLocal%, UseErrorLevel
+		if (ErrorLevel = "ERROR")
+		{
+			MsgBox, 请编辑本ahk文件设置原神.exe的路径
+			exitapp
+		}
+	WaitForYuanShenStart:
+		v_isReloadByStartGameFromHere=1
+		loop, 40  ;等待120s YuanShen.exe启动
+		{
+			if WinActive(yuanshenName)
+			{
+				break
+			}
+			sleep 3000
+		}
+		if !WinExist(yuanshenName)
+		{
+			msgbox, 原神启动等待超时（2min）
+			exitapp
+		}
+		goto ReloadByStartGameFromHere
+	}
 }
 }
 else if not (A_IsAdmin)
@@ -546,7 +566,7 @@ if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*3+OutX, OutHeight/2+OutY, 
   click, %xpos%, %ypos%, 0
 }
 else
-{
+{  ;累了,仅在4k下做了适配
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<浓缩树脂图标4k>*196$71.zy000CM1zzzxzz008Qk3zzzvzy000xU3zzzrzw001zU7zzzzzk000TUDzzzzy0000T0zzzzzk060061zzzzw0Dy0043zzzzk1zw0003zzzy0Dzs0007zzzwT8000007zzzsy000000Dzzzxs000000Dzzxs0000000TzzvUU00zy00TzzrVzkDzz00zzzjzz1zzzU0zzzTzw7zzzU1zzwzzkzzzzU1zztzy3zzzzU1zzXzU7zzzzU3zz7y0TzzzzU3zwDk1zzzzz03zsT07zzzzz03zUw1zzzzzz03z1"
 if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+100, 0, 0, Text))
@@ -555,7 +575,7 @@ if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+10
   FindText().Click(X, Y, "L")
   sleep 800
   FindText().Click(X, Y, "L")
-  sleep 950 ;等待本的 跳过文字 出现
+  sleep 950 ;等待副本的 跳过文字 出现时间
   t1:=A_TickCount, Text:=X:=Y:=""
 Text:=fubendetiaoguowenzi ;副本的跳过文字
 if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
@@ -566,7 +586,7 @@ if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+O
 }
 }
 else
-{
+{  ;累了,仅在4k下做了适配
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<替换按钮（右下角4k>*211$71.z00zk0DzzTwDy01zU0TzzzkTzzzzzkzzzz1zzzzzzVzzzw7zzzzzz3zzzzzzzzzzy0Tvzzzzzzzzw0zzzzzz07zk01zjzzzzUDzk03zTzzzzUzzk07yDzzzzXzzk0Dzztzzzzzzs0Tzznznzzlzs0zzzbz1zz1zw3zzzDzzzzzzyzzzyTzzzzzzvzzDwzzzzzzzrzwTtzzzzzzXjzzzzzzzzzz0Dzzzzzs007y0Tzzzzzk00Dw0vzzzzzU00Ts07zzzzzzzzzk0Dw03zzzzzzU0Ts0Dzzzzzz00zk0Tz"
 if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/2+OutX, OutHeight/4*3+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
@@ -588,7 +608,7 @@ click
 return
 
 
-~a::
+~a::  ;累了,仅在4k下做了适配
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<队伍选择界面左箭头4k>*228$34.zzs00Tzz003zzs00zzw00DzzU00zzw00Dzz001zzs00Dzz001zzk00Tzw001zzk007zzk00Tzzk00TzzU01zzz001zzz003zzy003zzw00Dzzw007zzw007zzk00Tzzk00zzzk00zzz002"
 if (ok:=FindText(X, Y, 136-50, 1081-50, 136+50, 1081+50, 0, 0, Text))
@@ -597,7 +617,7 @@ if (ok:=FindText(X, Y, 136-50, 1081-50, 136+50, 1081+50, 0, 0, Text))
 }
 return
 
-~d::
+~d::  ;累了,仅在4k下做了适配
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<队伍选择界面右箭头4k>*228$34.001zzz003zzy003zzs007zzs00Dzzs00Dzzk00DzzU00zzzU00zzz000zzy001zzw003zzs003zzU00Dzw003zzU00Tzs007zzU00zzs00Dzz000zzs00Dzy003zzU00Tzy003zzk00zzy"
 if (ok:=FindText(X, Y, 3704-50, 1079-50, 3704+50, 1079+50, 0, 0, Text))
@@ -606,7 +626,7 @@ if (ok:=FindText(X, Y, 3704-50, 1079-50, 3704+50, 1079+50, 0, 0, Text))
 }
 return
 
-~e::
+~e::  ;累了,仅在4k下做了适配
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<被冰住按space解封4k>*174$71.00003zs000zy00003zU003zw00003y000Dzs00003s000zzk000000003zzU30000000Dzz0TU000000zzy1zU000003zzw7zU00000DzzsTzU00000zzzlzzU00003zzzbzzU0000DzzzTzzU0000zzzzzzzU0003zzzzzzz0000Dzzzzzzz0000Tzzzzzzz0000zzzzTzzy0001zzzyzzzs0003zzzlzzzU0003zzzXzzy00003zzw7zzs00003zzsDzzU00003zz0Tzy000003zy0zzs000003zk1"
 sleep 300
