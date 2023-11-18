@@ -140,7 +140,10 @@ if !WinExist(yuanshenName)
 				goto, WaitForYuanShenStart
 			}
 		}
+		else
+		{
 		sleep 2000
+		}
 		run, %Gamename%, %YuanShenLocal%, UseErrorLevel
 		if (ErrorLevel = "ERROR")
 		{
@@ -220,8 +223,13 @@ Goto findtext91
 return
 
 
-;设置需要兼容的游戏
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;设置需要添加的游戏
 #if WinActive(yuanshenName) or WinActive("幻塔2077") or WinActive("ahk_exe StarRail.exe")
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 
 
