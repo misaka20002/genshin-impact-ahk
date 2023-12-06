@@ -303,6 +303,9 @@ return
 F3::Media_Play_Pause
 return
 ;功能同键盘上的Fn+F5,F6,F7分别为上一个、下一个、暂停
+;（如果小窗不是最前面重启游戏并进入世界后再试）
+;（如果小窗不是最前面重启游戏并进入世界后再试）
+;（如果小窗不是最前面重启游戏并进入世界后再试）
 
 ;按着下面那个键不停输入f；双击F则开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消
 ~f::
@@ -775,7 +778,7 @@ if WinExist(yuanshenName)
     MouseMove, diqux*v_fenbianlvbeilv, diquy*v_fenbianlvbeilv ;移动到地区
     Sleep 150
     Click
-	sleep 50
+	sleep 150 ;第一个人总是卡一下
 	
     MouseMove, didianx*v_fenbianlvbeilv, didiany*v_fenbianlvbeilv ;移动到地点
     Sleep 150
