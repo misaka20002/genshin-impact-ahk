@@ -4,7 +4,8 @@
 
 ## 功能
 
-![image](https://github.com/misaka20002/genshin-impact-ahk/assets/40714502/30d357cf-536c-4f8c-bf5a-b368ede1293b)
+![image](https://github.com/misaka20002/genshin-impact-ahk/assets/40714502/41494c30-49da-476b-993c-2806f1312ac3)
+
 
 
 单靠鼠标就可以按 W 前进，可以右键冲刺，可以左右移动视角转弯，可以按 F 对话，可以按 F 捡东西，可以靠滚轮调整捡东西选项，可以按 Alt 调出界面，可以进行简单的攻击，可以按 Alt 点技能。
