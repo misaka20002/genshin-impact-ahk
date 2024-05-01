@@ -27,7 +27,7 @@ ReloadByStartGameFromHere:
 Gamename=YuanShen.exe ;国际服请修改此处为genshin.exe
 YuanShenLocal=G:\Genshin Impact\Genshin Impact Game\ ;YuanShen.exe或genshin.exe的路径。
 ;3DMigoto
-3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
+; 3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
 ;FanHeXie
 FanHeXieLocal=F:\desktop\打ち止め\反和谐\ ;反和谐"loader.exe"的路径，如果不需要可不填写，若已运行3DMigoto则不会运行。
 ;游戏内设置
@@ -343,11 +343,22 @@ return
         {
             If Not GetKeyState("f", "P")
             Break
-                Send {f down}
-	Sleep 10 ; try various milliseconds
-	Send {f up}
-
+			if WinActive("崩坏：星穹铁道")
+			{
+				Send {f down}
+				send {lbutton down}
+				Sleep 10 ; try various milliseconds
+				Send {f up}
+				send {lbutton up}
                 Sleep 100
+			}
+			else
+			{
+                Send {f down}
+				Sleep 10 ; try various milliseconds
+				Send {f up}
+                Sleep 100
+			}
         }
 }
 Return
@@ -621,8 +632,9 @@ return
 
 ~a::  ;累了,仅在4k下做了适配
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<队伍选择界面左箭头4k>*228$34.zzs00Tzz003zzs00zzw00DzzU00zzw00Dzz001zzs00Dzz001zzk00Tzw001zzk007zzk00Tzzk00TzzU01zzz001zzz003zzy003zzw00Dzzw007zzw007zzk00Tzzk00zzzk00zzz002"
-if (ok:=FindText(X, Y, 136-50, 1081-50, 136+50, 1081+50, 0, 0, Text))
+;Text:="|<队伍选择界面左箭头4k璃月>*150$23.zU01w003k007000800000010006000Q001s00Dk00zU03y00Dk00y001w001y001z001z001y001w000s000k000k000s001|<4k枫丹>*192$35.zk001zz0007zs000TzU001zw000Dzk000zz0003zy000Dzw001zzs007zzk00TzzU00zzz000zzy000zzw000Tzs000Tzs000Tzs000Tzw000Dzw000Dzy000Dzy000Dzy000Dzz000Dzz000D"
+Text:="|<队伍选择界面左箭头4k璃月>*173$4.BzxnU"
+if (ok:=FindText(X, Y, 142-25, 1080-25, 142+25, 1080+25, 0, 0, Text))
 {
   FindText().Click(X, Y, "L")
 }
@@ -630,8 +642,9 @@ return
 
 ~d::  ;累了,仅在4k下做了适配
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<队伍选择界面右箭头4k>*228$34.001zzz003zzy003zzs007zzs00Dzzs00Dzzk00DzzU00zzzU00zzz000zzy001zzw003zzs003zzU00Dzw003zzU00Tzs007zzU00zzs00Dzz000zzs00Dzy003zzU00Tzy003zzk00zzy"
-if (ok:=FindText(X, Y, 3704-50, 1079-50, 3704+50, 1079+50, 0, 0, Text))
+;Text:="|<队伍选择界面右箭头4k璃月>*182$23.000S000C000C000C000S000y001y003z003z001z001z001zU00z001y00Ds00zU03y00Ts01z003w007k00D000Q000k001|<4k枫丹>*212$35.k003zzk001zzk001zzk001zzk001zzk000zzk000zzs000Tzs000Tzs000Tzs000Tzw000zzw001zzw003zzs007zzU00Dzy000Tzk000zz0003zw000Dzk000zz0007zw000TzU003zy000Dz"
+Text:="|<队伍选择界面右箭头4k璃月>*177$4.XCzym8|<4k枫丹>*212$8.UA3UwDnyzzzyzD3Uk800U"
+if (ok:=FindText(X, Y, 3715-25, 1080-25, 3715+25, 1080+25, 0, 0, Text))
 {
   FindText().Click(X, Y, "L")
 }
