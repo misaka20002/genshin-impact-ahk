@@ -27,7 +27,7 @@ ReloadByStartGameFromHere:
 Gamename=YuanShen.exe ;国际服请修改此处为genshin.exe
 YuanShenLocal=G:\Genshin Impact\Genshin Impact Game\ ;YuanShen.exe或genshin.exe的路径。
 ;3DMigoto
-; 3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
+3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
 ;FanHeXie
 FanHeXieLocal=F:\desktop\打ち止め\反和谐\ ;反和谐"loader.exe"的路径，如果不需要可不填写，若已运行3DMigoto则不会运行。
 ;游戏内设置
@@ -116,7 +116,7 @@ if (v_isReloadByStartGameFromHere==0)
 {
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否禁用"屏蔽派蒙菜单"：卡出了派蒙跟随后点'否'
+MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否不开启"屏蔽ESC键"：卡出了派蒙跟随后点'否'
 IfMsgBox yes
 {
 kalepaimon=0
@@ -631,22 +631,36 @@ return
 
 
 ~a::  ;累了,仅在4k下做了适配
+; t1:=A_TickCount, Text:=X:=Y:=""
+; Text:="|<队伍选择界面左箭头4k璃月>*173$4.BzxnU|<蒙德>*228$12.1z3z7zDzzzzzzzzzDzDz3z1zU"
+; if (ok:=FindText(X, Y, 142-25, 1080-25, 142+25, 1080+25, 0, 0, Text))
+; {
+  ; FindText().Click(X, Y, "L")
+; }
+
+; 改为判断右上角的 x
 t1:=A_TickCount, Text:=X:=Y:=""
-;Text:="|<队伍选择界面左箭头4k璃月>*150$23.zU01w003k007000800000010006000Q001s00Dk00zU03y00Dk00y001w001y001z001z001y001w000s000k000k000s001|<4k枫丹>*192$35.zk001zz0007zs000TzU001zw000Dzk000zz0003zy000Dzw001zzs007zzk00TzzU00zzz000zzy000zzw000Tzs000Tzs000Tzs000Tzw000Dzw000Dzy000Dzy000Dzy000Dzz000Dzz000D"
-Text:="|<队伍选择界面左箭头4k璃月>*173$4.BzxnU"
-if (ok:=FindText(X, Y, 142-25, 1080-25, 142+25, 1080+25, 0, 0, Text))
+Text:="|<右上角的x>*222$71.0DzzzyDzzzy00Tzzzzzzzzw00zDzzzzzzbk00s7zzzzzw3U000Dzzzzzs000007zzzzz000000Dzzzzy0000007zzzzk000000DzzzzU0000007zzzw0000000Dzzzs00000007zzz00000000Dzzy00000001zzzz00000003zzzy0000000Tzzzz0000000zzzzy0000007zzzzy000000Dzzzzy000001zzzzzz0000Q3zzzzzy1k01zzzzzzzzDU03zzzzzzzzzU07zzzz7zzzz00Dzzzw7zzzy1"
+if (ok:=FindText(X, Y, 3685-50, 96-50, 3685+50, 96+50, 0, 0, Text))
 {
-  FindText().Click(X, Y, "L")
+  click 140,1080,1
 }
 return
 
 ~d::  ;累了,仅在4k下做了适配
+; t1:=A_TickCount, Text:=X:=Y:=""
+; Text:="|<队伍选择界面右箭头4k璃月>*177$4.XCzym8|<4k枫丹>*212$8.UA3UwDnyzzzyzD3Uk800U|<蒙德>*203$9.k70w7kzbyzzzzrwy7Us60U"
+; if (ok:=FindText(X, Y, 3715-25, 1080-25, 3715+25, 1080+25, 0, 0, Text))
+; {
+  ; FindText().Click(X, Y, "L")
+; }
+
+; 改为判断右上角的 x
 t1:=A_TickCount, Text:=X:=Y:=""
-;Text:="|<队伍选择界面右箭头4k璃月>*182$23.000S000C000C000C000S000y001y003z003z001z001z001zU00z001y00Ds00zU03y00Ts01z003w007k00D000Q000k001|<4k枫丹>*212$35.k003zzk001zzk001zzk001zzk001zzk000zzk000zzs000Tzs000Tzs000Tzs000Tzw000zzw001zzw003zzs007zzU00Dzy000Tzk000zz0003zw000Dzk000zz0007zw000TzU003zy000Dz"
-Text:="|<队伍选择界面右箭头4k璃月>*177$4.XCzym8|<4k枫丹>*212$8.UA3UwDnyzzzyzD3Uk800U"
-if (ok:=FindText(X, Y, 3715-25, 1080-25, 3715+25, 1080+25, 0, 0, Text))
+Text:="|<右上角的x>*222$71.0DzzzyDzzzy00Tzzzzzzzzw00zDzzzzzzbk00s7zzzzzw3U000Dzzzzzs000007zzzzz000000Dzzzzy0000007zzzzk000000DzzzzU0000007zzzw0000000Dzzzs00000007zzz00000000Dzzy00000001zzzz00000003zzzy0000000Tzzzz0000000zzzzy0000007zzzzy000000Dzzzzy000001zzzzzz0000Q3zzzzzy1k01zzzzzzzzDU03zzzzzzzzzU07zzzz7zzzz00Dzzzw7zzzy1"
+if (ok:=FindText(X, Y, 3685-50, 96-50, 3685+50, 96+50, 0, 0, Text))
 {
-  FindText().Click(X, Y, "L")
+  click 3700,1080,1
 }
 return
 
