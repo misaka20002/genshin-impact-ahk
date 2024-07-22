@@ -1,4 +1,4 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -8,6 +8,7 @@ I_Icon = novelai-round.png
 IfExist, %I_Icon%
 Menu, Tray, Icon, %I_Icon%
 bSwitch=0
+f3Switch=0
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;	^	〔Ctrl〕鍵
@@ -39,21 +40,33 @@ Goto findtext91
 return
 
 
+;说明:
+; F1: 官网连点器  
+; 上/下/1/2/3/9: Picasa 标签辅助  ahk_exe Picasa3.exe
+; F2: 剪映辅助  ahk_exe JianyingPro.exe
+; F1/F2: qq滚动PGUP/PGDN辅助  ahk_exe QQ.exe
+; F3/F4: qq左/右辅助
+; delete: pacasa图片查看器快速删除  ahk_exe PicasaPhotoViewer.exe
+; shift+q: Photoshop快速马赛克  ahk_class Photoshop
 
 
+
+
+
+#IfWinActive Image Generation
 F1::
 if(bSwitch==0)
 {
 ;初始化参数，所有硬编码改完后请ctrl+home重启本脚本
 count_One_tag = 0
 count_wait_times = 0
-end_One_tag_time = 500  ;单次循环达到次数时停止或切换tag，例如300
+end_One_tag_time = 1  ;单次循环达到次数时停止或切换tag，例如300
 multi_tags_switch := true  ;是否开启多tag自动切换
 next_tag_num = 0  ;切换tag时的初始tag。例如0
 multi_tags_switch_changeTagImmediately := false  ;多tag自动切换时先改变tag再loop
 unlimited_loop_mode := true ;多tag无尽循环模式
 ; 多tags切换时把人物tag替换成 __charName__
-toSwitchTag := "__charName__, [artist:menthako],artist:ciloranko,[artist:tianliang duohe fangdongye],[artist:sho_(sho_lwlw)],[artist:baku-p],[artist:tsubasa_tsubasa]，{{toddler}},golden light,[very aesthetic, absurdres, masterpiece,best quality,extremely detailed CG unity 8k wallpaper,]white_legwear, shoulder_bag, sleeves_past_wrists, bangs, blush, hair_ornament, looking_at_viewer, holding_stuffed_toy, food, open_mouth, indoor,"
+toSwitchTag := "__charName__, {{{{toddler}}}}, nsfw, [artist:ningen_mame],artist:ciloranko,[artist:sho_(sho_lwlw)],[[artist:as109]], wlop,year_2023,1girl,t-shirt,long hair,messy hair,indoor,looking at viewer,trembling,heavy_breathing,moaning,sweating, shy, fang, pov,  white pantyhose,pantyhose pull, pussy juice, flustered,sweating_profusely, wet, missionary, boy body, cum, sex, penis, stomach_bulge, hold legs, "
 
 SetTimer, loopLbutton, 1000
 bSwitch=1
@@ -264,6 +277,24 @@ bSwitch=0
 return
 ;END--------------
 
+#IfWinActive
+
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+
+
 
 
 
@@ -358,6 +389,15 @@ return
 #IfWinActive 
 
 
+
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 #IfWinActive  ahk_exe PicasaPhotoViewer.exe
 ;图片删除快捷键
 delete::
@@ -365,6 +405,22 @@ click
 send {delete}
 return
 #IfWinActive 
+
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+
+
+
 
 
 #IfWinActive ahk_exe JianyingPro.exe
@@ -378,7 +434,8 @@ MouseGetPos, xpos, ypos, winid
 t1:=A_TickCount, Text:=X:=Y:=""
 
 ; Text:="|<叠化>*72$71.zw0000000001zw0000000003zs0000000007zs000000000Dzs000000000Tzs000000000zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzrzzzzzzzy01zDTzzzzzzw6Dyyzzzzzzzz0Dxxtzzzzzzbzznvbzzzzzy0k7jqTzzzzzwviSTdzzzzzzy7Vsz7zzzzzzrzypyTzzzzzzU01vlzzzzzzzTzvq3zzzzzzzU0ThrzzzzzzzDwzTjbzzzzzyTxyzTDzzzzzw03xyyzzzzzzvzrvw1zzzzzz003rw7zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzk"
-Text:="|<左下角>*56$71.zk000U000001zk0010000003zU00+U000007z003TU00000Dz00Cz000000Ty00Ti000000zy00zy000001zy01xs000003zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzwzzzzztzzzzztzs007U3zzzs00800STbzzzk00TnztyTzzzyTzzbzU03zzzwzzz3y007zzzvzzy3zDjjzzzU0TwlySTTzzz00Ttlw00zzzwyzznstxxzzztxzzbvnvvzzzbvzzDzU07zzyTrzyTz00DzzwzjzwzyTTTzzn00Ttztyyzzzw00TnznxVzzzzzzzbzjv7zzzzzzzzzzzzzzzzzzzzzzzzk"
+; Text:="|<左下角>*56$71.zk000U000001zk0010000003zU00+U000007z003TU00000Dz00Cz000000Ty00Ti000000zy00zy000001zy01xs000003zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzwzzzzztzzzzztzs007U3zzzs00800STbzzzk00TnztyTzzzyTzzbzU03zzzwzzz3y007zzzvzzy3zDjjzzzU0TwlySTTzzz00Ttlw00zzzwyzznstxxzzztxzzbvnvvzzzbvzzDzU07zzyTrzyTz00DzzwzjzwzyTTTzzn00Ttztyyzzzw00TnznxVzzzzzzzbzjv7zzzzzzzzzzzzzzzzzzzzzzzzk"
+Text:="|<吸入>*56$34.zzzwzw00ztzkNnznz9bDzbwaNzyTmNVzkz9a3z3waDTxbmMtzaT9dbyQwYYznnkH3yTbDSTlzDtkyDwTCFlzswXkDznqTjzzs"
 
 if (ok:=FindText(X_005, Y_005, 143, 0, 1662, 1158, 0, 0, Text,,,,,,1))
 {
@@ -399,7 +456,8 @@ Text:="|<搜索>*44$71.jrzvzrnwzzwzM0k07Dbt07k03Rzjs01nwT0003yDxyzbnwzf0600kxw6T
 if (ok:=FindText(X, Y, 252-150000, 165-150000, 252+150000, 165+150000, 0, 0, Text))
 {
   FindText().Click(X, Y, "L",,1)
-  send 左下角
+  ; send 左下角
+  send 吸入
   send {enter}
 }
 else
@@ -410,6 +468,16 @@ FindText().Click(X_005+85, Y_005-37, "L",,1)
 return
 
 #IfWinActive
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
 
 #IfWinActive ahk_class Photoshop
 ; 快速马赛克
@@ -434,12 +502,160 @@ send {q}
 return
 
 
+#IfWinActive
 
+
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+#IfWinActive ahk_exe QQ.exe
+F1::
+if(f3Switch==0)
+{
+gosub setAllLoopOff
+SetTimer, loopPGUPbutton, 100
+f3Switch=1
+}
+else if(f3Switch==1)
+{
+gosub setAllLoopOff
+f3Switch=0
+}
+return
+
+F2::
+if(f3Switch==0)
+{
+gosub setAllLoopOff
+SetTimer, loopPGDNbutton, 100
+f3Switch=1
+}
+else if(f3Switch==1)
+{
+gosub setAllLoopOff
+f3Switch=0
+}
+return
+
+F3::
+if(f3Switch==0)
+{
+gosub setAllLoopOff
+SetTimer, loopLEFTbutton, 100
+f3Switch=1
+}
+else if(f3Switch==1)
+{
+gosub setAllLoopOff
+f3Switch=0
+}
+return
+
+F4::
+if(f3Switch==0)
+{
+gosub setAllLoopOff
+SetTimer, loopRIGHTbutton, 100
+f3Switch=1
+}
+else if(f3Switch==1)
+{
+gosub setAllLoopOff
+f3Switch=0
+}
+return
+
+
+~Lbutton::
+~space::
+~Rbutton::
+; ~WheelDown::
+; ~Wheelup::
+setAllLoopOff:
+	SetTimer, loopPGUPbutton, Off
+	SetTimer, loopPGDNbutton, Off
+	SetTimer, loopLEFTbutton, Off
+	SetTimer, loopRIGHTbutton, Off
+	f3Switch=0
+return
+
+
+
+loopPGUPbutton:
+{
+	Random, vloopPeriod, 500, 510
+	SetTimer, loopPGUPbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
+	Send {PGUP down}
+	Random, vAnXiaShiChang, 5, 7
+	Sleep %vAnXiaShiChang% ;按下时长
+	Send {PGUP up}
+}
+return
+
+loopPGDNbutton:
+{
+	Random, vloopPeriod, 400, 410
+	SetTimer, loopPGDNbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
+	Send {PGDN down}
+	Random, vAnXiaShiChang, 5, 7
+	Sleep %vAnXiaShiChang% ;按下时长
+	Send {PGDN up}
+}
+return
+
+loopLEFTbutton:
+{
+	Random, vloopPeriod, 400, 450
+	SetTimer, loopLEFTbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
+	Send {LEFT down}
+	Random, vAnXiaShiChang, 5, 7
+	Sleep %vAnXiaShiChang% ;按下时长
+	Send {LEFT up}
+}
+return
+
+loopRIGHTbutton:
+{
+	Random, vloopPeriod, 400, 450
+	SetTimer, loopRIGHTbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
+	Send {RIGHT down}
+	Random, vAnXiaShiChang, 5, 7
+	Sleep %vAnXiaShiChang% ;按下时长
+	Send {RIGHT up}
+}
+return
 
 
 
 
 #IfWinActive
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 findtext91:
