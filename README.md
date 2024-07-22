@@ -29,7 +29,14 @@ Tab 键为图像识别原神内的圈圈图标，例如右下角的按钮/弹窗
 
 到 [AutoHotkey 官网](https://www.autohotkey.com/) 下载 AutoHotkey。正常进行安装。（注意：使用 Download Current Version，而不是 Download V2 Alpha。）
 
-下载【genshin】管理员权限才能用.ahk 和 klee.ico
+下载
+```
+【genshin】管理员权限才能用.ahk
+```
+和
+```
+klee.ico
+```
 
 原x，启动！
 
