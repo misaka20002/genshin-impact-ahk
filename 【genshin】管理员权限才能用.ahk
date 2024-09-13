@@ -116,14 +116,16 @@ if (v_isReloadByStartGameFromHere==0)
 {
 if(A_IsAdmin)
 {
-MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否不开启"屏蔽ESC键"：卡出了派蒙跟随后点'否'
+; MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否不开启"屏蔽ESC键"：卡出了派蒙跟随后点'否'
+MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件
 IfMsgBox yes
 {
 kalepaimon=0
 }
 else IfMsgBox no
 {
-kalepaimon=1
+; kalepaimon=1
+kalepaimon=0
 }
 
 if !WinExist(yuanshenName)
@@ -227,7 +229,7 @@ return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;设置需要添加的游戏
-#if WinActive(yuanshenName) or WinActive("幻塔2077") or WinActive("ahk_exe StarRail.exe")
+#if WinActive(yuanshenName) or WinActive("幻塔2077") or WinActive("ahk_exe StarRail.exe") or WinActive("ahk_exe Client-Win64-Shipping.exe")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
