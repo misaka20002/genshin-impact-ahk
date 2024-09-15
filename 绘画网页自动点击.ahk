@@ -66,7 +66,7 @@ next_tag_num = 0  ;切换tag时的初始tag。例如0
 multi_tags_switch_changeTagImmediately := false  ;多tag自动切换时先改变tag再loop
 unlimited_loop_mode := true ;多tag无尽循环模式
 ; 多tags切换时把人物tag替换成 __charName__
-toSwitchTag := "__charName__, {{{{toddler}}}}, nsfw, [artist:ningen_mame],artist:ciloranko,[artist:sho_(sho_lwlw)],[[artist:as109]], wlop,year_2023,1girl,t-shirt,long hair,messy hair,indoor,looking at viewer,trembling,heavy_breathing,moaning,sweating, shy, fang, pov,  white pantyhose,pantyhose pull, pussy juice, flustered,sweating_profusely, wet, missionary, boy body, cum, sex, penis, stomach_bulge, hold legs, "
+toSwitchTag := "__charName__, {{{{toddler}}}},xxxxxxx"
 
 SetTimer, loopLbutton, 1000
 bSwitch=1
@@ -488,17 +488,21 @@ Text:="|<动作开始>*150$17.TzyDzw7zs3zk1zU0T00C00400000000U0700y0Dw1zsDzlzzjz
 if (ok:=FindText(X, Y, 3591-150000, 779-150000, 3591+150000, 779+150000, 0, 0, Text))
 {
   FindText().Click(X, Y, "L",,1)
-}
+  
 sleep 500
 send ^{s}
 sleep 50
 send 9
 sleep 50
 send {enter}
-sleep 600
+sleep 1000
 send ^{w}
 sleep 100
 send {q}
+
+}
+else
+msgbox, 请先按q开启蒙版，涂抹出蒙版后，点击选中要执行的动作
 return
 
 
