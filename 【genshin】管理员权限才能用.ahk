@@ -670,6 +670,7 @@ return
 t1:=A_TickCount, Text:=X:=Y:=""
 Text:="|<被冰住按space解封4k>*174$71.00003zs000zy00003zU003zw00003y000Dzs00003s000zzk000000003zzU30000000Dzz0TU000000zzy1zU000003zzw7zU00000DzzsTzU00000zzzlzzU00003zzzbzzU0000DzzzTzzU0000zzzzzzzU0003zzzzzzz0000Dzzzzzzz0000Tzzzzzzz0000zzzzTzzy0001zzzyzzzs0003zzzlzzzU0003zzzXzzy00003zzw7zzs00003zzsDzzU00003zz0Tzy000003zy0zzs000003zk1"
 sleep 300
+; 延迟主要是因为行秋的e弱水附着导致被冰冻
 if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
@@ -698,6 +699,42 @@ if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
 }
 return
 
+; 胡桃 aaz space
+1::
+t1:=A_TickCount, Text:=X:=Y:=""
+Text:="|<胡桃头像>*147$46.rzzzzzzzbzzzzzzyDzzzzzzwzzzzzzzzzzzzzznzszzzzz7zlzzzzwHzbzzzzkDzDzzzz0vyzzzzw3bHzzzzk6Q7zzzz08kTzzzw0X1zzzzk087zzzz000Tzzzw003zzzzE00Dzzzx000zzzzk003zzzz0007zzzw000Tzzzy"
+; 仅搜索 1 号位置
+if (ok:=FindText(X, Y, 3225, 414, 3838, 582, 0, 0, Text))
+{
+  ; 我写的
+  send {LButton down}
+  sleep 5
+  send {LButton up}
+  sleep 200
+
+  send {LButton down}
+  sleep 5
+  send {LButton up}
+  sleep 100
+
+  send {LButton down}
+  sleep 300
+  send {LButton up}
+  sleep 20
+  
+	send {space down}
+	sleep 5
+	send {space up}
+
+  return
+}
+else{
+  ; 胡桃头像没找到
+	send {1 down}
+	sleep 5
+	send {1 up}
+  return
+}
 
 
 
