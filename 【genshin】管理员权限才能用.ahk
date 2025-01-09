@@ -421,7 +421,7 @@ return
 
 ;按一下x键持续按w前进，再按一次x键停止----------------------
 ~x::
-;长按x则激活x，用于x键下落，但是受不了200毫秒延迟
+; ;长按x则激活x，用于x键下落，但是受不了200毫秒延迟
 if(ChangAnX==1)
 {
 	KeyWait, x
@@ -431,26 +431,49 @@ if(ChangAnX==1)
 		return
 	}
 }
-;需要在原神设置里把原来的x落下键改为n
-;if WinActive("原神") or WinActive("幻塔")
-{
+
+; ; x为一直按着w，需要在原神设置里把原来的x落下键改为n
+; if WinActive("原神") or WinActive("幻塔")
+; {
+; t1:=A_TickCount, Text:=X:=Y:=""
+; Text:=zuoxiajiaoEnter
+; if !(b_UseFindText) or (WinActive("ahk_exe StarRail.exe")) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
+; {
+;   ; FindText().Click(X, Y, "L")
+; ;msgbox, b_UseFindText=%b_UseFindText%
+; if (xh==1)
+; {
+; send {w down}
+; xh:=-1
+; }
+; else
+; {
+; xh:=1
+; send {w up}
+; }
+; }
+; }
+
+; 如果是 火神头像 则 按 x 为 space space space
 t1:=A_TickCount, Text:=X:=Y:=""
-Text:=zuoxiajiaoEnter
-if !(b_UseFindText) or (WinActive("ahk_exe StarRail.exe")) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
+Text:="|<火神 头像>*153$48.3zzzzzzz1zzzzzzz1zzzzzzz0zzzzzzz0zzzzzzz0Tzzzzzz0Dzzzzzz0Dzzzzzz07zzzzzz0Tzzzzzz1rzzzzzz7lzzzzzzS1zzzzzzQ0zzzzzz0Dzzzzzz0zzzzzzz0zzzzzzz0zzzzzzz0nzzzzzz0Xjzzzzz01Dzzzzz007zzzzz00DTzztz004Dzzlz000DzzV0U"
+if (WinActive("原神") And ok:=FindText(X, Y, 3057, 386, 3838, 1152, 0, 0, Text))
 {
   ; FindText().Click(X, Y, "L")
-;msgbox, b_UseFindText=%b_UseFindText%
-if (xh==1)
-{
-send {w down}
-xh:=-1
-}
-else
-{
-xh:=1
-send {w up}
-}
-}
+send {space down}
+sleep 100
+send {space up}
+sleep 100
+
+send {space down}
+sleep 100
+send {space up}
+sleep 100
+
+send {space down}
+sleep 100
+send {space up}
+
 }
 Return
 
@@ -710,7 +733,7 @@ if (ok:=FindText(X, Y, 3225, 414, 3838, 582, 0, 0, Text))
   send {LButton down}
   sleep 5
   send {LButton up}
-  sleep 200
+  sleep 100
 
   send {LButton down}
   sleep 5
