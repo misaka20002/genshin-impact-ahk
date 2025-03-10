@@ -5,1070 +5,1017 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #SingleInstance force
 I_Icon = klee.ico
 IfExist, %I_Icon%
-Menu, Tray, Icon, %I_Icon%
+  Menu, Tray, Icon, %I_Icon%
 v_isReloadByStartGameFromHere=0
 ReloadByStartGameFromHere:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	^	〔Ctrl〕鍵
-;	!	〔Alt〕鍵
-;	+	〔Shift〕鍵
-;	#	〔Win〕鍵
-;	&	用&符號把兩個按鍵或按鈕組合成為一個鍵，例如：LButton& a表示按左鈕不放，同時再按〔a〕鍵
-;	~	加~符號表示不抑制該按鍵，使用在當我們想要把某個按鍵做額外輸出的場合
-;	$	抑制该按键
-;	::	字符串, 如::ch::china
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;	^	〔Ctrl〕鍵
+  ;	!	〔Alt〕鍵
+  ;	+	〔Shift〕鍵
+  ;	#	〔Win〕鍵
+  ;	&	用&符號把兩個按鍵或按鈕組合成為一個鍵，例如：LButton& a表示按左鈕不放，同時再按〔a〕鍵
+  ;	~	加~符號表示不抑制該按鍵，使用在當我們想要把某個按鍵做額外輸出的場合
+  ;	$	抑制该按键
+  ;	::	字符串, 如::ch::china
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;
+  ;用户设定config：
+  ;游戏路径
+  game_Name=YuanShen.exe ;国际服请修改此处为genshin.exe
+  ; run_exe_name=YuanShen.exe ;自动启动exe
+  run_exe_name="XXMI Launcher.exe" ;自动启动exe
+  run_exe_para= --nogui --xxmi GIMI ;自动启动exe 启动参数
+  ; run_exe_local=G:\Genshin Impact\Genshin Impact Game\ ;自动启动exe的路径
+  run_exe_local=G:\XXMI-Launcher-Portable\Resources\Bin\ ;自动启动exe的路径
+  ;3DMigoto
+  ; 3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
+  ;FanHeXie
+  ; FanHeXieLocal=F:\desktop\打ち止め\反和谐\ ;反和谐"loader.exe"的路径，如果不需要可不填写，若已运行3DMigoto则不会运行。
+  ;游戏内设置
+  b_UseFindText=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
+  ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;
-;用户设定config：
-;游戏路径
-Gamename=YuanShen.exe ;国际服请修改此处为genshin.exe
-YuanShenLocal=G:\Genshin Impact\Genshin Impact Game\ ;YuanShen.exe或genshin.exe的路径。
-;3DMigoto
-3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
-;FanHeXie
-FanHeXieLocal=F:\desktop\打ち止め\反和谐\ ;反和谐"loader.exe"的路径，如果不需要可不填写，若已运行3DMigoto则不会运行。
-;游戏内设置
-b_UseFindText=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
-ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
-
-
-
-
-
-
-
-
-
-
-yuanshenName:="ahk_exe "+(Gamename)
-;读取游戏窗口分辨率
-if WinExist(yuanshenName)
-{
-	helpyouxiyiqidong=已
-	WinGet, zuidahuazuixiaohua,MinMax , %yuanshenName%
-	;msgbox, %zuidahuazuixiaohua%
-	if (zuidahuazuixiaohua==-1)  ;如果最小化了
-	{
-	WinActivate , %yuanshenName%
-	;sleep 100
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
-	;OutWidth:=A_ScreenWidth
-	}
-	else
-	{
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
-	}
-}
-else
-{
-OutWidth:=A_ScreenWidth
-OutHeight:=A_ScreenHeight
-helpyouxiyiqidong=未
-}
-;msgbox, %OutWidth%  %zuidahuazuixiaohua%
-
-help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——媒体播放/暂停`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    ESC键——点击对话时最下选项`n    ctrl+F9——5个探索派遣`n    请在原神设置将落下键改为n，或启动本软件双击x下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（显示鼠标/快捷元素爆发）
-
-;内置参数:
-bSwitch=0
-xh=1
-kalepaimon=0  ;是否禁用esc键，禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
-
-;if(A_ScreenWidth==3840)
-if(OutWidth>3800) and (OutWidth<3900)
-{
-youshangjiaodetouxiang="|<右上角的主角头像图标4k>*227$66.00000000100000000000U0000000000k0000000000E0000000000E0080000000E00Q0000000M00Q0000000M00w0000000M00w0000000Q00y0000000Q00zU300000Q00tk3U0000C00kw3k0000600kTzk0000701kDzk00003U1k3zs00003k1k0zs00001sXk07w00070yXk03w000Dzzbk00w000Dzzzk00w000Dzzzk00Q000Dzwzk00Q000TzsU"
-zuoxiajiaoEnter="|<Enter4k>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU|<左下角的enter在有对话框时4k>*154$71.0100007s0000000000Dk0000000000TU0000000000z00000000001y0000000wzkDzw1zU00DzzkTzkDzk00Tzzkzz0zDnzkTsTUTU1w7rzUTUz0z07kDzz0z0z1y0DUTU01y1y3w0z0T003w3w7s1y0y007s7sDk3zzw00DkDkTU7zzs00TUTUz0Dzzk00z0z1y0TU0001y1y3w0z00003w3w7s1y00067s7sDk1y03zwDkDkTU3y0zzsTUTUzz3zzjzUz0y0zy3zyTz1w1w0zk3zs001k300000y1"
-quedingQuanQuan="|<4.3圈圈4k>*115$42.z03zs0Ty0Tzy0Dw0zzz0Ds1zzzk7s3zzzk3k7zzzs3kDzzzw3kDzzzw1UDzzzy1UTzzzy0UTzzzz0Uzzzzz0Uzzzzz00zzzzz00zzzzz0Uzzzzz0Uzzzzz0UTzzzz0UTzzzy0UDzzzy1kDzzzw1kDzzzw3k7zzzs3s3zzzk3s1zzzk7U|<4.3副本内圈圈4k>*116$41.k7zzzk7UTzzzk60zzzzkA3zzzzUE7zzzz00Tzzzz00zzzzy01zzzzw03zzzzs07zzzzk0DzzzzU0Tzzzz00zzzzy01zzzzw01zzzzs43zzzzU87zzzz0k7zzzw1k7zzzs7U7zzzUDUDzzy0zU7zzk1z07zz07z03zs0Tz00y01z"
-youxiajiaoditutubiao="|<右下地图的图标4k>*121$38.U0zzk0M0Tzw0607zzU103zzw0E0zzz000Dzzk003zzw000zzz000Dzzk1U3zzw0M0Tzy0707zzU1k0zzk0w07zs0DU0zw07s03w01z00000zs0000Tz0000Dzk0003zy0001zzk000zzw000DzzU007zzw003zs"
-duihuatubiao="|<对话图标最下一个4k>*200$71.zzU0000000zzzy00000000Tzzk00000000TzzU00000000Tzy000000000Tzs000000000TzU000000000Ty0000000000zw0000000000zk0000000000z00000000001y00000000001s00000000003k00000000003U0000000000700000000000A00000000000M00000000000U01s01s03s01007s0Ds0Ds0200Ts0Ts0zs0400zs1zk1zk0803zk3zk3zU0E03zU7z07z00U07z07y0Dy01"
-fubendetiaoguowenzi="|<副本中右上角的跳过文字4k>*200$71.zy0Dzzzzzwzzzy0zzzzzzszzzw1zzzzzzkzzzs3zzzzzzUzzzk7zzzzzz0TjzUDzzzzzz0TTz0Tzzzzzz0STy0zzzzzzzUATw1zzzzzzXU8Ts3zzzzzy3U0zk7zzzzzs3k0zUDzzzzz01k0z0Tzzzzs0000y0zzzzzk0031w1zzzzzU0073s3zzzzzk0QDjk7zzzzzk1kTzUDzzzzzsD0zz0Tzzzzzss3zy0zzzzzzzUDzw1zzzzzzy1zzk3zzzzzzk7s007zzzzzz0Tk00Dzzzzzy3zk00zzzzzzwDz"
-dianjirenyiweizhiguanbi="|<文字：点击任意位置关闭4k>*86$71.000000zUC000000001z0Tzzw000003w0zzzzzzzzzzs1y7zjzzzzzzU3kDzE00007z07UTyU0000Dw0DUzt00000Ts0T0zm1zzz0zU0y1zY3zzy1y21y3z800003wA3w3wE00007ws7w7sU0000DzkDsDl0zzzUTzUTsT21zzz0zz0zkS400003zy1zkw800007zw3zVsE0001zzs7zVUUzkTyDzkDzX001UTkDzUTz6403UTUTz0zzM887UTUTy1zzkkkDVzUTw3zzVVUTvnUzs400070zz7Uzk8001"
-}
-else if(OutWidth>1900) and (OutWidth<1950)
-{
-youshangjiaodetouxiang="|<右上角的主角头像图标1080p>*232$25.0002000100000000800050002U001g800Fy008T0003U0M0k0D080DU407k203s103g0Y3m0y1k0z1kE"
-zuoxiajiaoEnter="|<Enter1080p>*163$55.zy0000000Tz003U00070003k0003U000s0001k0LVzVs2Ms1zszlz7STwSSD1lnzjyD73Usttr07XVkwSw3U3lksTzS1k1ssQDzD0s0wQC7U7UTySC71kHkDzD73wztk7zbXVw7sk4|<左下角的enter在有对话框时1080p>*163$48.zs000000w001k000w001k000w001s000w1zXyDnbzttlkQvzzstlkMtnw0stkwtkw0stkztkw0stkw1kw0stks1kzsstsQNkzsskyDlUU"
-quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zzs7zz0zzs7zy4TzlVzwCDz3kTkT007w03zs1zU|<按钮圈圈2O1080p>*114$21.zUDzk0Ts01y3w7kzsQDzXXzy8zzl7zy8zzs7zz0zzs7zy8TzlXzwADz3kzkT0s7w01zs0zzszw|<之前的失效了这个是新的右下1080p>*116$29.zzzzzzzzzzzw7zzz03zzw01zzkS1zz3z1zwDzXzszz3zVzz7z7zyDyDzyDwTzwTszzszlzzXzXzz7zXzyDz3zszz3zVzz1w7zz00Tzz03zzzUTzzzzzzzzzzz"
-youxiajiaoditutubiao="|<右下地图的图标1080p>*121$19.w07w01w00Q0061w31z11zk0zs0Tw0Dy23y31z1UC0s00y00zU0zk0Tw0Tz0TzUTzsDzyDzzjz"
-duihuatubiao="|<对话图标最下一个1080p>*200$36.zU001zy0000Tw0000Ds00007k00007k00003U00001U00001U000010A1UA10S3kS00S7ky00S3ky00S3kQ0U00001U00001U00001k00003s00007s0000Dw0000Dy0000zz0001zzk003zzy003zU"
-fubendetiaoguowenzi=0
-dianjirenyiweizhiguanbi="|<>*80$71.zzzzzzzzzzzzzzzzzzzzzzzzzzzXzyD7zzzzUT007wS7y0000w007syDwMX0Tz3VzW01s00szy73z401k01lz000QCzDzlzXzzzzsMyT0077z007UlszU000S00D1Xly0000w00Q3bXw00szs00v77Ds01lzlzlyDATk03XzU03wSMzU077z037syHz00CDw2D7lw7y00QTs6CDXyTw0001WDmD401U0003C0CS003003zzy0zwzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
-}
-else
-{
-b_UseFindText=0
-}
-
-if !WinExist(yuanshenName)
-{
-b_UseFindText=0
-}
-
-if (v_isReloadByStartGameFromHere==0)
-{
-if(A_IsAdmin)
-{
-; MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否不开启"屏蔽ESC键"：卡出了派蒙跟随后点'否'
-MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件
-IfMsgBox yes
-{
-kalepaimon=0
-}
-else IfMsgBox no
-{
-; kalepaimon=1
-kalepaimon=0
-}
-
-if !WinExist(yuanshenName)
-{
-	MsgBox, 4, ,原神未启动，是否启动原神？`n  （编辑本ahk文件设置原神路径）
-	IfMsgBox, yes
-	{
-		Run, 3DMigoto Loader.exe, %3DMigotoLocal%, UseErrorLevel
-		if (ErrorLevel = "ERROR")
-		{
-			run, loader.exe, %FanHeXieLocal%, UseErrorLevel
-			if !(ErrorLevel = "ERROR")
-			{
-				goto, WaitForYuanShenStart
-			}
-		}
-		else
-		{
-		sleep 2000
-		}
-		run, %Gamename%, %YuanShenLocal%, UseErrorLevel
-		if (ErrorLevel = "ERROR")
-		{
-			MsgBox, 请编辑本ahk文件设置原神.exe的路径
-			exitapp
-		}
-	WaitForYuanShenStart:
-		v_isReloadByStartGameFromHere=1
-		loop, 40  ;等待120s YuanShen.exe启动
-		{
-			if WinActive(yuanshenName)
-			{
-				break
-			}
-			sleep 3000
-		}
-		if !WinExist(yuanshenName)
-		{
-			msgbox, 原神启动等待超时（2min）
-			exitapp
-		}
-		goto ReloadByStartGameFromHere
-	}
-}
-}
-else if not (A_IsAdmin)
-{
-MsgBox, 4, , %help2001%`n`n目前不处于管理员权限运行！`n是：继续   否：退出
-IfMsgBox yes
-{
-
-}
-else IfMsgBox no
-{
-Exitapp
-}
-}
-
-;获取管理员权限
-full_command_line := DllCall("GetCommandLine", "str")
-if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
-{
-    try ; leads to having the script re-launching itself as administrator
+  yuanshenName:="ahk_exe "+(game_Name)
+  ;读取游戏窗口分辨率
+  if WinExist(yuanshenName)
+  {
+    helpyouxiyiqidong=已
+    WinGet, zuidahuazuixiaohua,MinMax , %yuanshenName%
+    ;msgbox, %zuidahuazuixiaohua%
+    if (zuidahuazuixiaohua==-1)  ;如果最小化了
     {
-	MsgBox, 4, , 大侠，你原神是用管理员权限启动的，`n本软件需要用管理员权限才可以在你原神内执行模拟键鼠功能。`n`n是否授予管理员权限？`n（建议以后使用快捷方式-高级-勾选以管理员运行）`n`n是：重启本软件   否：退出
-IfMsgBox yes
-{
-
-}
-else IfMsgBox no
-{
-Exitapp
-}
-	
-	
-        if A_IsCompiled
-            Run *RunAs "%A_ScriptFullPath%" /restart
-        else
-            Run *RunAs "%A_AhkPath%" /restart "%A_ScriptFullPath%"
+      WinActivate , %yuanshenName%
+      ;sleep 100
+      WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
+      ;OutWidth:=A_ScreenWidth
     }
-    ExitApp
-}
-}
+    else
+    {
+      WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
+    }
+  }
+  else
+  {
+    OutWidth:=A_ScreenWidth
+    OutHeight:=A_ScreenHeight
+    helpyouxiyiqidong=未
+  }
+  ;msgbox, %OutWidth%  %zuidahuazuixiaohua%
 
-;激活游戏
-WinActivate , %yuanshenName%
+  help2001=原神AHK帮助`n`n    键盘功能：`n    Home——启动/暂停本软件`n    F3——媒体播放/暂停`n    长按F键——F键连击`n    双击F键——开启持续鼠标左键连点`n    x键/~键——持续按w前进`n    双击w键——持续按w前进`n    Tab键——原神游戏内的○确定键`n    ESC键——点击对话时最下选项`n    ctrl+F9——5个探索派遣`n    请在原神设置将落下键改为n，或启动本软件双击x下落`n`n    鼠标功能：`n    鼠标中键——开启持续鼠标左键连点`n    鼠标侧键1——按w键`n    双击鼠标侧键1——持续按w前进`n    鼠标侧键2——按F键`n    长按鼠标侧键2——连击F键`n    双击并长按鼠标侧键2——ALT键（显示鼠标/快捷元素爆发）
 
+  ;内置参数:
+  bSwitch=0
+  xh=1
+  kalepaimon=0  ;是否禁用esc键，禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
+
+  ;if(A_ScreenWidth==3840)
+  if(OutWidth>3800) and (OutWidth<3900)
+  {
+    youshangjiaodetouxiang="|<右上角的主角头像图标4k>*227$66.00000000100000000000U0000000000k0000000000E0000000000E0080000000E00Q0000000M00Q0000000M00w0000000M00w0000000Q00y0000000Q00zU300000Q00tk3U0000C00kw3k0000600kTzk0000701kDzk00003U1k3zs00003k1k0zs00001sXk07w00070yXk03w000Dzzbk00w000Dzzzk00w000Dzzzk00Q000Dzwzk00Q000TzsU"
+    zuoxiajiaoEnter="|<Enter4k>*153$71.000000Ds000000CTs1zzk0zU0Dzzw7zzUDzs0Tzzw7zy0zzzUTyTs3y03w7z0TkDs3w07sDy0zUTk7s0TUDw1z0TUDk0z0Q03y0z0TU1y0M07w1y0z07w0k0Ds3w1y0DzzU0Tk7s3w0Tzz00zUDk7s0zzy01z0TUDk1zzw03y0z0TU3y0007w1y0z07w000Ds3w1y0Ds00MTk7s3w0Ds0zUzUDk7s0Ts1z1z0TUDwsTwDy3y0z0TzkTzzw7w1y0Tz0TzzsDk3s0Ts0Dz00000000001UU|<左下角的enter在有对话框时4k>*154$71.0100007s0000000000Dk0000000000TU0000000000z00000000001y0000000wzkDzw1zU00DzzkTzkDzk00Tzzkzz0zDnzkTsTUTU1w7rzUTUz0z07kDzz0z0z1y0DUTU01y1y3w0z0T003w3w7s1y0y007s7sDk3zzw00DkDkTU7zzs00TUTUz0Dzzk00z0z1y0TU0001y1y3w0z00003w3w7s1y00067s7sDk1y03zwDkDkTU3y0zzsTUTUzz3zzjzUz0y0zy3zyTz1w1w0zk3zs001k300000y1"
+    quedingQuanQuan="|<4.3圈圈4k>*115$42.z03zs0Ty0Tzy0Dw0zzz0Ds1zzzk7s3zzzk3k7zzzs3kDzzzw3kDzzzw1UDzzzy1UTzzzy0UTzzzz0Uzzzzz0Uzzzzz00zzzzz00zzzzz0Uzzzzz0Uzzzzz0UTzzzz0UTzzzy0UDzzzy1kDzzzw1kDzzzw3k7zzzs3s3zzzk3s1zzzk7U|<4.3副本内圈圈4k>*116$41.k7zzzk7UTzzzk60zzzzkA3zzzzUE7zzzz00Tzzzz00zzzzy01zzzzw03zzzzs07zzzzk0DzzzzU0Tzzzz00zzzzy01zzzzw01zzzzs43zzzzU87zzzz0k7zzzw1k7zzzs7U7zzzUDUDzzy0zU7zzk1z07zz07z03zs0Tz00y01z"
+    youxiajiaoditutubiao="|<右下地图的图标4k>*121$38.U0zzk0M0Tzw0607zzU103zzw0E0zzz000Dzzk003zzw000zzz000Dzzk1U3zzw0M0Tzy0707zzU1k0zzk0w07zs0DU0zw07s03w01z00000zs0000Tz0000Dzk0003zy0001zzk000zzw000DzzU007zzw003zs"
+    duihuatubiao="|<对话图标最下一个4k>*200$71.zzU0000000zzzy00000000Tzzk00000000TzzU00000000Tzy000000000Tzs000000000TzU000000000Ty0000000000zw0000000000zk0000000000z00000000001y00000000001s00000000003k00000000003U0000000000700000000000A00000000000M00000000000U01s01s03s01007s0Ds0Ds0200Ts0Ts0zs0400zs1zk1zk0803zk3zk3zU0E03zU7z07z00U07z07y0Dy01"
+    fubendetiaoguowenzi="|<副本中右上角的跳过文字4k>*200$71.zy0Dzzzzzwzzzy0zzzzzzszzzw1zzzzzzkzzzs3zzzzzzUzzzk7zzzzzz0TjzUDzzzzzz0TTz0Tzzzzzz0STy0zzzzzzzUATw1zzzzzzXU8Ts3zzzzzy3U0zk7zzzzzs3k0zUDzzzzz01k0z0Tzzzzs0000y0zzzzzk0031w1zzzzzU0073s3zzzzzk0QDjk7zzzzzk1kTzUDzzzzzsD0zz0Tzzzzzss3zy0zzzzzzzUDzw1zzzzzzy1zzk3zzzzzzk7s007zzzzzz0Tk00Dzzzzzy3zk00zzzzzzwDz"
+    dianjirenyiweizhiguanbi="|<文字：点击任意位置关闭4k>*86$71.000000zUC000000001z0Tzzw000003w0zzzzzzzzzzs1y7zjzzzzzzU3kDzE00007z07UTyU0000Dw0DUzt00000Ts0T0zm1zzz0zU0y1zY3zzy1y21y3z800003wA3w3wE00007ws7w7sU0000DzkDsDl0zzzUTzUTsT21zzz0zz0zkS400003zy1zkw800007zw3zVsE0001zzs7zVUUzkTyDzkDzX001UTkDzUTz6403UTUTz0zzM887UTUTy1zzkkkDVzUTw3zzVVUTvnUzs400070zz7Uzk8001"
+  }
+  else if(OutWidth>1900) and (OutWidth<1950)
+  {
+    youshangjiaodetouxiang="|<右上角的主角头像图标1080p>*232$25.0002000100000000800050002U001g800Fy008T0003U0M0k0D080DU407k203s103g0Y3m0y1k0z1kE"
+    zuoxiajiaoEnter="|<Enter1080p>*163$55.zy0000000Tz003U00070003k0003U000s0001k0LVzVs2Ms1zszlz7STwSSD1lnzjyD73Usttr07XVkwSw3U3lksTzS1k1ssQDzD0s0wQC7U7UTySC71kHkDzD73wztk7zbXVw7sk4|<左下角的enter在有对话框时1080p>*163$48.zs000000w001k000w001k000w001s000w1zXyDnbzttlkQvzzstlkMtnw0stkwtkw0stkztkw0stkw1kw0stks1kzsstsQNkzsskyDlUU"
+    quedingQuanQuan="|<按钮圈圈O1080p>*114$21.z0DzU0Ts00y3y7lzsQDzVXzy8Tzk7zz0zzs7zz0zzs7zy4TzlVzwCDz3kTkT007w03zs1zU|<按钮圈圈2O1080p>*114$21.zUDzk0Ts01y3w7kzsQDzXXzy8zzl7zy8zzs7zz0zzs7zy8TzlXzwADz3kzkT0s7w01zs0zzszw|<之前的失效了这个是新的右下1080p>*116$29.zzzzzzzzzzzw7zzz03zzw01zzkS1zz3z1zwDzXzszz3zVzz7z7zyDyDzyDwTzwTszzszlzzXzXzz7zXzyDz3zszz3zVzz1w7zz00Tzz03zzzUTzzzzzzzzzzz"
+    youxiajiaoditutubiao="|<右下地图的图标1080p>*121$19.w07w01w00Q0061w31z11zk0zs0Tw0Dy23y31z1UC0s00y00zU0zk0Tw0Tz0TzUTzsDzyDzzjz"
+    duihuatubiao="|<对话图标最下一个1080p>*200$36.zU001zy0000Tw0000Ds00007k00007k00003U00001U00001U000010A1UA10S3kS00S7ky00S3ky00S3kQ0U00001U00001U00001k00003s00007s0000Dw0000Dy0000zz0001zzk003zzy003zU"
+    fubendetiaoguowenzi=0
+    dianjirenyiweizhiguanbi="|<>*80$71.zzzzzzzzzzzzzzzzzzzzzzzzzzzXzyD7zzzzUT007wS7y0000w007syDwMX0Tz3VzW01s00szy73z401k01lz000QCzDzlzXzzzzsMyT0077z007UlszU000S00D1Xly0000w00Q3bXw00szs00v77Ds01lzlzlyDATk03XzU03wSMzU077z037syHz00CDw2D7lw7y00QTs6CDXyTw0001WDmD401U0003C0CS003003zzy0zwzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+  }
+  else
+  {
+    b_UseFindText=0
+  }
+
+  if !WinExist(yuanshenName)
+  {
+    b_UseFindText=0
+  }
+
+  if (v_isReloadByStartGameFromHere==0)
+  {
+    if(A_IsAdmin)
+    {
+      ; MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件`n    问：是否不开启"屏蔽ESC键"：卡出了派蒙跟随后点'否'
+      MsgBox, 4, , %help2001%`n`n%helpyouxiyiqidong%启动原神游戏, 分辨率:(%OutWidth%,%OutHeight%), Pos:(%OutX%,%OutY%),%b_UseFindText%`n(游戏启动后或窗口位置发生变化请重启本软件)`n    Ctrl+Home——重启本软件
+      IfMsgBox yes
+      {
+        kalepaimon=0
+      }
+      else IfMsgBox no
+      {
+        ; kalepaimon=1
+        kalepaimon=0
+      }
+
+      if !WinExist(yuanshenName)
+      {
+        MsgBox, 4, ,原神未启动，是否启动原神？`n  （编辑本ahk文件设置原神路径）
+        IfMsgBox, yes
+        {
+          Run, 3DMigoto Loader.exe, %3DMigotoLocal%, UseErrorLevel
+          if (ErrorLevel = "ERROR")
+          {
+            run, loader.exe, %FanHeXieLocal%, UseErrorLevel
+            if !(ErrorLevel = "ERROR")
+            {
+              goto, WaitForYuanShenStart
+            }
+          }
+          else
+          {
+            sleep 2000
+          }
+          ; 启动原神（防3dm导致的错误）
+          run, %run_exe_name% %run_exe_para%, %run_exe_local%, UseErrorLevel
+          if (ErrorLevel = "ERROR")
+          {
+            MsgBox, 请编辑本ahk文件设置原神.exe的路径
+            exitapp
+          }
+          WaitForYuanShenStart:
+          v_isReloadByStartGameFromHere=1
+          loop, 40  ;等待120s YuanShen.exe启动
+          {
+            if WinActive(yuanshenName)
+            {
+              break
+            }
+            sleep 3000
+          }
+          if !WinExist(yuanshenName)
+          {
+            msgbox, 原神启动等待超时（2min）
+            exitapp
+          }
+          goto ReloadByStartGameFromHere
+        }
+      }
+    }
+    else if not (A_IsAdmin)
+    {
+      MsgBox, 4, , %help2001%`n`n目前不处于管理员权限运行！`n是：继续   否：退出
+      IfMsgBox yes
+      {
+
+      }
+      else IfMsgBox no
+      {
+        Exitapp
+      }
+    }
+
+    ;获取管理员权限
+    full_command_line := DllCall("GetCommandLine", "str")
+    if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
+    {
+      try ; leads to having the script re-launching itself as administrator
+      {
+        MsgBox, 4, , 大侠，你原神是用管理员权限启动的，`n本软件需要用管理员权限才可以在你原神内执行模拟键鼠功能。`n`n是否授予管理员权限？`n（建议以后使用快捷方式-高级-勾选以管理员运行）`n`n是：重启本软件   否：退出
+        IfMsgBox yes
+        {
+
+        }
+        else IfMsgBox no
+        {
+          Exitapp
+        }
+
+        if A_IsCompiled
+          Run *RunAs "%A_ScriptFullPath%" /restart
+        else
+          Run *RunAs "%A_AhkPath%" /restart "%A_ScriptFullPath%"
+      }
+      ExitApp
+    }
+  }
+
+  ;激活游戏
+  WinActivate , %yuanshenName%
 
 ;重启
 ^home::
-suspend permit
-reload
+  suspend permit
+  reload
 return
 
 ^+home::
-Goto findtext91
+  Goto findtext91
 return
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;设置需要添加的游戏
 #if WinActive(yuanshenName) or WinActive("幻塔2077") or WinActive("ahk_exe StarRail.exe") or WinActive("ahk_exe Client-Win64-Shipping.exe")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-home::	;暂停
-        suspend permit
-SetTimer, loopLbutton, Off
-bSwitch=0
-send {w up}
-xh:=1
-        suspend toggle
-        return
-
-
-
-
-
-
-;禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
-esc::
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:=duihuatubiao
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*5+OutX, OutHeight/2+OutY, OutWidth/4*3+OutX, OutHeight+OutY, 0, 0, Text,,,,,,9))
-{
-  MouseGetPos, xpos, ypos, winid
-  FindText().Click(X, Y, "L")
-  sleep 200
-  FindText().Click(X, Y-OutHeight/14, "L",0)
-;  sleep 400
-;  click, %xpos%, %ypos%, 1
-}
-else
-{
-if(kalepaimon==1)
-{
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:=zuoxiajiaoEnter
-if !(b_UseFindText) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
-{
-  ; FindText().Click(X, Y, "L")
+  home::	;暂停
+    suspend permit
+    SetTimer, loopLbutton, Off
+    bSwitch=0
+    send {w up}
+    xh:=1
+    suspend toggle
   return
-}
-else
-{
-send {esc down}
-sleep 10
-send {esc up}
-  ;Msgbox, The cursor is at X%xpos% Y%ypos% and is true.12
-return
-}
-}
-else if(kalepaimon==0)
-{
-send {esc down}
-sleep 10
-send {esc up}
-}
-}
-return
 
-;禁用抽卡界面
-F3::Media_Play_Pause
-return
-;功能同键盘上的Fn+F5,F6,F7分别为上一个、下一个、暂停
-;（如果小窗不是最前面重启游戏并进入世界后再试）
-;（如果小窗不是最前面重启游戏并进入世界后再试）
-;（如果小窗不是最前面重启游戏并进入世界后再试）
-
-;按着下面那个键不停输入f；双击F则开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消
-~f::
-;if WinActive("原神") or WinActive("幻塔")
-{
-	if(bSwitch==1)
-	{
-		SetTimer, loopLbutton, Off
-		bSwitch=0
-	}
-    KeyWait, f, T0.1
-    If Not ErrorLevel
+  ;禁用派蒙菜单 用于卡bug卡出派蒙后不要让派蒙消失
+  esc::
+    t1:=A_TickCount, Text:=X:=Y:=""
+    Text:=duihuatubiao
+    if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*5+OutX, OutHeight/2+OutY, OutWidth/4*3+OutX, OutHeight+OutY, 0, 0, Text,,,,,,9))
     {
+      MouseGetPos, xpos, ypos, winid
+      FindText().Click(X, Y, "L")
+      sleep 200
+      FindText().Click(X, Y-OutHeight/14, "L",0)
+      ;  sleep 400
+      ;  click, %xpos%, %ypos%, 1
+    }
+    else
+    {
+      if(kalepaimon==1)
+      {
+        t1:=A_TickCount, Text:=X:=Y:=""
+        Text:=zuoxiajiaoEnter
+        if !(b_UseFindText) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
+        {
+          ; FindText().Click(X, Y, "L")
+          return
+        }
+        else
+        {
+          send {esc down}
+          sleep 10
+          send {esc up}
+          ;Msgbox, The cursor is at X%xpos% Y%ypos% and is true.12
+          return
+        }
+      }
+      else if(kalepaimon==0)
+      {
+        send {esc down}
+        sleep 10
+        send {esc up}
+      }
+    }
+  return
+
+  ;禁用抽卡界面
+  F3::Media_Play_Pause
+  return
+  ;功能同键盘上的Fn+F5,F6,F7分别为上一个、下一个、暂停
+  ;（如果小窗不是最前面重启游戏并进入世界后再试）
+  ;（如果小窗不是最前面重启游戏并进入世界后再试）
+  ;（如果小窗不是最前面重启游戏并进入世界后再试）
+
+  ;按着下面那个键不停输入f；双击F则开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消
+  ~f::
+    ;if WinActive("原神") or WinActive("幻塔")
+    {
+      if(bSwitch==1)
+      {
+        SetTimer, loopLbutton, Off
+        bSwitch=0
+      }
+      KeyWait, f, T0.2
+      If Not ErrorLevel
+      {
         KeyWait, f, D T0.1
         If Not ErrorLevel
         {
-            ;KeyWait, f
+          ;KeyWait, f
+          {
+            if(bSwitch==0)
             {
-				if(bSwitch==0)
-				{
-				send {Lbutton}
-				SetTimer, loopLbutton, 500
-				bSwitch=1
-				}
-				else if(bSwitch==1)
-				{
-				SetTimer, loopLbutton, Off
-				bSwitch=0
-				}
-			}
+              send {Lbutton}
+              SetTimer, loopLbutton, 500
+              bSwitch=1
+            }
+            else if(bSwitch==1)
+            {
+              SetTimer, loopLbutton, Off
+              bSwitch=0
+            }
+          }
         }
-    }
-	
-	Loop
+      }
+
+      Loop
+      {
+        If Not GetKeyState("f", "P")
+          Break
+        if WinActive("崩坏：星穹铁道")
         {
-            If Not GetKeyState("f", "P")
-            Break
-			if WinActive("崩坏：星穹铁道")
-			{
-				Send {f down}
-				send {lbutton down}
-				Sleep 10 ; try various milliseconds
-				Send {f up}
-				send {lbutton up}
-                Sleep 100
-			}
-			else
-			{
-                Send {f down}
-				Sleep 10 ; try various milliseconds
-				Send {f up}
-                Sleep 100
-			}
+          Send {f down}
+          send {lbutton down}
+          Sleep 10 ; try various milliseconds
+          Send {f up}
+          send {lbutton up}
+          Sleep 100
         }
-}
-Return
+        else
+        {
+          Send {f down}
+          Sleep 10 ; try various milliseconds
+          Send {f up}
+          Sleep 100
+        }
+      }
+    }
+  Return
 
-
-
-;按一下鼠标中间键（元素视野alt点左上角的图标激活）开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消--------------------
-;~h::
-MButton::
-;if WinActive("原神") or WinActive("幻塔")
-{
-{
-  ; FindText().Click(X, Y, "L")
-  
-
-if(bSwitch==0)
-{
-send {Lbutton}
-SetTimer, loopLbutton, 500
-bSwitch=1
-}
-else if(bSwitch==1)
-{
-SetTimer, loopLbutton, Off
-bSwitch=0
-}
-}
-}
-return
-
-loopLbutton:
-;if WinActive("原神") or WinActive("幻塔")
-{
-	Random, vloopPeriod, 100, 200
-	SetTimer, loopLbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
-		Send {lbutton down}
-Random, vAnXiaShiChang, 5, 7
-		Sleep %vAnXiaShiChang% ;按下时长
-		Send {lbutton up}
-}
-return
-
-
-;连点鼠标后也可以按鼠标左键或空格键取消
-~Lbutton::
-~Space::
-;if WinActive("原神") or WinActive("幻塔")
-{
-if(bSwitch==1)
-{
-SetTimer, loopLbutton, Off
-bSwitch=0
-}
-}
-return
-;END--------------
-
-
-;按一下x键持续按w前进，再按一次x键停止----------------------
-~x::
-; ;长按x则激活x，用于x键下落，但是受不了200毫秒延迟
-if(ChangAnX==1)
-{
-	KeyWait, x
-	If (A_TimeSinceThisHotkey > 300)
-	{
-		SetTimer, ChangAnXsendx, -1
-		return
-	}
-}
-
-; ; x为一直按着w，需要在原神设置里把原来的x落下键改为n
-; if WinActive("原神") or WinActive("幻塔")
-; {
-; t1:=A_TickCount, Text:=X:=Y:=""
-; Text:=zuoxiajiaoEnter
-; if !(b_UseFindText) or (WinActive("ahk_exe StarRail.exe")) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
-; {
-;   ; FindText().Click(X, Y, "L")
-; ;msgbox, b_UseFindText=%b_UseFindText%
-; if (xh==1)
-; {
-; send {w down}
-; xh:=-1
-; }
-; else
-; {
-; xh:=1
-; send {w up}
-; }
-; }
-; }
-
-; 如果是 火神头像 则 按 x 为 space space space
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<火神 头像>*153$48.3zzzzzzz1zzzzzzz1zzzzzzz0zzzzzzz0zzzzzzz0Tzzzzzz0Dzzzzzz0Dzzzzzz07zzzzzz0Tzzzzzz1rzzzzzz7lzzzzzzS1zzzzzzQ0zzzzzz0Dzzzzzz0zzzzzzz0zzzzzzz0zzzzzzz0nzzzzzz0Xjzzzzz01Dzzzzz007zzzzz00DTzztz004Dzzlz000DzzV0U"
-if (WinActive("原神") And ok:=FindText(X, Y, 3057, 386, 3838, 1152, 0, 0, Text))
-{
-  ; FindText().Click(X, Y, "L")
-send {space down}
-sleep 100
-send {space up}
-sleep 100
-
-send {space down}
-sleep 100
-send {space up}
-sleep 100
-
-send {space down}
-sleep 100
-send {space up}
-
-}
-Return
-
-~`::
-{
-if (xh==1)
-{
-send {w down}
-xh:=-1
-}
-else
-{
-xh:=1
-send {w up}
-}
-}
-Return
-
-ChangAnXsendx:
-	Send {x down}
-	sleep 50
-	Send {x up}
-return
-
-; 点两下 w 按住 w
-~w::
-;if WinActive("原神") or WinActive("幻塔")
-{
-	xh:=1
-    KeyWait, w, T0.1
-    If Not ErrorLevel
+  ;按一下鼠标中间键（元素视野alt点左上角的图标激活）开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消--------------------
+  ;~h::
+  MButton::
+    ;if WinActive("原神") or WinActive("幻塔")
     {
+      {
+        ; FindText().Click(X, Y, "L")
+
+        if(bSwitch==0)
+        {
+          send {Lbutton}
+          SetTimer, loopLbutton, 500
+          bSwitch=1
+        }
+        else if(bSwitch==1)
+        {
+          SetTimer, loopLbutton, Off
+          bSwitch=0
+        }
+      }
+    }
+  return
+
+  loopLbutton:
+    ;if WinActive("原神") or WinActive("幻塔")
+    {
+      Random, vloopPeriod, 100, 200
+      SetTimer, loopLbutton, %vloopPeriod% ;引入随机数反作弊（聊胜于无
+      Send {lbutton down}
+      Random, vAnXiaShiChang, 5, 7
+      Sleep %vAnXiaShiChang% ;按下时长
+      Send {lbutton up}
+    }
+  return
+
+  ;连点鼠标后也可以按鼠标左键或空格键取消
+  ~Lbutton::
+  ~Space::
+    ;if WinActive("原神") or WinActive("幻塔")
+    {
+      if(bSwitch==1)
+      {
+        SetTimer, loopLbutton, Off
+        bSwitch=0
+      }
+    }
+  return
+  ;END--------------
+
+  ;按一下x键持续按w前进，再按一次x键停止----------------------
+  ~x::
+    ; ;长按x则激活x，用于x键下落，但是受不了200毫秒延迟
+    if(ChangAnX==1)
+    {
+      KeyWait, x
+      If (A_TimeSinceThisHotkey > 300)
+      {
+        SetTimer, ChangAnXsendx, -1
+        return
+      }
+    }
+
+    ; ; x为一直按着w，需要在原神设置里把原来的x落下键改为n
+    ; if WinActive("原神") or WinActive("幻塔")
+    ; {
+    ; t1:=A_TickCount, Text:=X:=Y:=""
+    ; Text:=zuoxiajiaoEnter
+    ; if !(b_UseFindText) or (WinActive("ahk_exe StarRail.exe")) or (ok:=FindText(X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text))
+    ; {
+    ;   ; FindText().Click(X, Y, "L")
+    ; ;msgbox, b_UseFindText=%b_UseFindText%
+    ; if (xh==1)
+    ; {
+    ; send {w down}
+    ; xh:=-1
+    ; }
+    ; else
+    ; {
+    ; xh:=1
+    ; send {w up}
+    ; }
+    ; }
+    ; }
+
+    ; 如果是 火神头像 则 按 x 为 space space space
+    t1:=A_TickCount, Text:=X:=Y:=""
+    Text:="|<火神 头像>*153$48.3zzzzzzz1zzzzzzz1zzzzzzz0zzzzzzz0zzzzzzz0Tzzzzzz0Dzzzzzz0Dzzzzzz07zzzzzz0Tzzzzzz1rzzzzzz7lzzzzzzS1zzzzzzQ0zzzzzz0Dzzzzzz0zzzzzzz0zzzzzzz0zzzzzzz0nzzzzzz0Xjzzzzz01Dzzzzz007zzzzz00DTzztz004Dzzlz000DzzV0U"
+    if (WinActive("原神") And ok:=FindText(X, Y, 3057, 386, 3838, 1152, 0, 0, Text))
+    {
+      ; FindText().Click(X, Y, "L")
+      send {space down}
+      sleep 100
+      send {space up}
+      sleep 100
+
+      send {space down}
+      sleep 100
+      send {space up}
+      sleep 100
+
+      send {space down}
+      sleep 100
+      send {space up}
+
+    }
+  Return
+
+  ~`::
+    {
+      if (xh==1)
+      {
+        send {w down}
+        xh:=-1
+      }
+      else
+      {
+        xh:=1
+        send {w up}
+      }
+    }
+  Return
+
+  ChangAnXsendx:
+    Send {x down}
+    sleep 50
+    Send {x up}
+  return
+
+  ; 点两下 w 按住 w
+  ~w::
+    ;if WinActive("原神") or WinActive("幻塔")
+    {
+      xh:=1
+      KeyWait, w, T0.1
+      If Not ErrorLevel
+      {
         KeyWait, w, D T0.1
         If Not ErrorLevel
         {
-            KeyWait, w, T0.1
-            Send {w down}
-			xh:=-1
+          KeyWait, w, T0.1
+          Send {w down}
+          xh:=-1
         }
+      }
     }
-}
-Return
+  Return
 
-
-~s::
-;if WinActive("原神") or WinActive("幻塔")
-{
-if(xh==-1)
-{
-send {w up}
-xh:=1
-}
-}
-return
-;按一下X键持续按w前进，再按一次X键停止 END-----------------------
-
-
-
-		
-
-;宏 爬山2段跳
-;~ctrl::
-if WinActive("幻塔")
-{
-send {alt up}
-if(xh==-1)
-{
-xh:=1
-send {w up}
-sleep 20
-}
-
-sleep 200
-send {space}
-sleep 200
-send {space}
-sleep 300
-
-send {2 down}
-sleep 50
-send {2 up}
-
-sleep 20
-send {w down}
-xh:=-1
-
-}
-return
-
-
-
-;tab键按一下圈圈
-tab::
-	if(bSwitch==1)
-	{
-		SetTimer, loopLbutton, Off
-		bSwitch=0
-	}
-	; if(xh==-1)
-	; {
-		; send {w up}
-		; xh:=1
-	; }
-;if WinActive("原神") or WinActive("幻塔")
-{
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:=quedingQuanQuan
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
-{
-MouseGetPos, xpos, ypos, winid
-  FindText().Click(X, Y, "L")
-  ;Msgbox, The cursor is at X%xpos% Y%ypos% and is true.
-  sleep 100
-  click, %xpos%, %ypos%, 0
-}
-else 
-{
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:=youxiajiaoditutubiao
-;X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
-{
-  MouseGetPos, xpos, ypos, winid
-  FindText().Click(X, Y, "L")
-  sleep 100
-  click, %xpos%, %ypos%, 0
-}
-else
-{
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:=dianjirenyiweizhiguanbi
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*3+OutX, OutHeight/2+OutY, OutWidth/8*5+OutX, OutHeight+OutY, 0, 0, Text))
-{
-  MouseGetPos, xpos, ypos, winid
-  FindText().Click(X, Y, "L")
-  sleep 100
-  click, %xpos%, %ypos%, 0
-}
-else
-{  ;累了,仅在4k下做了适配
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<浓缩树脂图标4k>*196$71.zy000CM1zzzxzz008Qk3zzzvzy000xU3zzzrzw001zU7zzzzzk000TUDzzzzy0000T0zzzzzk060061zzzzw0Dy0043zzzzk1zw0003zzzy0Dzs0007zzzwT8000007zzzsy000000Dzzzxs000000Dzzxs0000000TzzvUU00zy00TzzrVzkDzz00zzzjzz1zzzU0zzzTzw7zzzU1zzwzzkzzzzU1zztzy3zzzzU1zzXzU7zzzzU3zz7y0TzzzzU3zwDk1zzzzz03zsT07zzzzz03zUw1zzzzzz03z1"
-if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+100, 0, 0, Text))
-{
-  MouseGetPos, xpos, ypos, winid
-  FindText().Click(X, Y, "L")
-  sleep 800
-  FindText().Click(X, Y, "L")
-  sleep 950 ;等待副本的 跳过文字 出现时间
-  t1:=A_TickCount, Text:=X:=Y:=""
-Text:=fubendetiaoguowenzi ;副本的跳过文字
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
-{
-  FindText().Click(X, Y, "L")
-  sleep 100
-  click, %xpos%, %ypos%, 0
-}
-}
-else
-{  ;累了,仅在4k下做了适配
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<替换按钮（右下角4k>*211$71.z00zk0DzzTwDy01zU0TzzzkTzzzzzkzzzz1zzzzzzVzzzw7zzzzzz3zzzzzzzzzzy0Tvzzzzzzzzw0zzzzzz07zk01zjzzzzUDzk03zTzzzzUzzk07yDzzzzXzzk0Dzztzzzzzzs0Tzznznzzlzs0zzzbz1zz1zw3zzzDzzzzzzyzzzyTzzzzzzvzzDwzzzzzzzrzwTtzzzzzzXjzzzzzzzzzz0Dzzzzzs007y0Tzzzzzk00Dw0vzzzzzU00Ts07zzzzzzzzzk0Dw03zzzzzzU0Ts0Dzzzzzz00zk0Tz"
-if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/2+OutX, OutHeight/4*3+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
-{
-  MouseGetPos, xpos, ypos, winid
-  FindText().Click(X, Y, "L")
-  sleep 100
-  click, %xpos%, %ypos%, 0
-}
-else
-{
-click
-}
-}
-}
-}
-}
-}
-return
-
-
-~a::  ;累了,仅在4k下做了适配
-; t1:=A_TickCount, Text:=X:=Y:=""
-; Text:="|<队伍选择界面左箭头4k璃月>*173$4.BzxnU|<蒙德>*228$12.1z3z7zDzzzzzzzzzDzDz3z1zU"
-; if (ok:=FindText(X, Y, 142-25, 1080-25, 142+25, 1080+25, 0, 0, Text))
-; {
-  ; FindText().Click(X, Y, "L")
-; }
-
-; 改为判断右上角的 x
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<右上角的x>*222$71.0DzzzyDzzzy00Tzzzzzzzzw00zDzzzzzzbk00s7zzzzzw3U000Dzzzzzs000007zzzzz000000Dzzzzy0000007zzzzk000000DzzzzU0000007zzzw0000000Dzzzs00000007zzz00000000Dzzy00000001zzzz00000003zzzy0000000Tzzzz0000000zzzzy0000007zzzzy000000Dzzzzy000001zzzzzz0000Q3zzzzzy1k01zzzzzzzzDU03zzzzzzzzzU07zzzz7zzzz00Dzzzw7zzzy1"
-if (ok:=FindText(X, Y, 3685-50, 96-50, 3685+50, 96+50, 0, 0, Text))
-{
-  click 140,1080,1
-}
-return
-
-~d::  ;累了,仅在4k下做了适配
-; t1:=A_TickCount, Text:=X:=Y:=""
-; Text:="|<队伍选择界面右箭头4k璃月>*177$4.XCzym8|<4k枫丹>*212$8.UA3UwDnyzzzyzD3Uk800U|<蒙德>*203$9.k70w7kzbyzzzzrwy7Us60U"
-; if (ok:=FindText(X, Y, 3715-25, 1080-25, 3715+25, 1080+25, 0, 0, Text))
-; {
-  ; FindText().Click(X, Y, "L")
-; }
-
-; 改为判断右上角的 x
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<右上角的x>*222$71.0DzzzyDzzzy00Tzzzzzzzzw00zDzzzzzzbk00s7zzzzzw3U000Dzzzzzs000007zzzzz000000Dzzzzy0000007zzzzk000000DzzzzU0000007zzzw0000000Dzzzs00000007zzz00000000Dzzy00000001zzzz00000003zzzy0000000Tzzzz0000000zzzzy0000007zzzzy000000Dzzzzy000001zzzzzz0000Q3zzzzzy1k01zzzzzzzzDU03zzzzzzzzzU07zzzz7zzzz00Dzzzw7zzzy1"
-if (ok:=FindText(X, Y, 3685-50, 96-50, 3685+50, 96+50, 0, 0, Text))
-{
-  click 3700,1080,1
-}
-return
-
-~e::  ;累了,仅在4k下做了适配
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<被冰住按space解封4k>*174$71.00003zs000zy00003zU003zw00003y000Dzs00003s000zzk000000003zzU30000000Dzz0TU000000zzy1zU000003zzw7zU00000DzzsTzU00000zzzlzzU00003zzzbzzU0000DzzzTzzU0000zzzzzzzU0003zzzzzzz0000Dzzzzzzz0000Tzzzzzzz0000zzzzTzzy0001zzzyzzzs0003zzzlzzzU0003zzzXzzy00003zzw7zzs00003zzsDzzU00003zz0Tzy000003zy0zzs000003zk1"
-sleep 300
-; 延迟主要是因为行秋的e弱水附着导致被冰冻
-if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
-{
-  ; FindText().Click(X, Y, "L")
-  loop, 8
-  {
-	send {space down}
-	sleep 5
-	send {space up}
-	sleep 50
-  }
-}
-else
-{
-sleep 700
-if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
-{
-  ; FindText().Click(X, Y, "L")
-  loop, 8
-  {
-	send {space down}
-	sleep 5
-	send {space up}
-	sleep 50
-  }
-}
-}
-return
-
-; 胡桃 aaz space
-1::
-t1:=A_TickCount, Text:=X:=Y:=""
-Text:="|<胡桃头像>*147$46.rzzzzzzzbzzzzzzyDzzzzzzwzzzzzzzzzzzzzznzszzzzz7zlzzzzwHzbzzzzkDzDzzzz0vyzzzzw3bHzzzzk6Q7zzzz08kTzzzw0X1zzzzk087zzzz000Tzzzw003zzzzE00Dzzzx000zzzzk003zzzz0007zzzw000Tzzzy"
-; 仅搜索 1 号位置
-if (ok:=FindText(X, Y, 3225, 414, 3838, 582, 0, 0, Text))
-{
-  ; 我写的
-  send {LButton down}
-  sleep 5
-  send {LButton up}
-  sleep 100
-
-  send {LButton down}
-  sleep 5
-  send {LButton up}
-  sleep 100
-
-  send {LButton down}
-  sleep 300
-  send {LButton up}
-  sleep 20
-  
-	send {space down}
-	sleep 5
-	send {space up}
-
+  ~s::
+    ;if WinActive("原神") or WinActive("幻塔")
+    {
+      if(xh==-1)
+      {
+        send {w up}
+        xh:=1
+      }
+    }
   return
-}
-else{
-  ; 胡桃头像没找到
-	send {1 down}
-	sleep 5
-	send {1 up}
+  ;按一下X键持续按w前进，再按一次X键停止 END-----------------------
+
+  ;宏 爬山2段跳
+  ;~ctrl::
+  if WinActive("幻塔")
+  {
+    send {alt up}
+    if(xh==-1)
+    {
+      xh:=1
+      send {w up}
+      sleep 20
+    }
+
+    sleep 200
+    send {space}
+    sleep 200
+    send {space}
+    sleep 300
+
+    send {2 down}
+    sleep 50
+    send {2 up}
+
+    sleep 20
+    send {w down}
+    xh:=-1
+
+  }
   return
-}
 
+  ;tab键按一下圈圈
+  tab::
+    if(bSwitch==1)
+    {
+      SetTimer, loopLbutton, Off
+      bSwitch=0
+    }
+    ; if(xh==-1)
+    ; {
+    ; send {w up}
+    ; xh:=1
+    ; }
+    ;if WinActive("原神") or WinActive("幻塔")
+    {
+      t1:=A_TickCount, Text:=X:=Y:=""
+      Text:=quedingQuanQuan
+      if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth*1/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+      {
+        MouseGetPos, xpos, ypos, winid
+        FindText().Click(X, Y, "L")
+        ;Msgbox, The cursor is at X%xpos% Y%ypos% and is true.
+        sleep 100
+        click, %xpos%, %ypos%, 0
+      }
+      else
+      {
+        t1:=A_TickCount, Text:=X:=Y:=""
+        Text:=youxiajiaoditutubiao
+        ;X, Y, 0+OutX, OutHeight-200+OutY, 350+OutX, OutHeight+OutY, 0, 0, Text
+        if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-980+OutX, OutHeight-260+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+        {
+          MouseGetPos, xpos, ypos, winid
+          FindText().Click(X, Y, "L")
+          sleep 100
+          click, %xpos%, %ypos%, 0
+        }
+        else
+        {
+          t1:=A_TickCount, Text:=X:=Y:=""
+          Text:=dianjirenyiweizhiguanbi
+          if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/8*3+OutX, OutHeight/2+OutY, OutWidth/8*5+OutX, OutHeight+OutY, 0, 0, Text))
+          {
+            MouseGetPos, xpos, ypos, winid
+            FindText().Click(X, Y, "L")
+            sleep 100
+            click, %xpos%, %ypos%, 0
+          }
+          else
+          {  ;累了,仅在4k下做了适配
+            t1:=A_TickCount, Text:=X:=Y:=""
+            Text:="|<浓缩树脂图标4k>*196$71.zy000CM1zzzxzz008Qk3zzzvzy000xU3zzzrzw001zU7zzzzzk000TUDzzzzy0000T0zzzzzk060061zzzzw0Dy0043zzzzk1zw0003zzzy0Dzs0007zzzwT8000007zzzsy000000Dzzzxs000000Dzzxs0000000TzzvUU00zy00TzzrVzkDzz00zzzjzz1zzzU0zzzTzw7zzzU1zzwzzkzzzzU1zztzy3zzzzU1zzXzU7zzzzU3zz7y0TzzzzU3zwDk1zzzzz03zsT07zzzzz03zUw1zzzzzz03z1"
+            if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+100, 0, 0, Text))
+            {
+              MouseGetPos, xpos, ypos, winid
+              FindText().Click(X, Y, "L")
+              sleep 800
+              FindText().Click(X, Y, "L")
+              sleep 950 ;等待副本的 跳过文字 出现时间
+              t1:=A_TickCount, Text:=X:=Y:=""
+              Text:=fubendetiaoguowenzi ;副本的跳过文字
+              if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
+              {
+                FindText().Click(X, Y, "L")
+                sleep 100
+                click, %xpos%, %ypos%, 0
+              }
+            }
+            else
+            {  ;累了,仅在4k下做了适配
+              t1:=A_TickCount, Text:=X:=Y:=""
+              Text:="|<替换按钮（右下角4k>*211$71.z00zk0DzzTwDy01zU0TzzzkTzzzzzkzzzz1zzzzzzVzzzw7zzzzzz3zzzzzzzzzzy0Tvzzzzzzzzw0zzzzzz07zk01zjzzzzUDzk03zTzzzzUzzk07yDzzzzXzzk0Dzztzzzzzzs0Tzznznzzlzs0zzzbz1zz1zw3zzzDzzzzzzyzzzyTzzzzzzvzzDwzzzzzzzrzwTtzzzzzzXjzzzzzzzzzz0Dzzzzzs007y0Tzzzzzk00Dw0vzzzzzU00Ts07zzzzzzzzzk0Dw03zzzzzzU0Ts0Dzzzzzz00zk0Tz"
+              if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth/2+OutX, OutHeight/4*3+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
+              {
+                MouseGetPos, xpos, ypos, winid
+                FindText().Click(X, Y, "L")
+                sleep 100
+                click, %xpos%, %ypos%, 0
+              }
+              else
+              {
+                click
+              }
+            }
+          }
+        }
+      }
+    }
+  return
 
+  ~a::  ;累了,仅在4k下做了适配
+    ; t1:=A_TickCount, Text:=X:=Y:=""
+    ; Text:="|<队伍选择界面左箭头4k璃月>*173$4.BzxnU|<蒙德>*228$12.1z3z7zDzzzzzzzzzDzDz3z1zU"
+    ; if (ok:=FindText(X, Y, 142-25, 1080-25, 142+25, 1080+25, 0, 0, Text))
+    ; {
+    ; FindText().Click(X, Y, "L")
+    ; }
 
-; 鼠标侧键 1 等于前进，连按两下等于按住 w
-XButton1::
+    ; 改为判断右上角的 x
+    t1:=A_TickCount, Text:=X:=Y:=""
+    Text:="|<右上角的x>*222$71.0DzzzyDzzzy00Tzzzzzzzzw00zDzzzzzzbk00s7zzzzzw3U000Dzzzzzs000007zzzzz000000Dzzzzy0000007zzzzk000000DzzzzU0000007zzzw0000000Dzzzs00000007zzz00000000Dzzy00000001zzzz00000003zzzy0000000Tzzzz0000000zzzzy0000007zzzzy000000Dzzzzy000001zzzzzz0000Q3zzzzzy1k01zzzzzzzzDU03zzzzzzzzzU07zzzz7zzzz00Dzzzw7zzzy1"
+    if (ok:=FindText(X, Y, 3685-50, 96-50, 3685+50, 96+50, 0, 0, Text))
+    {
+      click 140,1080,1
+    }
+  return
+
+  ~d::  ;累了,仅在4k下做了适配
+    ; t1:=A_TickCount, Text:=X:=Y:=""
+    ; Text:="|<队伍选择界面右箭头4k璃月>*177$4.XCzym8|<4k枫丹>*212$8.UA3UwDnyzzzyzD3Uk800U|<蒙德>*203$9.k70w7kzbyzzzzrwy7Us60U"
+    ; if (ok:=FindText(X, Y, 3715-25, 1080-25, 3715+25, 1080+25, 0, 0, Text))
+    ; {
+    ; FindText().Click(X, Y, "L")
+    ; }
+
+    ; 改为判断右上角的 x
+    t1:=A_TickCount, Text:=X:=Y:=""
+    Text:="|<右上角的x>*222$71.0DzzzyDzzzy00Tzzzzzzzzw00zDzzzzzzbk00s7zzzzzw3U000Dzzzzzs000007zzzzz000000Dzzzzy0000007zzzzk000000DzzzzU0000007zzzw0000000Dzzzs00000007zzz00000000Dzzy00000001zzzz00000003zzzy0000000Tzzzz0000000zzzzy0000007zzzzy000000Dzzzzy000001zzzzzz0000Q3zzzzzy1k01zzzzzzzzDU03zzzzzzzzzU07zzzz7zzzz00Dzzzw7zzzy1"
+    if (ok:=FindText(X, Y, 3685-50, 96-50, 3685+50, 96+50, 0, 0, Text))
+    {
+      click 3700,1080,1
+    }
+  return
+
+  ~e::  ;累了,仅在4k下做了适配
+    t1:=A_TickCount, Text:=X:=Y:=""
+    Text:="|<被冰住按space解封4k>*174$71.00003zs000zy00003zU003zw00003y000Dzs00003s000zzk000000003zzU30000000Dzz0TU000000zzy1zU000003zzw7zU00000DzzsTzU00000zzzlzzU00003zzzbzzU0000DzzzTzzU0000zzzzzzzU0003zzzzzzz0000Dzzzzzzz0000Tzzzzzzz0000zzzzTzzy0001zzzyzzzs0003zzzlzzzU0003zzzXzzy00003zzw7zzs00003zzsDzzU00003zz0Tzy000003zy0zzs000003zk1"
+    sleep 300
+    ; 延迟主要是因为行秋的e弱水附着导致被冰冻
+    if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
+    {
+      ; FindText().Click(X, Y, "L")
+      loop, 8
+      {
+        send {space down}
+        sleep 5
+        send {space up}
+        sleep 50
+      }
+    }
+    else
+    {
+      sleep 700
+      if (ok:=FindText(X, Y, 2830-100, 1076-100, 2830+100, 1076+100, 0, 0, Text))
+      {
+        ; FindText().Click(X, Y, "L")
+        loop, 8
+        {
+          send {space down}
+          sleep 5
+          send {space up}
+          sleep 50
+        }
+      }
+    }
+  return
+
+  ; 胡桃 aaz space
+  1::
+    t1:=A_TickCount, Text:=X:=Y:=""
+    Text:="|<胡桃头像>*147$46.rzzzzzzzbzzzzzzyDzzzzzzwzzzzzzzzzzzzzznzszzzzz7zlzzzzwHzbzzzzkDzDzzzz0vyzzzzw3bHzzzzk6Q7zzzz08kTzzzw0X1zzzzk087zzzz000Tzzzw003zzzzE00Dzzzx000zzzzk003zzzz0007zzzw000Tzzzy"
+    ; 仅搜索 1 号位置
+    if (ok:=FindText(X, Y, 3225, 414, 3838, 582, 0, 0, Text))
+    {
+      ; 我写的
+      send {LButton down}
+      sleep 5
+      send {LButton up}
+      sleep 180
+
+      send {LButton down}
+      sleep 5
+      send {LButton up}
+      sleep 150
+
+      send {LButton down}
+      sleep 300
+      send {LButton up}
+      sleep 20
+
+      send {space down}
+      sleep 5
+      send {space up}
+
+      return
+    }
+    else{
+      ; 胡桃头像没找到
+      send {1 down}
+      sleep 5
+      send {1 up}
+      return
+    }
+
+  ; 鼠标侧键 1 等于前进，连按两下等于按住 w
+  XButton1::
     Send {w down}
     KeyWait, XButton1, T0.2
     If Not ErrorLevel
     {
-        Send {w up}
-		xh:=1
-        KeyWait, XButton1, D T0.1
-        If Not ErrorLevel
-        {
-            Send {w down}
-			xh:=-1
-        }
+      Send {w up}
+      xh:=1
+      KeyWait, XButton1, D T0.1
+      If Not ErrorLevel
+      {
+        Send {w down}
+        xh:=-1
+      }
     }
     Else
     {
-        KeyWait, XButton1
-        Send {w up}
-		xh:=1
+      KeyWait, XButton1
+      Send {w up}
+      xh:=1
     }
-Return
+  Return
 
-; 鼠标侧键 2 等于 F 键，按住等于连点F键，双击并按住等于 Alt 键显示鼠标
-XButton2::
-	send {f}
+  ; 鼠标侧键 2 等于 F 键，按住等于连点F键，双击并按住等于 Alt 键显示鼠标
+  XButton2::
+    send {f}
     KeyWait, XButton2, T0.3
     If Not ErrorLevel
     {
-        KeyWait, XButton2, D T0.1
-        If Not ErrorLevel
+      KeyWait, XButton2, D T0.1
+      If Not ErrorLevel
+      {
         {
-            {
-				Send, {LAlt down}
-				KeyWait, XButton2
-				Send, {LAlt up}
-			}
-		}
-       }
-	Loop
-        {
-            If Not GetKeyState("XButton2", "P")
-            Break
-                Send {f down}
-				Sleep 10 ; try various milliseconds
-				Send {f up}
-
-                Sleep 100
+          Send, {LAlt down}
+          KeyWait, XButton2
+          Send, {LAlt up}
         }
-Return
-
-;鼠标侧键 2 等于 F 键，按住等于 Alt 键显示鼠标，双击并按住等于连点F键（已禁用）
-;XButton2::
-send {f}
-    KeyWait, XButton2, T0.2
-    If ErrorLevel
-    {
-        Send, {LAlt down}
-        KeyWait, XButton2
-        Send, {LAlt up}
+      }
     }
-	else If Not ErrorLevel
+    Loop
     {
-        KeyWait, XButton2, D T0.1
-        If Not ErrorLevel
-        {
-		Loop
-			{
-            If Not GetKeyState("XButton2", "P")
-            Break
-                Send {f down}
-				Sleep 10 ; try various milliseconds
-				Send {f up}
+      If Not GetKeyState("XButton2", "P")
+        Break
+      Send {f down}
+      Sleep 10 ; try various milliseconds
+      Send {f up}
 
-                Sleep 100
-			}
-        }
+      Sleep 100
     }
-Return
+  Return
 
-; 探索派遣函数  ;findtext默认是相对屏幕位置查找的,而AHK默认(CoordMode)是相对活动窗口执行命令的,两相互独立
-TansuoPaiqian(diqux, diquy, didianx, didiany, fenpeijuesex, fenpeijuesey, tanxianshichang20hours) {
-if WinExist(yuanshenName)
-{
-	WinGet, zuidahuazuixiaohua,MinMax , %yuanshenName%
-	;msgbox, %zuidahuazuixiaohua%
-	if (zuidahuazuixiaohua==-1)  ;如果最小化了先最大化
-	{
-	WinActivate , %yuanshenName%
-	;sleep 100
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
-	;OutWidth:=A_ScreenWidth
-	}
-	else
-	{
-	WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
-	}
-}
-	v_fenbianlvbeilv:=OutWidth/1920  ;分辨率缩放,注意赋值要用:=而不是=
-	;msgbox, v_fenbianlvbeilv=%v_fenbianlvbeilv%  OutWidth=%OutWidth%  OutX=%OutX%
-	
+  ;鼠标侧键 2 等于 F 键，按住等于 Alt 键显示鼠标，双击并按住等于连点F键（已禁用）
+  ;XButton2::
+  send {f}
+  KeyWait, XButton2, T0.2
+  If ErrorLevel
+  {
+    Send, {LAlt down}
+    KeyWait, XButton2
+    Send, {LAlt up}
+  }
+  else If Not ErrorLevel
+  {
+    KeyWait, XButton2, D T0.1
+    If Not ErrorLevel
+    {
+      Loop
+      {
+        If Not GetKeyState("XButton2", "P")
+          Break
+        Send {f down}
+        Sleep 10 ; try various milliseconds
+        Send {f up}
+
+        Sleep 100
+      }
+    }
+  }
+  Return
+
+  ; 探索派遣函数  ;findtext默认是相对屏幕位置查找的,而AHK默认(CoordMode)是相对活动窗口执行命令的,两相互独立
+  TansuoPaiqian(diqux, diquy, didianx, didiany, fenpeijuesex, fenpeijuesey, tanxianshichang20hours) {
+    if WinExist(yuanshenName)
+    {
+      WinGet, zuidahuazuixiaohua,MinMax , %yuanshenName%
+      ;msgbox, %zuidahuazuixiaohua%
+      if (zuidahuazuixiaohua==-1)  ;如果最小化了先最大化
+      {
+        WinActivate , %yuanshenName%
+        ;sleep 100
+        WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
+        ;OutWidth:=A_ScreenWidth
+      }
+      else
+      {
+        WinGetPos , OutX, OutY, OutWidth, OutHeight, %yuanshenName%
+      }
+    }
+    v_fenbianlvbeilv:=OutWidth/1920  ;分辨率缩放,注意赋值要用:=而不是=
+    ;msgbox, v_fenbianlvbeilv=%v_fenbianlvbeilv%  OutWidth=%OutWidth%  OutX=%OutX%
 
     BlockInput, MouseMove
     MouseMove, diqux*v_fenbianlvbeilv, diquy*v_fenbianlvbeilv ;移动到地区
     Sleep 150
     Click
-	sleep 150 ;第一个人总是卡一下
-	
+    sleep 150 ;第一个人总是卡一下
+
     MouseMove, didianx*v_fenbianlvbeilv, didiany*v_fenbianlvbeilv ;移动到地点
     Sleep 150
     Click
-	sleep 50
+    sleep 50
 
-	MouseMove, 1610*v_fenbianlvbeilv, 1040*v_fenbianlvbeilv ;移动到右下角点2次
-	Sleep 150
+    MouseMove, 1610*v_fenbianlvbeilv, 1040*v_fenbianlvbeilv ;移动到右下角点2次
+    Sleep 150
     Click
-	;sleep 50
+    ;sleep 50
     Sleep 250  ;等待点击屏幕
     Click
-	sleep 50
-	
-	if(tanxianshichang20hours==1)
-	{
-	;msgbox, tanxianshichang20hours=%tanxianshichang20hours%
-	MouseMove, 1770*v_fenbianlvbeilv, 700*v_fenbianlvbeilv ;鼠标将探险时长调到20小时
+    sleep 50
+
+    if(tanxianshichang20hours==1)
+    {
+      ;msgbox, tanxianshichang20hours=%tanxianshichang20hours%
+      MouseMove, 1770*v_fenbianlvbeilv, 700*v_fenbianlvbeilv ;鼠标将探险时长调到20小时
+      Sleep 150
+      Click
+      sleep 50
+    }
+
+    MouseMove, 1610*v_fenbianlvbeilv, 1040*v_fenbianlvbeilv ;移动到右下角点1次
     Sleep 150
-    Click	
-	sleep 50
-	}
-	
-	MouseMove, 1610*v_fenbianlvbeilv, 1040*v_fenbianlvbeilv ;移动到右下角点1次
-	Sleep 150
     Click
-	sleep 50
-	
-	;msgbox , fenpeijuese
-	MouseMove, fenpeijuesex*v_fenbianlvbeilv, fenpeijuesey*v_fenbianlvbeilv ;分配角色
-	Sleep 150
+    sleep 50
+
+    ;msgbox , fenpeijuese
+    MouseMove, fenpeijuesex*v_fenbianlvbeilv, fenpeijuesey*v_fenbianlvbeilv ;分配角色
+    Sleep 150
     Click
 
-	sleep 200
+    sleep 200
     BlockInput, MouseMoveOff
-}
+  }
 
-; 执行5个探索派遣函数
-^F9::   ;根据分辨率自适应倍数→v_fenbianlvbeilv
-tanxianshichang20hours=0
-MsgBox, 3, , 执行5个探索派遣，根据分辨率自适应倍数，遇到bug请全屏，支持16:9屏幕。`n  (YES-执行/NO-终止/Cancel-执行并把探险时长调到20小时)
-IfMsgBox No
-{
-	WinActivate , %yuanshenName%
-    return
-}
-IfMsgBox Yes
-{
-WinActivate , %yuanshenName%
-sleep 100
-}
-IfMsgBox, Cancel
-{
-tanxianshichang20hours=1
-WinActivate , %yuanshenName%
-sleep 100
-}
+  ; 执行5个探索派遣函数
+  ^F9::   ;根据分辨率自适应倍数→v_fenbianlvbeilv
+    tanxianshichang20hours=0
+    MsgBox, 3, , 执行5个探索派遣，根据分辨率自适应倍数，遇到bug请全屏，支持16:9屏幕。`n  (YES-执行/NO-终止/Cancel-执行并把探险时长调到20小时)
+    IfMsgBox No
+    {
+      WinActivate , %yuanshenName%
+      return
+    }
+    IfMsgBox Yes
+    {
+      WinActivate , %yuanshenName%
+      sleep 100
+    }
+    IfMsgBox, Cancel
+    {
+      tanxianshichang20hours=1
+      WinActivate , %yuanshenName%
+      sleep 100
+    }
     ; 蒙德(1080p下地区选择x,y,探索点x,y,派遣人物x,y,是否重置探险时长调到20小时)
     TansuoPaiqian(150, 181, 1037, 339, 300, 160, tanxianshichang20hours)
     TansuoPaiqian(150, 181, 1156, 663, 300, 310, tanxianshichang20hours)
     ; 璃月
     TansuoPaiqian(150, 252, 724, 333, 300, 160, tanxianshichang20hours)
     TansuoPaiqian(150, 252, 961, 454, 300, 310, tanxianshichang20hours)
-	;TansuoPaiqian(150, 252, 706, 826, 300, 310, tanxianshichang20hours)  ;莲蓬松茸
-	; 稻妻
-	TansuoPaiqian(150, 324, 919, 354, 300, 160, tanxianshichang20hours)  ;稻妻堇瓜
-    ; 须弥
-    ;TansuoPaiqian(150, 397, 878, 565, 300, 160, tanxianshichang20hours)  ;墩墩桃松果
-    ; 枫丹
-    ;TansuoPaiqian(150, 468, 876, 467, 300, 160, tanxianshichang20hours)  ;汐藻	
-return
+    ;TansuoPaiqian(150, 252, 706, 826, 300, 310, tanxianshichang20hours)  ;莲蓬松茸
+    ; 稻妻
+    TansuoPaiqian(150, 324, 919, 354, 300, 160, tanxianshichang20hours)  ;稻妻堇瓜
+  ; 须弥
+  ;TansuoPaiqian(150, 397, 878, 565, 300, 160, tanxianshichang20hours)  ;墩墩桃松果
+  ; 枫丹
+  ;TansuoPaiqian(150, 468, 876, 467, 300, 160, tanxianshichang20hours)  ;汐藻
+  return
 
+  findtext91:
+    ;/*
+    ;===========================================
+    ;  FindText - Capture screen image into text and then find it
+    ;  https://www.autohotkey.com/boards/viewtopic.php?f=6&t=17834
+    ;
+    ;  Author  : FeiYue
+    ;  Version : 9.1
+    ;  Date    : 2023-07-30
+    ;
+    ;  Usage:  (required AHK v1.1.34+)
+    ;  1. Capture the image to text string.
+    ;  2. Test find the text string on full Screen.
+    ;  3. When test is successful, you may copy the code
+    ;     and paste it into your own script.
+    ;     Note: Copy the "FindText()" function and the following
+    ;     functions and paste it into your own script Just once.
+    ;  4. The more recommended way is to save the script as
+    ;     "FindText.ahk" and copy it to the "Lib" subdirectory
+    ;     of AHK program, instead of copying the "FindText()"
+    ;     function and the following functions, add a line to
+    ;     the beginning of your script: #Include <FindText>
+    ;  5. If you want to call a method in the "FindTextClass" class,
+    ;     use the parameterless FindText() to get the default object
+    ;
+    ;===========================================
+    ;*/
+    ;/*
+    ;===========================================
+    ;  FindText - 屏幕抓字生成字库工具与找字函数
+    ;  https://autohotkey.com/boards/viewtopic.php?f=6&t=17834
+    ;
+    ;  脚本作者 : FeiYue
+    ;  最新版本 : 8.9
+    ;  更新时间 : 2022-05-28
+    ;
+    ;  用法:  (需要最新版本 AHK v1.1.31+)
+    ;  1. 将本脚本保存为“FindText.ahk”并复制到AHK程序的Lib子目录中
+    ;  2. 抓图并生成调用FindText()的代码
+    ;     2.1 方式一：直接点击“抓图”按钮
+    ;     2.2 方式二：先设定截屏热键，使用热键截屏，再点击“截屏抓图”按钮
+    ;  3. 测试一下调用的代码是否成功:直接点击“测试”按钮
+    ;  4. 复制调用的代码到自己的脚本中
+    ;     4.1 方式一：直接点击“复制”按钮，然后粘贴到自己的脚本中（不推荐）
+    ;     4.2 方式二：取消“附加FindText()函数”的选框，然后点击“复制”按钮，
+    ;         然后粘贴到自己的脚本中，然后在自己的脚本开头加上一行:
+    ;         #Include <FindText>  ; Lib目录中必须有FindText.ahk
+    ;  5. 多色查找模式可以一定程度上适应图像的放大缩小，也可以找图
+    ;  6. 这个库还可以用于快速截屏、获取颜色、写入颜色、编辑后另存图片
+    ;  7. 如果要调用FindTextClass类中的函数，请用无参数的FindText()获取默认对象
+    ;
+    ;===========================================
+    ;*/
 
+    ;--------------------------------
+    ;  FindText - 屏幕找字函数
+    ;--------------------------------
+    ;  返回变量 := FindText(
+    ;      OutputX --> 保存返回的X坐标的变量名称
+    ;    , OutputY --> 保存返回的Y坐标的变量名称
+    ;    , X1 --> 查找范围的左上角X坐标
+    ;    , Y1 --> 查找范围的左上角Y坐标
+    ;    , X2 --> 查找范围的右下角X坐标
+    ;    , Y2 --> 查找范围的右下角Y坐标
+    ;    , err1 --> 文字的黑点容错百分率（0.1=10%）
+    ;    , err0 --> 背景的白点容错百分率（0.1=10%）
+    ;    , Text --> 由工具生成的查找图像的数据，可以一次查找多个，用“|”分隔
+    ;    , ScreenShot --> 是否截屏，为0则使用上一次的截屏数据
+    ;    , FindAll --> 是否搜索所有位置，为0则找到一个位置就返回
+    ;    , JoinText --> 如果想组合查找，可以为1，或者是要查找单词的数组
+    ;    , offsetX --> 组合图像的每个字和前一个字的最大横向间隔
+    ;    , offsetY --> 组合图像的每个字和前一个字的最大高低间隔
+    ;    , dir --> 查找的方向，有上、下、左、右、中心9种
+    ;    , zoomW --> 图像宽度的缩放百分率（1.0=100%）
+    ;    , zoomH --> 图像高度的缩放百分率（1.0=100%）
+    ;  )
+    ;
+    ;  返回变量 --> 如果没找到结果会返回0。否则返回一个二级数组，
+    ;      第一级是每个结果对象，第二级是结果对象的具体信息数组:
+    ;      { 1:左上角X, 2:左上角Y, 3:图像宽度W, 4:图像高度H
+    ;        , x:中心点X, y:中心点Y, id:图像识别文本 }
+    ;  坐标都是相对于屏幕，颜色使用RGB格式
+    ;
+    ;  如果 OutputX 等于 "wait" 或 "wait1" 意味着等待图像出现，
+    ;  如果 OutputX 等于 "wait0" 意味着等待图像消失
+    ;  此时 OutputY 设置等待时间的秒数，如果小于0则无限等待
+    ;  如果超时则返回0，意味着失败，如果等待图像出现成功，则返回位置数组
+    ;  如果等待图像消失成功，则返回 1
+    ;  例1: FindText(X:="wait", Y:=3, 0,0,0,0,0,0,Text)   ; 等待3秒等图像出现
+    ;  例2: FindText(X:="wait0", Y:=-1, 0,0,0,0,0,0,Text) ; 无限等待等图像消失
+    ;--------------------------------
 
+    if (!A_IsCompiled && A_LineFile=A_ScriptFullPath)
+      FindText().Gui("Show")
 
-findtext91:
-;/*
-;===========================================
-;  FindText - Capture screen image into text and then find it
-;  https://www.autohotkey.com/boards/viewtopic.php?f=6&t=17834
-;
-;  Author  : FeiYue
-;  Version : 9.1
-;  Date    : 2023-07-30
-;
-;  Usage:  (required AHK v1.1.34+)
-;  1. Capture the image to text string.
-;  2. Test find the text string on full Screen.
-;  3. When test is successful, you may copy the code
-;     and paste it into your own script.
-;     Note: Copy the "FindText()" function and the following
-;     functions and paste it into your own script Just once.
-;  4. The more recommended way is to save the script as
-;     "FindText.ahk" and copy it to the "Lib" subdirectory
-;     of AHK program, instead of copying the "FindText()"
-;     function and the following functions, add a line to
-;     the beginning of your script: #Include <FindText>
-;  5. If you want to call a method in the "FindTextClass" class,
-;     use the parameterless FindText() to get the default object
-;
-;===========================================
-;*/
-;/*
-;===========================================
-;  FindText - 屏幕抓字生成字库工具与找字函数
-;  https://autohotkey.com/boards/viewtopic.php?f=6&t=17834
-;
-;  脚本作者 : FeiYue
-;  最新版本 : 8.9
-;  更新时间 : 2022-05-28
-;
-;  用法:  (需要最新版本 AHK v1.1.31+)
-;  1. 将本脚本保存为“FindText.ahk”并复制到AHK程序的Lib子目录中
-;  2. 抓图并生成调用FindText()的代码
-;     2.1 方式一：直接点击“抓图”按钮
-;     2.2 方式二：先设定截屏热键，使用热键截屏，再点击“截屏抓图”按钮
-;  3. 测试一下调用的代码是否成功:直接点击“测试”按钮
-;  4. 复制调用的代码到自己的脚本中
-;     4.1 方式一：直接点击“复制”按钮，然后粘贴到自己的脚本中（不推荐）
-;     4.2 方式二：取消“附加FindText()函数”的选框，然后点击“复制”按钮，
-;         然后粘贴到自己的脚本中，然后在自己的脚本开头加上一行:
-;         #Include <FindText>  ; Lib目录中必须有FindText.ahk
-;  5. 多色查找模式可以一定程度上适应图像的放大缩小，也可以找图
-;  6. 这个库还可以用于快速截屏、获取颜色、写入颜色、编辑后另存图片
-;  7. 如果要调用FindTextClass类中的函数，请用无参数的FindText()获取默认对象
-;
-;===========================================
-;*/
+    ;===== Copy The Following Functions To Your Own Code Just once =====
 
-;--------------------------------
-;  FindText - 屏幕找字函数
-;--------------------------------
-;  返回变量 := FindText(
-;      OutputX --> 保存返回的X坐标的变量名称
-;    , OutputY --> 保存返回的Y坐标的变量名称
-;    , X1 --> 查找范围的左上角X坐标
-;    , Y1 --> 查找范围的左上角Y坐标
-;    , X2 --> 查找范围的右下角X坐标
-;    , Y2 --> 查找范围的右下角Y坐标
-;    , err1 --> 文字的黑点容错百分率（0.1=10%）
-;    , err0 --> 背景的白点容错百分率（0.1=10%）
-;    , Text --> 由工具生成的查找图像的数据，可以一次查找多个，用“|”分隔
-;    , ScreenShot --> 是否截屏，为0则使用上一次的截屏数据
-;    , FindAll --> 是否搜索所有位置，为0则找到一个位置就返回
-;    , JoinText --> 如果想组合查找，可以为1，或者是要查找单词的数组
-;    , offsetX --> 组合图像的每个字和前一个字的最大横向间隔
-;    , offsetY --> 组合图像的每个字和前一个字的最大高低间隔
-;    , dir --> 查找的方向，有上、下、左、右、中心9种
-;    , zoomW --> 图像宽度的缩放百分率（1.0=100%）
-;    , zoomH --> 图像高度的缩放百分率（1.0=100%）
-;  )
-;
-;  返回变量 --> 如果没找到结果会返回0。否则返回一个二级数组，
-;      第一级是每个结果对象，第二级是结果对象的具体信息数组:
-;      { 1:左上角X, 2:左上角Y, 3:图像宽度W, 4:图像高度H
-;        , x:中心点X, y:中心点Y, id:图像识别文本 }
-;  坐标都是相对于屏幕，颜色使用RGB格式
-;
-;  如果 OutputX 等于 "wait" 或 "wait1" 意味着等待图像出现，
-;  如果 OutputX 等于 "wait0" 意味着等待图像消失
-;  此时 OutputY 设置等待时间的秒数，如果小于0则无限等待
-;  如果超时则返回0，意味着失败，如果等待图像出现成功，则返回位置数组
-;  如果等待图像消失成功，则返回 1
-;  例1: FindText(X:="wait", Y:=3, 0,0,0,0,0,0,Text)   ; 等待3秒等图像出现
-;  例2: FindText(X:="wait0", Y:=-1, 0,0,0,0,0,0,Text) ; 无限等待等图像消失
-;--------------------------------
+    FindText(ByRef x:="FindTextClass", ByRef y:="", args*)
+    {
+      static obj:=new FindTextClass()
+      return (x=="FindTextClass" && !args.Length()) ? obj : obj.FindText(x, y, args*)
+    }
 
+    Class FindTextClass
+    {  ;// Class Begin
 
-if (!A_IsCompiled && A_LineFile=A_ScriptFullPath)
-  FindText().Gui("Show")
+      __New()
+      {
+        this.bits:={ Scan0: 0, hBM: 0, oldzw: 0, oldzh: 0 }
+        this.bind:={ id: 0, mode: 0, oldStyle: 0 }
+        this.Lib:=[]
+        this.Cursor:=0
+      }
 
+      __Delete()
+      {
+        if (this.bits.hBM)
+          DllCall("DeleteObject", "Ptr",this.bits.hBM)
+      }
 
-;===== Copy The Following Functions To Your Own Code Just once =====
-
-
-FindText(ByRef x:="FindTextClass", ByRef y:="", args*)
-{
-  static obj:=new FindTextClass()
-  return (x=="FindTextClass" && !args.Length()) ? obj : obj.FindText(x, y, args*)
-}
-
-Class FindTextClass
-{  ;// Class Begin
-
-__New()
-{
-  this.bits:={ Scan0: 0, hBM: 0, oldzw: 0, oldzh: 0 }
-  this.bind:={ id: 0, mode: 0, oldStyle: 0 }
-  this.Lib:=[]
-  this.Cursor:=0
-}
-
-__Delete()
-{
-  if (this.bits.hBM)
-    DllCall("DeleteObject", "Ptr",this.bits.hBM)
-}
-
-help()
-{
-return "
+      help()
+      {
+        return "
 (
 ;--------------------------------
 ;  FindText - Capture screen image into text and then find it
@@ -1117,453 +1064,453 @@ return "
 ;  Example 2: FindText(X:='wait0', Y:=-1, 0,0,0,0,0,0,Text) ; Wait indefinitely for disappear
 ;--------------------------------
 )"
-}
+      }
 
-FindText(ByRef OutputX:="", ByRef OutputY:=""
-  , x1:=0, y1:=0, x2:=0, y2:=0, err1:=0, err0:=0, text:=""
-  , ScreenShot:=1, FindAll:=1, JoinText:=0, offsetX:=20, offsetY:=10
-  , dir:=1, zoomW:=1, zoomH:=1)
-{
-  local
-  if (OutputX ~= "i)^\s*wait[10]?\s*$")
-  {
-    found:=!InStr(OutputX,"0"), time:=Round(OutputY,3)
-    , timeout:=A_TickCount+Round(time*1000)
-    Loop
-    {
-      ; Wait for the image to remain stable
-      While (ok:=this.FindText(,, x1, y1, x2, y2
-        , err1, err0, text, ScreenShot, FindAll
-        , JoinText, offsetX, offsetY, dir, zoomW, zoomH))
-        && (found)
+      FindText(ByRef OutputX:="", ByRef OutputY:=""
+        , x1:=0, y1:=0, x2:=0, y2:=0, err1:=0, err0:=0, text:=""
+        , ScreenShot:=1, FindAll:=1, JoinText:=0, offsetX:=20, offsetY:=10
+        , dir:=1, zoomW:=1, zoomH:=1)
       {
-        x:=ok[1].1, y:=ok[1].2, w:=ok[1].3, h:=ok[1].4
-        Sleep 10
-        if this.FindText(,, x, y, x+w-1, y+h-1
-        , err1, err0, text, ScreenShot, FindAll
-        , JoinText, offsetX, offsetY, dir, zoomW, zoomH)
+        local
+        if (OutputX ~= "i)^\s*wait[10]?\s*$")
         {
-          OutputX:=ok[1].x, OutputY:=ok[1].y, this.ok:=ok
-          return ok
+          found:=!InStr(OutputX,"0"), time:=Round(OutputY,3)
+            , timeout:=A_TickCount+Round(time*1000)
+          Loop
+          {
+            ; Wait for the image to remain stable
+            While (ok:=this.FindText(,, x1, y1, x2, y2
+              , err1, err0, text, ScreenShot, FindAll
+              , JoinText, offsetX, offsetY, dir, zoomW, zoomH))
+              && (found)
+            {
+              x:=ok[1].1, y:=ok[1].2, w:=ok[1].3, h:=ok[1].4
+              Sleep 10
+              if this.FindText(,, x, y, x+w-1, y+h-1
+                , err1, err0, text, ScreenShot, FindAll
+                , JoinText, offsetX, offsetY, dir, zoomW, zoomH)
+              {
+                OutputX:=ok[1].x, OutputY:=ok[1].y, this.ok:=ok
+                return ok
+              }
+            }
+            if (!found && !ok)
+              return 1
+            if (time>=0 && A_TickCount>=timeout)
+              Break
+            Sleep 50
+          }
+          return 0
         }
+        SetBatchLines, % (bch:=A_BatchLines)?"-1":"-1"
+        x1:=Floor(x1), y1:=Floor(y1), x2:=Floor(x2), y2:=Floor(y2)
+        if (x1=0 && y1=0 && x2=0 && y2=0)
+          n:=150000, x:=y:=-n, w:=h:=2*n
+        else
+          x:=Min(x1,x2), y:=Min(y1,y2), w:=Abs(x2-x1)+1, h:=Abs(y2-y1)+1
+        bits:=this.GetBitsFromScreen(x,y,w,h,ScreenShot,zx,zy)
+          , x-=zx, y-=zy, info:=[], this.ok:=0
+        Loop Parse, text, |
+          if IsObject(j:=this.PicInfo(A_LoopField))
+            info.Push(j)
+        if (w<1 || h<1 || !(num:=info.Length()) || !bits.Scan0)
+        {
+          SetBatchLines, %bch%
+          return 0
+        }
+        arr:=[], info2:=[], k:=0, s:=""
+          , mode:=(IsObject(JoinText) ? 2 : JoinText ? 1 : 0)
+        For i,j in info
+        {
+          k:=Max(k, j[2]*j[3]), v:=(mode=1 ? i : j[10]) . ""
+          if (mode && v!="")
+            s.="|" v, (!info2.HasKey(v) && info2[v]:=[]), info2[v].Push(j)
+        }
+        sx:=x, sy:=y, sw:=w, sh:=h
+          , JoinText:=(mode=1 ? [s] : JoinText)
+          , VarSetCapacity(s1, k*4), VarSetCapacity(s0, k*4)
+          , VarSetCapacity(ss, sw*(sh+2))
+          , FindAll:=(dir=9 ? 1 : FindAll)
+          , allpos_max:=(FindAll || JoinText ? 10240 : 1)
+          , ini:={ sx:sx, sy:sy, sw:sw, sh:sh, zx:zx, zy:zy
+            , mode:mode, bits:bits, ss:&ss, s1:&s1, s0:&s0
+            , err1:err1, err0:err0, allpos_max:allpos_max
+            , zoomW:zoomW, zoomH:zoomH }
+        Loop 2
+        {
+          if (err1=0 && err0=0) && (num>1 || A_Index>1)
+            ini.err1:=err1:=0.05, ini.err0:=err0:=0.05
+          if (!JoinText)
+          {
+            VarSetCapacity(allpos, allpos_max*4), allpos_ptr:=&allpos
+            For i,j in info
+              Loop % this.PicFind(ini, j, dir, sx, sy, sw, sh, allpos_ptr)
+              {
+                pos:=NumGet(allpos, 4*A_Index-4, "uint")
+                  , x:=Mod(pos,sw)+sx+zx, y:=pos//sw+sy+zy
+                  , w:=Floor(j[2]*zoomW), h:=Floor(j[3]*zoomH), comment:=j[10]
+                  , arr.Push({1:x, 2:y, 3:w, 4:h, x:x+w//2, y:y+h//2, id:comment})
+                if (!FindAll)
+                  Break 3
+              }
+          }
+          else
+            For k,v in JoinText
+            {
+              v:=RegExReplace(v, "\s*\|[|\s]*", "|")
+                , v:=StrSplit(Trim(v,"|"), (InStr(v,"|")?"|":""), " `t")
+              if (v.Length()<1)
+                Continue
+              this.JoinText(ini, arr, info2, v, offsetX, offsetY, FindAll
+                , 1, v.Length(), dir, 0, 0, sx, sy, sw, sh)
+              if (!FindAll && arr.Length())
+                Break 2
+            }
+          if (err1!=0 || err0!=0 || arr.Length() || info[1][4] || info[1][7]=5)
+            Break
+        }
+        if (dir=9 && arr.Length())
+          arr:=this.Sort2(arr, (x1+x2)//2, (y1+y2)//2)
+        SetBatchLines, %bch%
+        if (arr.Length())
+        {
+          OutputX:=arr[1].x, OutputY:=arr[1].y, this.ok:=arr
+          return arr
+        }
+        return 0
       }
-      if (!found && !ok)
-        return 1
-      if (time>=0 && A_TickCount>=timeout)
-        Break
-      Sleep 50
-    }
-    return 0
-  }
-  SetBatchLines, % (bch:=A_BatchLines)?"-1":"-1"
-  x1:=Floor(x1), y1:=Floor(y1), x2:=Floor(x2), y2:=Floor(y2)
-  if (x1=0 && y1=0 && x2=0 && y2=0)
-    n:=150000, x:=y:=-n, w:=h:=2*n
-  else
-    x:=Min(x1,x2), y:=Min(y1,y2), w:=Abs(x2-x1)+1, h:=Abs(y2-y1)+1
-  bits:=this.GetBitsFromScreen(x,y,w,h,ScreenShot,zx,zy)
-  , x-=zx, y-=zy, info:=[], this.ok:=0
-  Loop Parse, text, |
-    if IsObject(j:=this.PicInfo(A_LoopField))
-      info.Push(j)
-  if (w<1 || h<1 || !(num:=info.Length()) || !bits.Scan0)
-  {
-    SetBatchLines, %bch%
-    return 0
-  }
-  arr:=[], info2:=[], k:=0, s:=""
-  , mode:=(IsObject(JoinText) ? 2 : JoinText ? 1 : 0)
-  For i,j in info
-  {
-    k:=Max(k, j[2]*j[3]), v:=(mode=1 ? i : j[10]) . ""
-    if (mode && v!="")
-      s.="|" v, (!info2.HasKey(v) && info2[v]:=[]), info2[v].Push(j)
-  }
-  sx:=x, sy:=y, sw:=w, sh:=h
-  , JoinText:=(mode=1 ? [s] : JoinText)
-  , VarSetCapacity(s1, k*4), VarSetCapacity(s0, k*4)
-  , VarSetCapacity(ss, sw*(sh+2))
-  , FindAll:=(dir=9 ? 1 : FindAll)
-  , allpos_max:=(FindAll || JoinText ? 10240 : 1)
-  , ini:={ sx:sx, sy:sy, sw:sw, sh:sh, zx:zx, zy:zy
-  , mode:mode, bits:bits, ss:&ss, s1:&s1, s0:&s0
-  , err1:err1, err0:err0, allpos_max:allpos_max
-  , zoomW:zoomW, zoomH:zoomH }
-  Loop 2
-  {
-    if (err1=0 && err0=0) && (num>1 || A_Index>1)
-      ini.err1:=err1:=0.05, ini.err0:=err0:=0.05
-    if (!JoinText)
-    {
-      VarSetCapacity(allpos, allpos_max*4), allpos_ptr:=&allpos
-      For i,j in info
-      Loop % this.PicFind(ini, j, dir, sx, sy, sw, sh, allpos_ptr)
+
+      ; the join text object <==> [ "abc", "xyz", "a1|a2|a3" ]
+
+      JoinText(ini, arr, info2, text, offsetX, offsetY, FindAll
+        , index, Len, dir, minY, maxY, sx, sy, sw, sh)
       {
-        pos:=NumGet(allpos, 4*A_Index-4, "uint")
-        , x:=Mod(pos,sw)+sx+zx, y:=pos//sw+sy+zy
-        , w:=Floor(j[2]*zoomW), h:=Floor(j[3]*zoomH), comment:=j[10]
-        , arr.Push({1:x, 2:y, 3:w, 4:h, x:x+w//2, y:y+h//2, id:comment})
-        if (!FindAll)
-          Break 3
+        local
+        VarSetCapacity(allpos, ini.allpos_max*4), allpos_ptr:=&allpos
+          , zoomW:=ini.zoomW, zoomH:=ini.zoomH
+        For i,j in info2[text[index]]
+          if (ini.mode=1 || text[index]==j[10])
+            Loop % this.PicFind(ini, j, dir, sx, sy, sw1:=(index=1 ? sw
+              : Min(sx+offsetX+Floor(j[2]*zoomW),ini.sx+ini.sw)-sx), sh, allpos_ptr)
+            {
+              pos:=NumGet(allpos, 4*A_Index-4, "uint")
+                , x:=Mod(pos,sw1)+sx, y:=pos//sw1+sy
+                , w:=Floor(j[2]*zoomW), h:=Floor(j[3]*zoomH)
+                , (index=1) && (ini.x:=x, minY:=y, maxY:=y+h)
+              if (index<Len)
+              {
+                minY1:=Min(y, minY), maxY1:=Max(y+h, maxY)
+                  , sy1:=Max(minY1-offsetY, ini.sy)
+                  , sh1:=Min(maxY1+offsetY, ini.sy+ini.sh)-sy1
+                if this.JoinText(ini, arr, info2, text, offsetX, offsetY, FindAll
+                  , index+1, Len, 5, minY1, maxY1, x+w, sy1, 0, sh1)
+                  && (index>1 || !FindAll)
+                  return 1
+              }
+              else
+              {
+                comment:=""
+                For k,v in text
+                  comment.=(ini.mode=1 ? info2[v][1][10] : v)
+                w:=x+w-ini.x, x:=ini.x+ini.zx
+                  , h:=Max(y+h,maxY)-Min(y,minY), y:=Min(y,minY)+ini.zy
+                  , arr.Push({1:x, 2:y, 3:w, 4:h, x:x+w//2, y:y+h//2, id:comment})
+                if (index>1 || !FindAll)
+                  return 1
+              }
+            }
       }
-    }
-    else
-    For k,v in JoinText
-    {
-      v:=RegExReplace(v, "\s*\|[|\s]*", "|")
-      , v:=StrSplit(Trim(v,"|"), (InStr(v,"|")?"|":""), " `t")
-      if (v.Length()<1)
-        Continue
-      this.JoinText(ini, arr, info2, v, offsetX, offsetY, FindAll
-      , 1, v.Length(), dir, 0, 0, sx, sy, sw, sh)
-      if (!FindAll && arr.Length())
-        Break 2
-    }
-    if (err1!=0 || err0!=0 || arr.Length() || info[1][4] || info[1][7]=5)
-      Break
-  }
-  if (dir=9 && arr.Length())
-    arr:=this.Sort2(arr, (x1+x2)//2, (y1+y2)//2)
-  SetBatchLines, %bch%
-  if (arr.Length())
-  {
-    OutputX:=arr[1].x, OutputY:=arr[1].y, this.ok:=arr
-    return arr
-  }
-  return 0
-}
 
-; the join text object <==> [ "abc", "xyz", "a1|a2|a3" ]
+      PicFind(ini, j, dir, sx, sy, sw, sh, allpos_ptr)
+      {
+        local
+        static MyFunc:=""
+        if (!MyFunc)
+        {
+          x32:=""
+            . "5557565383EC7483BC2488000000058BBC24C00000000F84DA0900008B8424C4"
+            . "00000085C00F8EBE0F0000C744240800000000C74424100000000031EDC70424"
+            . "00000000C7442414000000008D7426008B8424BC0000008B4C241431F631DB01"
+            . "C885FF8944240C7F3DE98F00000066900FAF8424A800000089C189F099F7FF01"
+            . "C18B44240C803C1831744D8B8424B800000083C30103B424D8000000890CA883"
+            . "C50139DF74538B44240899F7BC24C400000083BC24880000000375B40FAF8424"
+            . "9C00000089C189F099F7FF8D0C818B44240C803C183175B38B04248B9424B400"
+            . "000083C30103B424D8000000890C8283C00139DF89042475AD017C2414834424"
+            . "10018B9C24DC0000008B442410015C2408398424C40000000F8532FFFFFF8B04"
+            . "24BBAD8BDB68896C24080FAF8424C800000089C1F7EB89C88B4C24080FAF8C24"
+            . "CC000000C1F81F89C589D6C1FE0C29EE8974244889C8C1F91FF7EBC1FA0C29CA"
+            . "8954245083BC2488000000030F84770A00008B84249C0000008BB424A0000000"
+            . "0FAF8424A40000008BBC24880000008D2CB08B8424A80000008BB4249C000000"
+            . "F7D885FF8D04868944241C0F856D0300008B84248C0000008BB424AC000000C7"
+            . "44241800000000C7442420000000008B7C2404C1E8100FB6C08944240C8B8424"
+            . "8C0000000FB6C4894424100FB684248C000000894424148B8424A8000000C1E0"
+            . "0285F68944242889E80F8EBA0000008B9C24A800000085DB0F8E8D0000008BB4"
+            . "24980000008B6C242003AC24B000000001C60344242889442424038424980000"
+            . "00894424040FB67E028B4C240C0FB646010FB6162B4424102B54241489FB01CF"
+            . "29CB8D8F000400000FAFC00FAFCBC1E00B0FAFCB01C1B8FE05000029F80FAFC2"
+            . "0FAFD001CA399424900000000F93450083C60483C5013B74240475A98B9C24A8"
+            . "000000015C24208B44242483442418010344241C8B74241839B424AC0000000F"
+            . "854AFFFFFF897C24048B34248B5C2448B80000000039DE89C30F4FDE8B742450"
+            . "39742408891C240F8EDC0800008B34248B44240839C60F4DC6894424648B8424"
+            . "8800000083E80383E0FD0F84AF0600008B8424A80000002B8424D8000000C784"
+            . "24A400000000000000C78424A0000000000000008944245C8B8424AC0000002B"
+            . "8424DC0000008944243C8B84249400000083E80183F8070F87100600008BB424"
+            . "A000000083F80389442444897424588BB424A4000000897424680F8EF5050000"
+            . "8B74245C397424580F8F7F0C00008B44245C8B3424C744242C00000000894424"
+            . "608B8424B40000008D04B08B7424448944245489F083E0018944244C89F08BB4"
+            . "249800000083E0038944246C8B4424688B5C243C39D80F8F1C010000837C246C"
+            . "018B7C24580F4F7C2460895C243089442420897C24408B7C24648DB600000000"
+            . "8B4C244C8B44243085C90F44442420837C244403894424240F8F7702000083BC"
+            . "2488000000058B442440894424288B4424280F847F02000083BC248800000003"
+            . "0F84BA0300000FAF8424A80000000344242485FF89C2894424180F8464030000"
+            . "8B6C24508B5C244831C0039424B00000008B0C2489742414896C2410895C240C"
+            . "8B6C2408EB158D76008DBC270000000083C00139C70F842503000039C873188B"
+            . "9C24B40000008B348301D6803E007507836C240C01781C39C576D58B9C24B800"
+            . "00008B348301D6803E0175C4836C24100179BD8B74241489F68DBC2700000000"
+            . "8344242001836C2430018B4424203944243C0F8D08FFFFFF8344245801836C24"
+            . "60018B4424583944245C0F8DBCFEFFFF8B44242C83C4745B5E5F5DC2580083BC"
+            . "2488000000010F84E409000083BC2488000000020F84AD0700008B84248C0000"
+            . "000FB6BC248C000000C744241800000000C744242800000000C1E8100FB6D08B"
+            . "84248C0000008954240C0FB69424900000000FB6DC8B842490000000C1E8100F"
+            . "B6C88B8424900000000FB6F48B44240C29C8034C240C8944242C89D829F001DE"
+            . "8944241089D089FA29C201F889742414894424248BB424AC0000008B8424A800"
+            . "0000894C240C89E9895424208B6C242CC1E00285F6894424300F8EEAFCFFFF8B"
+            . "9C24A800000085DB0F8E880000008B8424980000008B542428039424B0000000"
+            . "01C8034C243089CF894C242C03BC2498000000EB34395C240C7C3D394C24107F"
+            . "37394C24147C3189F30FB6F3397424200F9EC3397424240F9DC183C00483C201"
+            . "21D9884AFF39F8741E0FB658020FB648010FB63039DD7EBD31C983C00483C201"
+            . "884AFF39F875E28BB424A8000000017424288B4C242C8344241801034C241C8B"
+            . "442418398424AC0000000F854FFFFFFFE934FCFFFF8B44242483BC2488000000"
+            . "05894424288B442440894424248B4424280F8581FDFFFF0FAF84249C0000008B"
+            . "5C242485FF8D0498894424100F848B0000008B6C244831C9897C240C8D742600"
+            . "8B8424B40000008B5C2410031C888B8424B80000008B3C880FB6441E0289FAC1"
+            . "EA100FB6D229D00FB6541E010FB61C1E0FAFC03B4424047F2789F80FB6C429C2"
+            . "0FAFD23B5424047F1789F80FB6C029C30FAFDB3B5C24047E108DB42600000000"
+            . "83ED010F880702000083C101394C240C758E89BC248C0000008B7C240C8B8424"
+            . "D00000008344242C018B5C242C85C00F846BFDFFFF8B5424282B9424A4000000"
+            . "0FAF9424A80000008B4424242B8424A00000008B8C24D000000001D03B9C24D4"
+            . "000000894499FC0F8C33FDFFFF8B44242C83C4745B5E5F5DC25800908D742600"
+            . "8B7424148B142485D274928B9C24B00000008B4C24188B8424B400000001D98B"
+            . "5C24548B1083C00401CA39D8C6020075F2E967FFFFFF8D76008DBC2700000000"
+            . "0FAF84249C0000008B5C24248D0498894424100384248C00000085FF0FB65C06"
+            . "02895C24140FB65C06010FB60406895C24188944241C0F8421FFFFFF8B442450"
+            . "31DB897C240C894424388B442448894424348B4424048D76008DBC2700000000"
+            . "3B1C2473658B8424B40000008B4C24108B7C2414030C980FB6440E020FB6540E"
+            . "010FB60C0E2B5424182B4C241C89C501F829FD8DB8000400000FAFD20FAFFDC1"
+            . "E20B0FAFFDBDFE05000029C50FAFE901FA0FAFCD01D13B8C2490000000760B83"
+            . "6C2434010F8896000000395C240876618B8424B80000008B4C24108B7C241403"
+            . "0C980FB6440E020FB6540E010FB60C0E2B5424182B4C241C89C501F829FD8DB8"
+            . "000400000FAFD20FAFFDC1E20B0FAFFDBDFE05000029C50FAFE901FA0FAFCD01"
+            . "D13B8C24900000007707836C243801782F83C301395C240C0F8522FFFFFF8944"
+            . "24048B7C240CE912FEFFFF908D74260089BC248C0000008B7C240CE980FBFFFF"
+            . "894424048B7C240CE973FBFFFFC7442444000000008B44243C8B74245C894424"
+            . "5C8B8424A40000008974243C894424588B8424A000000089442468E9E0F9FFFF"
+            . "C744246400000000C744245000000000C744240800000000C70424000000008B"
+            . "8424A8000000038424A00000002B8424D80000008944245C8B8424A400000003"
+            . "8424AC0000002B8424DC0000008944243CE954F9FFFF8B84248C0000000FAFC0"
+            . "894424048B84249000000085C00F841C0200008B842490000000C1E8100FB6C0"
+            . "894424188B8424900000000FB6C4894424200FB684249000000081AC24900000"
+            . "0000000001894424288B8424C400000085C00F8EC20500008D04BD0000000031"
+            . "F689BC24C0000000C744241400000000C744241C0000000089F78944242C31C0"
+            . "8B9424C000000085D20F8EE20000008BAC24BC000000C704240000000001C503"
+            . "44242C89442424038424BC000000894424100FB645000FB64D020FB65D0189C6"
+            . "894424088B84249000000085C0743189C82B4424188B5424040FAFC039C27C20"
+            . "89D82B4424200FAFC039C27C1389F02B4424280FAFC039C27D5C8DB600000000"
+            . "8B442414C1E1108D34BD0000000099F7BC24C40000000FAF84249C0000008944"
+            . "240C8B042499F7BC24C00000008B54240C8D04828B9424B40000008904BA89D8"
+            . "83C701C1E00809C10B4C24088B8424B8000000890C3083C5048BB424D8000000"
+            . "0134243B6C24100F8545FFFFFF8B4424248344241C018B8C24DC0000008B7424"
+            . "1C014C241439B424C40000000F85EEFEFFFF893C248B34248B8C24C8000000BA"
+            . "AD8BDB680FAFCE89C8C1F91FF7EAC1FA0C89D029C839C6894424480F8EDFFDFF"
+            . "FFC7442450000000008B3424B800000000C74424080000000089C385F60F49DE"
+            . "895C2464E914F7FFFF8B84248C000000C1E8100FAF8424DC00000099F7BC24C4"
+            . "0000000FAF84249C00000089C10FB784248C0000000FAF8424D800000099F7FF"
+            . "8D04818984248C000000E99AF6FFFF8BAC24BC00000031DB31F6C70424000000"
+            . "00EB19B80A0000006BF60AF7E331DB01F289DE89CB01C311D683C5010FB64500"
+            . "85C00F842DFFFFFF8D48D083F90976D383F82F75E48B04248D14850000000089"
+            . "54240889DA0FACF2100FB7C20FAF8424DC00000099F7BC24C40000008B94249C"
+            . "0000000FAFD00FB7C331DB0FAF8424D800000089D199F7FF8B9424B40000008D"
+            . "04818B0C2489048A89C88B54240883C00189042489F08BB424B8000000890416"
+            . "31F6E972FFFFFF8BB424A80000008B8424B0000000C744240C00000000C74424"
+            . "10000000008D04708944242489F0C1E002894424148B8424AC00000085C00F8E"
+            . "A5F5FFFF8B8424A800000085C07E598B8C24980000008B5C24248BBC24980000"
+            . "00035C241001E9036C241401EF8D76000FB651020FB6410183C1040FB671FC83"
+            . "C3016BC04B6BD22601C289F0C1E00429F001D0C1F8078843FF39CF75D38BB424"
+            . "A8000000017424108344240C01036C241C8B44240C398424AC00000075868B84"
+            . "24A8000000C74424140000000031FF83E8018944241C8B8424AC00000083E801"
+            . "894424208B8424A800000085C00F8E220100008B6C241489FB8B4424248BB424"
+            . "A80000008D4F0185ED8BAC24B00000008D14380F944424182B9C24A800000001"
+            . "FE01C601EF897C241001C331C0895C240C85C00F84B4000000807C2418000F85"
+            . "A90000003944241C0F849F0000008B7C2414397C24200F84910000000FB63A0F"
+            . "B66AFF03BC248C00000089BC249000000039AC2490000000BF0100000072600F"
+            . "B66A0139AC249000000072538B5C240C0FB62B39AC249000000072430FB62E39"
+            . "AC249000000072370FB66BFF39AC2490000000722A0FB66B0139AC2490000000"
+            . "721D0FB66EFF39AC249000000072100FB67E0139BC24900000000F92C389DF8B"
+            . "6C241089FB89CF885C0500EB0A8B5C241089CFC604030283C00183C10183C201"
+            . "83C6018344240C01398424A80000000F851CFFFFFF83442414018B4424143984"
+            . "24AC0000000F85B9FEFFFFE9B9F3FFFF8B84248C0000008B8C24AC000000C744"
+            . "240C00000000C74424100000000083C001C1E0078984248C0000008B8424A800"
+            . "0000C1E00285C98944241489E88BAC248C0000000F8E6FF3FFFF8B9424A80000"
+            . "0085D27E658B8C24980000008B5C2410039C24B000000001C103442414894424"
+            . "180384249800000089C78DB6000000000FB651020FB641010FB6316BC04B6BD2"
+            . "2601C289F0C1E00429F001D039C50F970383C10483C30139F975D58B9C24A800"
+            . "0000015C24108B4424188344240C010344241C8B74240C39B424AC0000000F85"
+            . "76FFFFFFE9E0F2FFFFC744245000000000C744244800000000C7442408000000"
+            . "00C7042400000000E957F1FFFFC744242C00000000E9F6F4FFFFC74424480000"
+            . "0000C7042400000000C744245000000000E993FBFFFF90909090909090909090"
+          x64:=""
+            . "4157415641554154555756534881EC88000000488BBC24F00000004C8BA42420"
+            . "01000083F905898C24D000000089542468448944240C44898C24E80000004C8B"
+            . "AC2428010000488B9C24300100004C8B942438010000448BBC24400100000F84"
+            . "DA090000448B8424480100004585C00F8EB60F000044897424144889BC24F000"
+            . "00004531DB4C89AC24280100008BBC244801000031F6448BAC24D0000000448B"
+            . "B4247001000031EDC7442410000000004531C04C89A424200100000F1F440000"
+            . "4531C94585FF478D24077F36EB7C66900FAF84241001000089C14489C89941F7"
+            . "FF01C143803C0231418D4001743F4863D64501F183C6014439E0890C934189C0"
+            . "74484489D899F7FF4183FD0375C20FAF8424F800000089C14489C89941F7FF43"
+            . "803C02318D0C81418D400175C14C8B8424280100004863D54501F183C5014439"
+            . "E041890C904189C075B8834424100144039C24780100008B44241039C70F855D"
+            . "FFFFFF8B8C245001000041B8AD8BDB68448B742414488BBC24F00000004C8BA4"
+            . "24200100004C8BAC24280100000FAFCD89C8C1F91F4189CA8B8C245801000041"
+            . "F7E80FAFCEC1FA0C4189D14529D189C8C1F91F44894C243C41F7E8C1FA0C29CA"
+            . "8954244483BC24D0000000030F84320A00008B8424F80000008B8C2400010000"
+            . "0FAF8424080100008D04888B8C24F8000000894424108B842410010000F7D88D"
+            . "0481894424188B8424D000000085C00F856C0300008B4C24684889C84189CB0F"
+            . "B6C441C1EB1089C20FB6C1450FB6DB89C18B84241801000085C00F8EFB000000"
+            . "8B842410010000448B7C240C4531D2896C24204C89AC242801000089D5C74424"
+            . "1400000000897424244189CDC1E00248899C24300100008944241C8BB4241001"
+            . "00008B842410010000448B4C24104401D685C07E70418D41024489CA4489D10F"
+            . "B61417440FB63407418D41010FB6040789D34589F04501DE4429EB418D960004"
+            . "00004529D829E8410FAFD00FAFC0410FAFD0C1E00B8D0402BAFE0500004429F2"
+            . "0FAFD30FAFD301D04139C7410F93040C4183C2014183C1044139F275988B5C24"
+            . "1C015C241083442414018B7424188B44241401742410398424180100000F8558"
+            . "FFFFFF8B6C24208B7424244C8BAC2428010000488B9C24300100003B6C243CB8"
+            . "000000000F4EE83B7424440F8E9F08000039F54189F3440F4DDD8B8424D00000"
+            . "0083E80383E0FD0F849A0600008B8424100100002B842470010000C784240801"
+            . "000000000000C784240001000000000000894424708B8424180100002B842478"
+            . "010000894424308B8424E800000083E80183F8070F870B0600008B8C24000100"
+            . "0083F80389442438894C246C8B8C2408010000894C24780F8EF00500008B4C24"
+            . "70394C246C0F8F590C00008B4424708B4C24384C89A424200100004C89AC2428"
+            . "0100004589DC4C8B9C2420010000C744242000000000894424748D45FF498D44"
+            . "85044189ED89F5488BB42428010000488944244889C883E0018944244089C883"
+            . "E0038944247C8B4424788B4C243039C80F8FFB000000837C247C018B54246C0F"
+            . "4F54247448899C24300100004889F3488BB42430010000894C24248944241489"
+            . "5424348B44244085C08B4424240F44442414837C243803894424180F8F6F0200"
+            . "0083BC24D0000000058B4424348944241C0F847702000083BC24D0000000030F"
+            . "847B0300008B4C241C0FAF8C2410010000034C24184585E40F8437030000448B"
+            . "542444448B4C243C31C0EB110F1F40004883C0014139C40F86180300004439E8"
+            . "89C273144189C84403048343803C030075064183E901781839D576D489CA0314"
+            . "8641803C130175C84183EA0179C266908344241401836C2424018B4424143944"
+            . "24300F8D3BFFFFFF4889F04889DE4889C38344246C01836C2474018B44246C39"
+            . "4424700F8DDDFEFFFF8B4424204881C4880000005B5E5F5D415C415D415E415F"
+            . "C383BC24D0000000010F84D709000083BC24D0000000020F84D70600008B5424"
+            . "68448B4C240C89D0440FB6DA450FB6C1C1E810440FB6D04889D00FB6CC4489C8"
+            . "4589D7C1E8100FB6D04C89C84189C90FB6C44129D74401D289C14489C84189D2"
+            . "29C831D24401C9894424244489C04589D84129C04401D84531C9448944241489"
+            . "44241C448B8424180100008B842410010000C1E0024585C0894424200F8E19FD"
+            . "FFFF896C242C4C89AC24280100008B6C2424448B6C2410448974242889742430"
+            . "4189CE48899C24300100004489D64489CB448B9C24100100008B8C2410010000"
+            . "4489E84101D385C97F38EB6D0F1F40004439CE7C4E4439C57F494539C67C4444"
+            . "39542414410F9EC1443954241C410F9DC083C20183C0044521C84139D3448801"
+            . "74328D4802440FB60C0F8D4801440FB6040F89C1440FB6140F89D14C01E14539"
+            . "CF7EAD83C2014531C083C0044139D344880175CE44036C242083C30144036C24"
+            . "18399C24180100000F8563FFFFFF448B7424288B6C242C8B7424304C8BAC2428"
+            . "010000488B9C2430010000E92BFCFFFF8B44241883BC24D0000000058944241C"
+            . "8B442434894424180F8589FDFFFF8B44241C8B4C24180FAF8424F80000004585"
+            . "E4448D14887473448B4C243C4531C04989DF4489D243031487428B1C8689D98D"
+            . "4202C1E9100FB6C90FB6040729C88D4A010FB614170FAFC00FB60C0F4439F07F"
+            . "1F0FB6C729C10FAFC94439F17F120FB6C329C20FAFD24439F27E0F0F1F440000"
+            . "4183E9010F88FB0100004983C0014539C4779F895C24684C89FB834424200148"
+            . "83BC246001000000448B5424200F845DFDFFFF8B54241C2B9424080100004963"
+            . "C20FAF9424100100008B4C24182B8C240001000001CA443B942468010000488B"
+            . "8C2460010000895481FC0F8C20FDFFFFE954FDFFFF4585ED74A04C8B44244848"
+            . "89D889CA03104883C0044C39C041C604130075EEEB84662E0F1F840000000000"
+            . "8B44241C8B4C24180FAF8424F80000008D04884189C7034424684585E48D5002"
+            . "0FB60C178D50010FB604070FB61417895424100F8441FFFFFF8B5424444989D9"
+            . "4C895C245048895C24584989F24531C04589FB89C348897424608954242C8B54"
+            . "243C89542428662E0F1F8400000000004539E873634489DA4103118D4202440F"
+            . "B634078D42010FB614170FB604072B4424104589F74101CE29DA418DB6000400"
+            . "004129CF410FAFF70FAFC0410FAFF741BFFE050000C1E00B4529F7440FAFFA01"
+            . "F0410FAFD701C23B54240C760B836C2428010F88990000004439C5765F4489DA"
+            . "4103128D4202440FB634078D42010FB614170FB604072B4424104589F74101CE"
+            . "29DA418DB6000400004129CF410FAFF70FAFC0410FAFF741BFFE050000C1E00B"
+            . "4529F7440FAFFA01F0410FAFD701C23B54240C7707836C242C0178354183C001"
+            . "4983C2044983C1044539C40F851FFFFFFF4C8B5C2450488B5C2458488B742460"
+            . "E915FEFFFF895C24684C89FBE97FFBFFFF4C8B5C2450488B5C2458488B742460"
+            . "E96BFBFFFFC7442438000000008B4424308B4C2470894424708B842408010000"
+            . "894C24308944246C8B84240001000089442478E9E5F9FFFF4531DBC744244400"
+            . "00000031F631ED8B842410010000038424000100002B84247001000089442470"
+            . "8B842408010000038424180100002B84247801000089442430E969F9FFFF8B44"
+            . "24688B4C240C4189C6440FAFF085C90F84F00100008B74240C8B942448010000"
+            . "89F0C1E8100FB6C0894424184889F00FB6C48944242089F0400FB6F62D000000"
+            . "0185D2897424288944240C0F8EC0050000428D04BD00000000C7442410000000"
+            . "00C744241C0000000031EDC74424240000000044897424148944242C4889BC24"
+            . "F00000004C89A4242001000031F64531E44585FF448B5C24240F8EAC00000090"
+            . "418D4302450FB60402418D4301410FB60C024489D8450FB60C028B44240C85C0"
+            . "742E4489C02B4424188B7C24140FAFC039C77C1C89C82B4424200FAFC039C77C"
+            . "0F4489C82B4424280FAFC039C77D3C908B44241041C1E010C1E1084409C14C63"
+            . "F583C5014409C999F7BC24480100000FAF8424F800000089C789F09941F7FF8D"
+            . "0487438944B50042890CB34183C4014183C30403B424700100004539E70F855D"
+            . "FFFFFF8B7C242C017C24248344241C018BB424780100008B44241C0174241039"
+            . "8424480100000F8520FFFFFF448B742414488BBC24F00000004C8BA424200100"
+            . "008B8C2450010000BAAD8BDB680FAFCD89C8C1F91FF7EAC1FA0C29CA39D58954"
+            . "243C0F8E10FEFFFFC74424440000000085EDB8000000000F49C531F64189C3E9"
+            . "56F7FFFF448B5424684489D0C1E8100FAF84247801000099F7BC24480100000F"
+            . "AF8424F800000089C1410FB7C20FAF8424700100009941F7FF8D048189442468"
+            . "E9F6F6FFFF4531DB31ED31C08D4801410FB6040285C00F8465FFFFFF8D50D083"
+            . "FA090F879F0200004B8D049B4C8D1C4289C8EBD88B842410010000448B942418"
+            . "0100004531C0C74424140000000001C048984D8D1C048B842410010000C1E002"
+            . "4585D28944241C0F8E8EF6FFFF448BBC2410010000448B8C24100100008B4C24"
+            . "104501C74585C97E510F1F80000000008D41024489C24183C001440FB60C078D"
+            . "41010FB60407456BC9266BC04B4101C189C883C104440FB614074489D0C1E004"
+            . "4429D04401C8C1F8074539F84188041375BE8B4C241C014C241083442414018B"
+            . "5424188B44241401542410398424180100000F8575FFFFFF8B8424100100008B"
+            . "4C240C4531D2448B8C24100100004889BC24F00000004531FF48899C24300100"
+            . "0044897424204489D383E801896C24248974242889C28B8424180100004C89AC"
+            . "242801000089D783E801894424108B842410010000F7D08944241C4585C90F8E"
+            . "0701000085DB4489FE478D2C0F400F94C54429CE458D77FF8974240C8B74241C"
+            . "41B80100000031C04401FE89742414428D343F89742418660F1F840000000000"
+            . "85C0418D14070F84040100004084ED0F85FB00000039C70F84F3000000395C24"
+            . "100F84E9000000458D1406410FB60C134C01E2034C2468430FB6341341BA0100"
+            . "000039F1726F438D3407410FB6343339F172628B74240C01C6410FB6343339F1"
+            . "7253428D3428410FB6343339F172468B74241401C6410FB6343339F172378B74"
+            . "240C4401C6410FB6343339F172278B742418448D1406430FB6341341BA010000"
+            . "0039F17210478D1428470FB614134439D1410F92C283C0014183C00144881241"
+            . "39C10F8538FFFFFF4589EF83C301399C24180100000F85E0FEFFFF448B742420"
+            . "8B6C24248B742428894C240C488BBC24F00000004C8BAC2428010000488B9C24"
+            . "30010000E952F4FFFF0F1F800000000083C0014183C00141C60414024139C10F"
+            . "85DBFEFFFFEBA183F82F0F8560FDFFFF4C89D84C63CD83C50148C1E8100FB7C0"
+            . "0FAF84247801000099F7BC24480100000FAF8424F80000004189C0410FB7C349"
+            . "C1EB200FAF8424700100009941F7FF418D04804389448D0046891C8B89C84531"
+            . "DBE9E6FCFFFF8B4424684531FF4531C083C001C1E007894424688B8424100100"
+            . "00C1E002894424148B84241801000085C00F8EA4F3FFFF448974241C448B7424"
+            . "68448B9C24100100008B8424100100008B4C24104501C385C07E500F1F440000"
+            . "8D41024489C2440FB60C078D41010FB60407456BC9266BC04B4101C189C8440F"
+            . "B614074489D0C1E0044429D04401C84139C6410F9704144183C00183C1044539"
+            . "C375BD8B4C2414014C24104183C7018B4C2418014C24104439BC241801000075"
+            . "80448B74241CE910F3FFFFC744244400000000C744243C0000000031F631EDE9"
+            . "80F1FFFFC744242000000000E918F5FFFFC744243C0000000031EDC744244400"
+            . "000000E988FBFFFF9090909090909090"
+          this.MCode(MyFunc, A_PtrSize=8 ? x64:x32)
+        }
+        text:=j[1], w:=j[2], h:=j[3]
+          , err1:=(j[4] ? j[5] : ini.err1)
+          , err0:=(j[4] ? j[6] : ini.err0)
+          , mode:=j[7], color:=j[8], n:=j[9]
+        return (!ini.bits.Scan0) ? 0 : DllCall(&MyFunc
+          , "int",mode, "uint",color, "uint",n, "int",dir
+          , "Ptr",ini.bits.Scan0, "int",ini.bits.Stride
+          , "int",sx, "int",sy, "int",sw, "int",sh
+          , "Ptr",ini.ss, "Ptr",ini.s1, "Ptr",ini.s0
+          , (mode=5 && n>0 ? "Ptr":"AStr"),text, "int",w, "int",h
+          , "int",Floor(err1*10000), "int",Floor(err0*10000)
+          , "Ptr",allpos_ptr, "int",ini.allpos_max
+          , "int",Floor(w*ini.zoomW), "int",Floor(h*ini.zoomH))
+      }
 
-JoinText(ini, arr, info2, text, offsetX, offsetY, FindAll
-  , index, Len, dir, minY, maxY, sx, sy, sw, sh)
-{
-  local
-  VarSetCapacity(allpos, ini.allpos_max*4), allpos_ptr:=&allpos
-  , zoomW:=ini.zoomW, zoomH:=ini.zoomH
-  For i,j in info2[text[index]]
-  if (ini.mode=1 || text[index]==j[10])
-  Loop % this.PicFind(ini, j, dir, sx, sy, sw1:=(index=1 ? sw
-  : Min(sx+offsetX+Floor(j[2]*zoomW),ini.sx+ini.sw)-sx), sh, allpos_ptr)
-  {
-    pos:=NumGet(allpos, 4*A_Index-4, "uint")
-    , x:=Mod(pos,sw1)+sx, y:=pos//sw1+sy
-    , w:=Floor(j[2]*zoomW), h:=Floor(j[3]*zoomH)
-    , (index=1) && (ini.x:=x, minY:=y, maxY:=y+h)
-    if (index<Len)
-    {
-      minY1:=Min(y, minY), maxY1:=Max(y+h, maxY)
-      , sy1:=Max(minY1-offsetY, ini.sy)
-      , sh1:=Min(maxY1+offsetY, ini.sy+ini.sh)-sy1
-      if this.JoinText(ini, arr, info2, text, offsetX, offsetY, FindAll
-      , index+1, Len, 5, minY1, maxY1, x+w, sy1, 0, sh1)
-      && (index>1 || !FindAll)
-        return 1
-    }
-    else
-    {
-      comment:=""
-      For k,v in text
-        comment.=(ini.mode=1 ? info2[v][1][10] : v)
-      w:=x+w-ini.x, x:=ini.x+ini.zx
-      , h:=Max(y+h,maxY)-Min(y,minY), y:=Min(y,minY)+ini.zy
-      , arr.Push({1:x, 2:y, 3:w, 4:h, x:x+w//2, y:y+h//2, id:comment})
-      if (index>1 || !FindAll)
-        return 1
-    }
-  }
-}
-
-PicFind(ini, j, dir, sx, sy, sw, sh, allpos_ptr)
-{
-  local
-  static MyFunc:=""
-  if (!MyFunc)
-  {
-    x32:=""
-    . "5557565383EC7483BC2488000000058BBC24C00000000F84DA0900008B8424C4"
-    . "00000085C00F8EBE0F0000C744240800000000C74424100000000031EDC70424"
-    . "00000000C7442414000000008D7426008B8424BC0000008B4C241431F631DB01"
-    . "C885FF8944240C7F3DE98F00000066900FAF8424A800000089C189F099F7FF01"
-    . "C18B44240C803C1831744D8B8424B800000083C30103B424D8000000890CA883"
-    . "C50139DF74538B44240899F7BC24C400000083BC24880000000375B40FAF8424"
-    . "9C00000089C189F099F7FF8D0C818B44240C803C183175B38B04248B9424B400"
-    . "000083C30103B424D8000000890C8283C00139DF89042475AD017C2414834424"
-    . "10018B9C24DC0000008B442410015C2408398424C40000000F8532FFFFFF8B04"
-    . "24BBAD8BDB68896C24080FAF8424C800000089C1F7EB89C88B4C24080FAF8C24"
-    . "CC000000C1F81F89C589D6C1FE0C29EE8974244889C8C1F91FF7EBC1FA0C29CA"
-    . "8954245083BC2488000000030F84770A00008B84249C0000008BB424A0000000"
-    . "0FAF8424A40000008BBC24880000008D2CB08B8424A80000008BB4249C000000"
-    . "F7D885FF8D04868944241C0F856D0300008B84248C0000008BB424AC000000C7"
-    . "44241800000000C7442420000000008B7C2404C1E8100FB6C08944240C8B8424"
-    . "8C0000000FB6C4894424100FB684248C000000894424148B8424A8000000C1E0"
-    . "0285F68944242889E80F8EBA0000008B9C24A800000085DB0F8E8D0000008BB4"
-    . "24980000008B6C242003AC24B000000001C60344242889442424038424980000"
-    . "00894424040FB67E028B4C240C0FB646010FB6162B4424102B54241489FB01CF"
-    . "29CB8D8F000400000FAFC00FAFCBC1E00B0FAFCB01C1B8FE05000029F80FAFC2"
-    . "0FAFD001CA399424900000000F93450083C60483C5013B74240475A98B9C24A8"
-    . "000000015C24208B44242483442418010344241C8B74241839B424AC0000000F"
-    . "854AFFFFFF897C24048B34248B5C2448B80000000039DE89C30F4FDE8B742450"
-    . "39742408891C240F8EDC0800008B34248B44240839C60F4DC6894424648B8424"
-    . "8800000083E80383E0FD0F84AF0600008B8424A80000002B8424D8000000C784"
-    . "24A400000000000000C78424A0000000000000008944245C8B8424AC0000002B"
-    . "8424DC0000008944243C8B84249400000083E80183F8070F87100600008BB424"
-    . "A000000083F80389442444897424588BB424A4000000897424680F8EF5050000"
-    . "8B74245C397424580F8F7F0C00008B44245C8B3424C744242C00000000894424"
-    . "608B8424B40000008D04B08B7424448944245489F083E0018944244C89F08BB4"
-    . "249800000083E0038944246C8B4424688B5C243C39D80F8F1C010000837C246C"
-    . "018B7C24580F4F7C2460895C243089442420897C24408B7C24648DB600000000"
-    . "8B4C244C8B44243085C90F44442420837C244403894424240F8F7702000083BC"
-    . "2488000000058B442440894424288B4424280F847F02000083BC248800000003"
-    . "0F84BA0300000FAF8424A80000000344242485FF89C2894424180F8464030000"
-    . "8B6C24508B5C244831C0039424B00000008B0C2489742414896C2410895C240C"
-    . "8B6C2408EB158D76008DBC270000000083C00139C70F842503000039C873188B"
-    . "9C24B40000008B348301D6803E007507836C240C01781C39C576D58B9C24B800"
-    . "00008B348301D6803E0175C4836C24100179BD8B74241489F68DBC2700000000"
-    . "8344242001836C2430018B4424203944243C0F8D08FFFFFF8344245801836C24"
-    . "60018B4424583944245C0F8DBCFEFFFF8B44242C83C4745B5E5F5DC2580083BC"
-    . "2488000000010F84E409000083BC2488000000020F84AD0700008B84248C0000"
-    . "000FB6BC248C000000C744241800000000C744242800000000C1E8100FB6D08B"
-    . "84248C0000008954240C0FB69424900000000FB6DC8B842490000000C1E8100F"
-    . "B6C88B8424900000000FB6F48B44240C29C8034C240C8944242C89D829F001DE"
-    . "8944241089D089FA29C201F889742414894424248BB424AC0000008B8424A800"
-    . "0000894C240C89E9895424208B6C242CC1E00285F6894424300F8EEAFCFFFF8B"
-    . "9C24A800000085DB0F8E880000008B8424980000008B542428039424B0000000"
-    . "01C8034C243089CF894C242C03BC2498000000EB34395C240C7C3D394C24107F"
-    . "37394C24147C3189F30FB6F3397424200F9EC3397424240F9DC183C00483C201"
-    . "21D9884AFF39F8741E0FB658020FB648010FB63039DD7EBD31C983C00483C201"
-    . "884AFF39F875E28BB424A8000000017424288B4C242C8344241801034C241C8B"
-    . "442418398424AC0000000F854FFFFFFFE934FCFFFF8B44242483BC2488000000"
-    . "05894424288B442440894424248B4424280F8581FDFFFF0FAF84249C0000008B"
-    . "5C242485FF8D0498894424100F848B0000008B6C244831C9897C240C8D742600"
-    . "8B8424B40000008B5C2410031C888B8424B80000008B3C880FB6441E0289FAC1"
-    . "EA100FB6D229D00FB6541E010FB61C1E0FAFC03B4424047F2789F80FB6C429C2"
-    . "0FAFD23B5424047F1789F80FB6C029C30FAFDB3B5C24047E108DB42600000000"
-    . "83ED010F880702000083C101394C240C758E89BC248C0000008B7C240C8B8424"
-    . "D00000008344242C018B5C242C85C00F846BFDFFFF8B5424282B9424A4000000"
-    . "0FAF9424A80000008B4424242B8424A00000008B8C24D000000001D03B9C24D4"
-    . "000000894499FC0F8C33FDFFFF8B44242C83C4745B5E5F5DC25800908D742600"
-    . "8B7424148B142485D274928B9C24B00000008B4C24188B8424B400000001D98B"
-    . "5C24548B1083C00401CA39D8C6020075F2E967FFFFFF8D76008DBC2700000000"
-    . "0FAF84249C0000008B5C24248D0498894424100384248C00000085FF0FB65C06"
-    . "02895C24140FB65C06010FB60406895C24188944241C0F8421FFFFFF8B442450"
-    . "31DB897C240C894424388B442448894424348B4424048D76008DBC2700000000"
-    . "3B1C2473658B8424B40000008B4C24108B7C2414030C980FB6440E020FB6540E"
-    . "010FB60C0E2B5424182B4C241C89C501F829FD8DB8000400000FAFD20FAFFDC1"
-    . "E20B0FAFFDBDFE05000029C50FAFE901FA0FAFCD01D13B8C2490000000760B83"
-    . "6C2434010F8896000000395C240876618B8424B80000008B4C24108B7C241403"
-    . "0C980FB6440E020FB6540E010FB60C0E2B5424182B4C241C89C501F829FD8DB8"
-    . "000400000FAFD20FAFFDC1E20B0FAFFDBDFE05000029C50FAFE901FA0FAFCD01"
-    . "D13B8C24900000007707836C243801782F83C301395C240C0F8522FFFFFF8944"
-    . "24048B7C240CE912FEFFFF908D74260089BC248C0000008B7C240CE980FBFFFF"
-    . "894424048B7C240CE973FBFFFFC7442444000000008B44243C8B74245C894424"
-    . "5C8B8424A40000008974243C894424588B8424A000000089442468E9E0F9FFFF"
-    . "C744246400000000C744245000000000C744240800000000C70424000000008B"
-    . "8424A8000000038424A00000002B8424D80000008944245C8B8424A400000003"
-    . "8424AC0000002B8424DC0000008944243CE954F9FFFF8B84248C0000000FAFC0"
-    . "894424048B84249000000085C00F841C0200008B842490000000C1E8100FB6C0"
-    . "894424188B8424900000000FB6C4894424200FB684249000000081AC24900000"
-    . "0000000001894424288B8424C400000085C00F8EC20500008D04BD0000000031"
-    . "F689BC24C0000000C744241400000000C744241C0000000089F78944242C31C0"
-    . "8B9424C000000085D20F8EE20000008BAC24BC000000C704240000000001C503"
-    . "44242C89442424038424BC000000894424100FB645000FB64D020FB65D0189C6"
-    . "894424088B84249000000085C0743189C82B4424188B5424040FAFC039C27C20"
-    . "89D82B4424200FAFC039C27C1389F02B4424280FAFC039C27D5C8DB600000000"
-    . "8B442414C1E1108D34BD0000000099F7BC24C40000000FAF84249C0000008944"
-    . "240C8B042499F7BC24C00000008B54240C8D04828B9424B40000008904BA89D8"
-    . "83C701C1E00809C10B4C24088B8424B8000000890C3083C5048BB424D8000000"
-    . "0134243B6C24100F8545FFFFFF8B4424248344241C018B8C24DC0000008B7424"
-    . "1C014C241439B424C40000000F85EEFEFFFF893C248B34248B8C24C8000000BA"
-    . "AD8BDB680FAFCE89C8C1F91FF7EAC1FA0C89D029C839C6894424480F8EDFFDFF"
-    . "FFC7442450000000008B3424B800000000C74424080000000089C385F60F49DE"
-    . "895C2464E914F7FFFF8B84248C000000C1E8100FAF8424DC00000099F7BC24C4"
-    . "0000000FAF84249C00000089C10FB784248C0000000FAF8424D800000099F7FF"
-    . "8D04818984248C000000E99AF6FFFF8BAC24BC00000031DB31F6C70424000000"
-    . "00EB19B80A0000006BF60AF7E331DB01F289DE89CB01C311D683C5010FB64500"
-    . "85C00F842DFFFFFF8D48D083F90976D383F82F75E48B04248D14850000000089"
-    . "54240889DA0FACF2100FB7C20FAF8424DC00000099F7BC24C40000008B94249C"
-    . "0000000FAFD00FB7C331DB0FAF8424D800000089D199F7FF8B9424B40000008D"
-    . "04818B0C2489048A89C88B54240883C00189042489F08BB424B8000000890416"
-    . "31F6E972FFFFFF8BB424A80000008B8424B0000000C744240C00000000C74424"
-    . "10000000008D04708944242489F0C1E002894424148B8424AC00000085C00F8E"
-    . "A5F5FFFF8B8424A800000085C07E598B8C24980000008B5C24248BBC24980000"
-    . "00035C241001E9036C241401EF8D76000FB651020FB6410183C1040FB671FC83"
-    . "C3016BC04B6BD22601C289F0C1E00429F001D0C1F8078843FF39CF75D38BB424"
-    . "A8000000017424108344240C01036C241C8B44240C398424AC00000075868B84"
-    . "24A8000000C74424140000000031FF83E8018944241C8B8424AC00000083E801"
-    . "894424208B8424A800000085C00F8E220100008B6C241489FB8B4424248BB424"
-    . "A80000008D4F0185ED8BAC24B00000008D14380F944424182B9C24A800000001"
-    . "FE01C601EF897C241001C331C0895C240C85C00F84B4000000807C2418000F85"
-    . "A90000003944241C0F849F0000008B7C2414397C24200F84910000000FB63A0F"
-    . "B66AFF03BC248C00000089BC249000000039AC2490000000BF0100000072600F"
-    . "B66A0139AC249000000072538B5C240C0FB62B39AC249000000072430FB62E39"
-    . "AC249000000072370FB66BFF39AC2490000000722A0FB66B0139AC2490000000"
-    . "721D0FB66EFF39AC249000000072100FB67E0139BC24900000000F92C389DF8B"
-    . "6C241089FB89CF885C0500EB0A8B5C241089CFC604030283C00183C10183C201"
-    . "83C6018344240C01398424A80000000F851CFFFFFF83442414018B4424143984"
-    . "24AC0000000F85B9FEFFFFE9B9F3FFFF8B84248C0000008B8C24AC000000C744"
-    . "240C00000000C74424100000000083C001C1E0078984248C0000008B8424A800"
-    . "0000C1E00285C98944241489E88BAC248C0000000F8E6FF3FFFF8B9424A80000"
-    . "0085D27E658B8C24980000008B5C2410039C24B000000001C103442414894424"
-    . "180384249800000089C78DB6000000000FB651020FB641010FB6316BC04B6BD2"
-    . "2601C289F0C1E00429F001D039C50F970383C10483C30139F975D58B9C24A800"
-    . "0000015C24108B4424188344240C010344241C8B74240C39B424AC0000000F85"
-    . "76FFFFFFE9E0F2FFFFC744245000000000C744244800000000C7442408000000"
-    . "00C7042400000000E957F1FFFFC744242C00000000E9F6F4FFFFC74424480000"
-    . "0000C7042400000000C744245000000000E993FBFFFF90909090909090909090"
-    x64:=""
-    . "4157415641554154555756534881EC88000000488BBC24F00000004C8BA42420"
-    . "01000083F905898C24D000000089542468448944240C44898C24E80000004C8B"
-    . "AC2428010000488B9C24300100004C8B942438010000448BBC24400100000F84"
-    . "DA090000448B8424480100004585C00F8EB60F000044897424144889BC24F000"
-    . "00004531DB4C89AC24280100008BBC244801000031F6448BAC24D0000000448B"
-    . "B4247001000031EDC7442410000000004531C04C89A424200100000F1F440000"
-    . "4531C94585FF478D24077F36EB7C66900FAF84241001000089C14489C89941F7"
-    . "FF01C143803C0231418D4001743F4863D64501F183C6014439E0890C934189C0"
-    . "74484489D899F7FF4183FD0375C20FAF8424F800000089C14489C89941F7FF43"
-    . "803C02318D0C81418D400175C14C8B8424280100004863D54501F183C5014439"
-    . "E041890C904189C075B8834424100144039C24780100008B44241039C70F855D"
-    . "FFFFFF8B8C245001000041B8AD8BDB68448B742414488BBC24F00000004C8BA4"
-    . "24200100004C8BAC24280100000FAFCD89C8C1F91F4189CA8B8C245801000041"
-    . "F7E80FAFCEC1FA0C4189D14529D189C8C1F91F44894C243C41F7E8C1FA0C29CA"
-    . "8954244483BC24D0000000030F84320A00008B8424F80000008B8C2400010000"
-    . "0FAF8424080100008D04888B8C24F8000000894424108B842410010000F7D88D"
-    . "0481894424188B8424D000000085C00F856C0300008B4C24684889C84189CB0F"
-    . "B6C441C1EB1089C20FB6C1450FB6DB89C18B84241801000085C00F8EFB000000"
-    . "8B842410010000448B7C240C4531D2896C24204C89AC242801000089D5C74424"
-    . "1400000000897424244189CDC1E00248899C24300100008944241C8BB4241001"
-    . "00008B842410010000448B4C24104401D685C07E70418D41024489CA4489D10F"
-    . "B61417440FB63407418D41010FB6040789D34589F04501DE4429EB418D960004"
-    . "00004529D829E8410FAFD00FAFC0410FAFD0C1E00B8D0402BAFE0500004429F2"
-    . "0FAFD30FAFD301D04139C7410F93040C4183C2014183C1044139F275988B5C24"
-    . "1C015C241083442414018B7424188B44241401742410398424180100000F8558"
-    . "FFFFFF8B6C24208B7424244C8BAC2428010000488B9C24300100003B6C243CB8"
-    . "000000000F4EE83B7424440F8E9F08000039F54189F3440F4DDD8B8424D00000"
-    . "0083E80383E0FD0F849A0600008B8424100100002B842470010000C784240801"
-    . "000000000000C784240001000000000000894424708B8424180100002B842478"
-    . "010000894424308B8424E800000083E80183F8070F870B0600008B8C24000100"
-    . "0083F80389442438894C246C8B8C2408010000894C24780F8EF00500008B4C24"
-    . "70394C246C0F8F590C00008B4424708B4C24384C89A424200100004C89AC2428"
-    . "0100004589DC4C8B9C2420010000C744242000000000894424748D45FF498D44"
-    . "85044189ED89F5488BB42428010000488944244889C883E0018944244089C883"
-    . "E0038944247C8B4424788B4C243039C80F8FFB000000837C247C018B54246C0F"
-    . "4F54247448899C24300100004889F3488BB42430010000894C24248944241489"
-    . "5424348B44244085C08B4424240F44442414837C243803894424180F8F6F0200"
-    . "0083BC24D0000000058B4424348944241C0F847702000083BC24D0000000030F"
-    . "847B0300008B4C241C0FAF8C2410010000034C24184585E40F8437030000448B"
-    . "542444448B4C243C31C0EB110F1F40004883C0014139C40F86180300004439E8"
-    . "89C273144189C84403048343803C030075064183E901781839D576D489CA0314"
-    . "8641803C130175C84183EA0179C266908344241401836C2424018B4424143944"
-    . "24300F8D3BFFFFFF4889F04889DE4889C38344246C01836C2474018B44246C39"
-    . "4424700F8DDDFEFFFF8B4424204881C4880000005B5E5F5D415C415D415E415F"
-    . "C383BC24D0000000010F84D709000083BC24D0000000020F84D70600008B5424"
-    . "68448B4C240C89D0440FB6DA450FB6C1C1E810440FB6D04889D00FB6CC4489C8"
-    . "4589D7C1E8100FB6D04C89C84189C90FB6C44129D74401D289C14489C84189D2"
-    . "29C831D24401C9894424244489C04589D84129C04401D84531C9448944241489"
-    . "44241C448B8424180100008B842410010000C1E0024585C0894424200F8E19FD"
-    . "FFFF896C242C4C89AC24280100008B6C2424448B6C2410448974242889742430"
-    . "4189CE48899C24300100004489D64489CB448B9C24100100008B8C2410010000"
-    . "4489E84101D385C97F38EB6D0F1F40004439CE7C4E4439C57F494539C67C4444"
-    . "39542414410F9EC1443954241C410F9DC083C20183C0044521C84139D3448801"
-    . "74328D4802440FB60C0F8D4801440FB6040F89C1440FB6140F89D14C01E14539"
-    . "CF7EAD83C2014531C083C0044139D344880175CE44036C242083C30144036C24"
-    . "18399C24180100000F8563FFFFFF448B7424288B6C242C8B7424304C8BAC2428"
-    . "010000488B9C2430010000E92BFCFFFF8B44241883BC24D0000000058944241C"
-    . "8B442434894424180F8589FDFFFF8B44241C8B4C24180FAF8424F80000004585"
-    . "E4448D14887473448B4C243C4531C04989DF4489D243031487428B1C8689D98D"
-    . "4202C1E9100FB6C90FB6040729C88D4A010FB614170FAFC00FB60C0F4439F07F"
-    . "1F0FB6C729C10FAFC94439F17F120FB6C329C20FAFD24439F27E0F0F1F440000"
-    . "4183E9010F88FB0100004983C0014539C4779F895C24684C89FB834424200148"
-    . "83BC246001000000448B5424200F845DFDFFFF8B54241C2B9424080100004963"
-    . "C20FAF9424100100008B4C24182B8C240001000001CA443B942468010000488B"
-    . "8C2460010000895481FC0F8C20FDFFFFE954FDFFFF4585ED74A04C8B44244848"
-    . "89D889CA03104883C0044C39C041C604130075EEEB84662E0F1F840000000000"
-    . "8B44241C8B4C24180FAF8424F80000008D04884189C7034424684585E48D5002"
-    . "0FB60C178D50010FB604070FB61417895424100F8441FFFFFF8B5424444989D9"
-    . "4C895C245048895C24584989F24531C04589FB89C348897424608954242C8B54"
-    . "243C89542428662E0F1F8400000000004539E873634489DA4103118D4202440F"
-    . "B634078D42010FB614170FB604072B4424104589F74101CE29DA418DB6000400"
-    . "004129CF410FAFF70FAFC0410FAFF741BFFE050000C1E00B4529F7440FAFFA01"
-    . "F0410FAFD701C23B54240C760B836C2428010F88990000004439C5765F4489DA"
-    . "4103128D4202440FB634078D42010FB614170FB604072B4424104589F74101CE"
-    . "29DA418DB6000400004129CF410FAFF70FAFC0410FAFF741BFFE050000C1E00B"
-    . "4529F7440FAFFA01F0410FAFD701C23B54240C7707836C242C0178354183C001"
-    . "4983C2044983C1044539C40F851FFFFFFF4C8B5C2450488B5C2458488B742460"
-    . "E915FEFFFF895C24684C89FBE97FFBFFFF4C8B5C2450488B5C2458488B742460"
-    . "E96BFBFFFFC7442438000000008B4424308B4C2470894424708B842408010000"
-    . "894C24308944246C8B84240001000089442478E9E5F9FFFF4531DBC744244400"
-    . "00000031F631ED8B842410010000038424000100002B84247001000089442470"
-    . "8B842408010000038424180100002B84247801000089442430E969F9FFFF8B44"
-    . "24688B4C240C4189C6440FAFF085C90F84F00100008B74240C8B942448010000"
-    . "89F0C1E8100FB6C0894424184889F00FB6C48944242089F0400FB6F62D000000"
-    . "0185D2897424288944240C0F8EC0050000428D04BD00000000C7442410000000"
-    . "00C744241C0000000031EDC74424240000000044897424148944242C4889BC24"
-    . "F00000004C89A4242001000031F64531E44585FF448B5C24240F8EAC00000090"
-    . "418D4302450FB60402418D4301410FB60C024489D8450FB60C028B44240C85C0"
-    . "742E4489C02B4424188B7C24140FAFC039C77C1C89C82B4424200FAFC039C77C"
-    . "0F4489C82B4424280FAFC039C77D3C908B44241041C1E010C1E1084409C14C63"
-    . "F583C5014409C999F7BC24480100000FAF8424F800000089C789F09941F7FF8D"
-    . "0487438944B50042890CB34183C4014183C30403B424700100004539E70F855D"
-    . "FFFFFF8B7C242C017C24248344241C018BB424780100008B44241C0174241039"
-    . "8424480100000F8520FFFFFF448B742414488BBC24F00000004C8BA424200100"
-    . "008B8C2450010000BAAD8BDB680FAFCD89C8C1F91FF7EAC1FA0C29CA39D58954"
-    . "243C0F8E10FEFFFFC74424440000000085EDB8000000000F49C531F64189C3E9"
-    . "56F7FFFF448B5424684489D0C1E8100FAF84247801000099F7BC24480100000F"
-    . "AF8424F800000089C1410FB7C20FAF8424700100009941F7FF8D048189442468"
-    . "E9F6F6FFFF4531DB31ED31C08D4801410FB6040285C00F8465FFFFFF8D50D083"
-    . "FA090F879F0200004B8D049B4C8D1C4289C8EBD88B842410010000448B942418"
-    . "0100004531C0C74424140000000001C048984D8D1C048B842410010000C1E002"
-    . "4585D28944241C0F8E8EF6FFFF448BBC2410010000448B8C24100100008B4C24"
-    . "104501C74585C97E510F1F80000000008D41024489C24183C001440FB60C078D"
-    . "41010FB60407456BC9266BC04B4101C189C883C104440FB614074489D0C1E004"
-    . "4429D04401C8C1F8074539F84188041375BE8B4C241C014C241083442414018B"
-    . "5424188B44241401542410398424180100000F8575FFFFFF8B8424100100008B"
-    . "4C240C4531D2448B8C24100100004889BC24F00000004531FF48899C24300100"
-    . "0044897424204489D383E801896C24248974242889C28B8424180100004C89AC"
-    . "242801000089D783E801894424108B842410010000F7D08944241C4585C90F8E"
-    . "0701000085DB4489FE478D2C0F400F94C54429CE458D77FF8974240C8B74241C"
-    . "41B80100000031C04401FE89742414428D343F89742418660F1F840000000000"
-    . "85C0418D14070F84040100004084ED0F85FB00000039C70F84F3000000395C24"
-    . "100F84E9000000458D1406410FB60C134C01E2034C2468430FB6341341BA0100"
-    . "000039F1726F438D3407410FB6343339F172628B74240C01C6410FB6343339F1"
-    . "7253428D3428410FB6343339F172468B74241401C6410FB6343339F172378B74"
-    . "240C4401C6410FB6343339F172278B742418448D1406430FB6341341BA010000"
-    . "0039F17210478D1428470FB614134439D1410F92C283C0014183C00144881241"
-    . "39C10F8538FFFFFF4589EF83C301399C24180100000F85E0FEFFFF448B742420"
-    . "8B6C24248B742428894C240C488BBC24F00000004C8BAC2428010000488B9C24"
-    . "30010000E952F4FFFF0F1F800000000083C0014183C00141C60414024139C10F"
-    . "85DBFEFFFFEBA183F82F0F8560FDFFFF4C89D84C63CD83C50148C1E8100FB7C0"
-    . "0FAF84247801000099F7BC24480100000FAF8424F80000004189C0410FB7C349"
-    . "C1EB200FAF8424700100009941F7FF418D04804389448D0046891C8B89C84531"
-    . "DBE9E6FCFFFF8B4424684531FF4531C083C001C1E007894424688B8424100100"
-    . "00C1E002894424148B84241801000085C00F8EA4F3FFFF448974241C448B7424"
-    . "68448B9C24100100008B8424100100008B4C24104501C385C07E500F1F440000"
-    . "8D41024489C2440FB60C078D41010FB60407456BC9266BC04B4101C189C8440F"
-    . "B614074489D0C1E0044429D04401C84139C6410F9704144183C00183C1044539"
-    . "C375BD8B4C2414014C24104183C7018B4C2418014C24104439BC241801000075"
-    . "80448B74241CE910F3FFFFC744244400000000C744243C0000000031F631EDE9"
-    . "80F1FFFFC744242000000000E918F5FFFFC744243C0000000031EDC744244400"
-    . "000000E988FBFFFF9090909090909090"
-    this.MCode(MyFunc, A_PtrSize=8 ? x64:x32)
-  }
-  text:=j[1], w:=j[2], h:=j[3]
-  , err1:=(j[4] ? j[5] : ini.err1)
-  , err0:=(j[4] ? j[6] : ini.err0)
-  , mode:=j[7], color:=j[8], n:=j[9]
-  return (!ini.bits.Scan0) ? 0 : DllCall(&MyFunc
-    , "int",mode, "uint",color, "uint",n, "int",dir
-    , "Ptr",ini.bits.Scan0, "int",ini.bits.Stride
-    , "int",sx, "int",sy, "int",sw, "int",sh
-    , "Ptr",ini.ss, "Ptr",ini.s1, "Ptr",ini.s0
-    , (mode=5 && n>0 ? "Ptr":"AStr"),text, "int",w, "int",h
-    , "int",Floor(err1*10000), "int",Floor(err0*10000)
-    , "Ptr",allpos_ptr, "int",ini.allpos_max
-    , "int",Floor(w*ini.zoomW), "int",Floor(h*ini.zoomH))
-}
-
-code()
-{
-return "
+      code()
+      {
+        return "
 (
 
 //***** C source code of machine code *****
@@ -1797,114 +1744,114 @@ int __attribute__((__stdcall__)) PicFind(
 }
 
 )"
-}
+      }
 
-PicInfo(text)
-{
-  local
-  static info:=[], bmp:=[]
-  if !InStr(text, "$")
-    return
-  key:=(r:=StrLen(text))<10000 ? text
-    : DllCall("ntdll\RtlComputeCrc32", "uint",0
-    , "Ptr",&text, "uint",r*(1+!!A_IsUnicode), "uint")
-  if info.HasKey(key)
-    return info[key]
-  v:=text, comment:="", seterr:=err1:=err0:=0
-  ; You Can Add Comment Text within The <>
-  if RegExMatch(v, "O)<([^>\n]*)>", r)
-    v:=StrReplace(v,r[0]), comment:=Trim(r[1])
-  ; You can Add two fault-tolerant in the [], separated by commas
-  if RegExMatch(v, "O)\[([^\]\n]*)]", r)
-  {
-    v:=StrReplace(v,r[0]), r:=StrSplit(r[1] ",", ",")
-    , seterr:=1, err1:=r[1], err0:=r[2]
-  }
-  color:=StrSplit(v,"$")[1], v:=Trim(SubStr(v,InStr(v,"$")+1))
-  mode:=InStr(color,"##") ? 5
-    : InStr(color,"-") ? 4 : InStr(color,"#") ? 3
-    : InStr(color,"**") ? 2 : InStr(color,"*") ? 1 : 0
-  color:=RegExReplace(color, "[*#\s]")
-  if (mode=5)
-  {
-    ; You can use Text:="##10-RRGGBB $ d:\a.bmp"
-    ; then the 0xRRGGBB(+/-10) as transparent color
-    if (v~="[^\s\w\-/,]")  ; ImageSearch
-    {
-      if !(hBM:=LoadPicture(v))
-        return
-      this.GetBitmapWH(hBM, w, h)
-      if (w<1 || h<1)
-        return
-      hBM2:=this.CreateDIBSection(w, h, 32, Scan0)
-      this.CopyHBM(hBM2, 0, 0, hBM, 0, 0, w, h)
-      DllCall("DeleteObject", "Ptr",hBM)
-      if (!Scan0)
-        return
-      ; All images used for ImageSearch are cached
-      bmp.Push(r:=this.Buffer(w*h*4)), v:=r.Ptr
-      DllCall("RtlMoveMemory", "Ptr",v, "Ptr",Scan0, "Ptr",w*h*4)
-      DllCall("DeleteObject", "Ptr",hBM2)
-      r:=RegExReplace(Trim(color,"-"), "i)-(?!0x)", "-0x")
-      n:=InStr(r,"-") ? Floor(StrSplit(r,"-")[2]) + 0x2000000 : 0x1000000
-    }
-    else
-    {
-      v:=RegExReplace(RegExReplace(v,"\s"), "i)/-?\w+/(?!0x)", "$00x")
-      v:=Trim(StrReplace(v, ",", "/"), "/")
-      r:=StrSplit(v, "/"), n:=r.Length()//3
-      if (!n)
-        return
-      VarSetCapacity(v, n*18*(1+!!A_IsUnicode))
-      x1:=x2:=Floor(r[1]), y1:=y2:=Floor(r[2])
-      SetFormat, IntegerFast, d
-      Loop % n + 0*(i:=-2)
-        x:=Floor(r[i+=3]), y:=Floor(r[i+1])
-        , (x<x1 && x1:=x), (x>x2 && x2:=x)
-        , (y<y1 && y1:=y), (y>y2 && y2:=y)
-      Loop % n + 0*(i:=-2)
-        x:=Floor(r[i+=3]), y:=Floor(r[i+1])
-        , v.=(x-x1)|(y-y1)<<16|(Floor(r[i+2])&0xFFFFFF)<<32 . "/"
-      w:=x2-x1+1, h:=y2-y1+1, n:=0
-    }
-    color:=Floor(StrSplit(color "-","-")[1])
-  }
-  else
-  {
-    r:=StrSplit(v ".", "."), w:=Floor(r[1])
-    , v:=this.base64tobit(r[2]), h:=StrLen(v)//w
-    if (w<1 || h<1 || StrLen(v)!=w*h)
-      return
-    if (mode=4)
-    {
-      r:=StrSplit(StrReplace(color, "0x"), "-")
-      , color:=Floor("0x" r[1]), n:=Floor("0x" r[2])
-    }
-    else
-    {
-      r:=StrSplit(color "@", "@")
-      , color:=Floor(r[1]), n:=r[2]
-      , n:=Round(n,2)+(!n), n:=Floor(512*9*255*255*(1-n)*(1-n))
-      if (mode=3)
-        color:=(((color-1)//w)<<16)|Mod(color-1,w)
-    }
-  }
-  return info[key]:=[v, w, h, seterr, err1, err0, mode, color, n, comment]
-}
+      PicInfo(text)
+      {
+        local
+        static info:=[], bmp:=[]
+        if !InStr(text, "$")
+          return
+        key:=(r:=StrLen(text))<10000 ? text
+          : DllCall("ntdll\RtlComputeCrc32", "uint",0
+          , "Ptr",&text, "uint",r*(1+!!A_IsUnicode), "uint")
+        if info.HasKey(key)
+          return info[key]
+        v:=text, comment:="", seterr:=err1:=err0:=0
+        ; You Can Add Comment Text within The <>
+        if RegExMatch(v, "O)<([^>\n]*)>", r)
+          v:=StrReplace(v,r[0]), comment:=Trim(r[1])
+        ; You can Add two fault-tolerant in the [], separated by commas
+        if RegExMatch(v, "O)\[([^\]\n]*)]", r)
+        {
+          v:=StrReplace(v,r[0]), r:=StrSplit(r[1] ",", ",")
+            , seterr:=1, err1:=r[1], err0:=r[2]
+        }
+        color:=StrSplit(v,"$")[1], v:=Trim(SubStr(v,InStr(v,"$")+1))
+        mode:=InStr(color,"##") ? 5
+          : InStr(color,"-") ? 4 : InStr(color,"#") ? 3
+          : InStr(color,"**") ? 2 : InStr(color,"*") ? 1 : 0
+        color:=RegExReplace(color, "[*#\s]")
+        if (mode=5)
+        {
+          ; You can use Text:="##10-RRGGBB $ d:\a.bmp"
+          ; then the 0xRRGGBB(+/-10) as transparent color
+          if (v~="[^\s\w\-/,]")  ; ImageSearch
+          {
+            if !(hBM:=LoadPicture(v))
+              return
+            this.GetBitmapWH(hBM, w, h)
+            if (w<1 || h<1)
+              return
+            hBM2:=this.CreateDIBSection(w, h, 32, Scan0)
+            this.CopyHBM(hBM2, 0, 0, hBM, 0, 0, w, h)
+            DllCall("DeleteObject", "Ptr",hBM)
+            if (!Scan0)
+              return
+            ; All images used for ImageSearch are cached
+            bmp.Push(r:=this.Buffer(w*h*4)), v:=r.Ptr
+            DllCall("RtlMoveMemory", "Ptr",v, "Ptr",Scan0, "Ptr",w*h*4)
+            DllCall("DeleteObject", "Ptr",hBM2)
+            r:=RegExReplace(Trim(color,"-"), "i)-(?!0x)", "-0x")
+            n:=InStr(r,"-") ? Floor(StrSplit(r,"-")[2]) + 0x2000000 : 0x1000000
+          }
+          else
+          {
+            v:=RegExReplace(RegExReplace(v,"\s"), "i)/-?\w+/(?!0x)", "$00x")
+            v:=Trim(StrReplace(v, ",", "/"), "/")
+            r:=StrSplit(v, "/"), n:=r.Length()//3
+            if (!n)
+              return
+            VarSetCapacity(v, n*18*(1+!!A_IsUnicode))
+            x1:=x2:=Floor(r[1]), y1:=y2:=Floor(r[2])
+            SetFormat, IntegerFast, d
+            Loop % n + 0*(i:=-2)
+              x:=Floor(r[i+=3]), y:=Floor(r[i+1])
+                , (x<x1 && x1:=x), (x>x2 && x2:=x)
+                , (y<y1 && y1:=y), (y>y2 && y2:=y)
+            Loop % n + 0*(i:=-2)
+              x:=Floor(r[i+=3]), y:=Floor(r[i+1])
+                , v.=(x-x1)|(y-y1)<<16|(Floor(r[i+2])&0xFFFFFF)<<32 . "/"
+            w:=x2-x1+1, h:=y2-y1+1, n:=0
+          }
+          color:=Floor(StrSplit(color "-","-")[1])
+        }
+        else
+        {
+          r:=StrSplit(v ".", "."), w:=Floor(r[1])
+            , v:=this.base64tobit(r[2]), h:=StrLen(v)//w
+          if (w<1 || h<1 || StrLen(v)!=w*h)
+            return
+          if (mode=4)
+          {
+            r:=StrSplit(StrReplace(color, "0x"), "-")
+              , color:=Floor("0x" r[1]), n:=Floor("0x" r[2])
+          }
+          else
+          {
+            r:=StrSplit(color "@", "@")
+              , color:=Floor(r[1]), n:=r[2]
+              , n:=Round(n,2)+(!n), n:=Floor(512*9*255*255*(1-n)*(1-n))
+            if (mode=3)
+              color:=(((color-1)//w)<<16)|Mod(color-1,w)
+          }
+        }
+        return info[key]:=[v, w, h, seterr, err1, err0, mode, color, n, comment]
+      }
 
-Buffer(size, FillByte:="")
-{
-  buf:={}, buf.SetCapacity("a", size), p:=buf.GetAddress("a")
-  , (FillByte!="" && DllCall("RtlFillMemory","Ptr",p,"Ptr",size,"uchar",FillByte))
-  , buf.Ptr:=p, buf.Size:=size
-  return buf
-}
+      Buffer(size, FillByte:="")
+      {
+        buf:={}, buf.SetCapacity("a", size), p:=buf.GetAddress("a")
+          , (FillByte!="" && DllCall("RtlFillMemory","Ptr",p,"Ptr",size,"uchar",FillByte))
+          , buf.Ptr:=p, buf.Size:=size
+        return buf
+      }
 
-GetBitsFromScreen(ByRef x:=0, ByRef y:=0, ByRef w:=0, ByRef h:=0
-  , ScreenShot:=1, ByRef zx:=0, ByRef zy:=0, ByRef zw:=0, ByRef zh:=0)
-{
-  local
-  static CAPTUREBLT:=""
+      GetBitsFromScreen(ByRef x:=0, ByRef y:=0, ByRef w:=0, ByRef h:=0
+        , ScreenShot:=1, ByRef zx:=0, ByRef zy:=0, ByRef zw:=0, ByRef zh:=0)
+      {
+        local
+        static CAPTUREBLT:=""
   (!IsObject(this.bits) && this.bits:={}), bits:=this.bits
   if (!ScreenShot && bits.Scan0)
   {
@@ -3155,9 +3102,7 @@ LastCtrl()
   return SubStr(s, InStr(s,"`n",0,-1)+1)
 }
 
-
 ;==== Optional GUI interface ====
-
 
 Gui(cmd, arg1:="", args*)
 {
@@ -4480,19 +4425,19 @@ s13 = 请先将图像二值化
 s14 = 不能用于颜色位置二值化模式, 因为分割后会导致位置错误
 s15 = 你确定选择的范围吗？\n\n如果不确定，可以重新选择
     )"
-    Lang:=[], Tip_Text:=[]
-    Loop Parse, s, `n, `r
-      if InStr(v:=A_LoopField, "=")
-        r:=StrSplit(StrReplace(v "==","\n","`n"), "=", "`t ")
-        , Lang[r[1]]:=r[2], Tip_Text[r[1]]:=r[3]
-    return
+        Lang:=[], Tip_Text:=[]
+        Loop Parse, s, `n, `r
+          if InStr(v:=A_LoopField, "=")
+            r:=StrSplit(StrReplace(v "==","\n","`n"), "=", "`t ")
+              , Lang[r[1]]:=r[2], Tip_Text[r[1]]:=r[3]
+        return
+      }
+    }
+
+  }  ;// Class End
+
+  Script_End() {
   }
-}
-
-}  ;// Class End
-
-Script_End() {
-}
 
 ;================= The End =================
 
