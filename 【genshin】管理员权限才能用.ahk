@@ -24,11 +24,11 @@ ReloadByStartGameFromHere:
   ;用户设定config：
   ;游戏路径
   game_Name=YuanShen.exe ;国际服请修改此处为genshin.exe
-  ; run_exe_name=YuanShen.exe ;自动启动exe
+  ; run_exe_local=G:\Program Files\miHoYo Launcher\ ;自动启动exe的路径
+  run_exe_local=G:\XXMI-Launcher-Portable\Resources\Bin\ ;自动启动exe的路径
+  ; run_exe_name=launcher.exe ;自动启动exe 米哈游启动器
   run_exe_name="XXMI Launcher.exe" ;自动启动exe
   run_exe_para= --nogui --xxmi GIMI ;自动启动exe 启动参数
-  ; run_exe_local=G:\Genshin Impact\Genshin Impact Game\ ;自动启动exe的路径
-  run_exe_local=G:\XXMI-Launcher-Portable\Resources\Bin\ ;自动启动exe的路径
   ;3DMigoto
   ; 3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
   ;FanHeXie
@@ -524,6 +524,13 @@ return
 
   ;tab键按一下圈圈
   tab::
+    MouseGetPos, xpos, ypos, winid
+    if WinActive("崩坏：星穹铁道"){
+      FindText().Click(3389, 1949, "L")
+      sleep 100
+      click, %xpos%, %ypos%, 0
+      return
+    }
     if(bSwitch==1)
     {
       SetTimer, loopLbutton, Off
@@ -540,7 +547,6 @@ return
       Text:=quedingQuanQuan
       if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth*1/3+OutX, OutHeight/2+OutY, OutWidth+OutX, OutHeight+OutY, 0, 0, Text))
       {
-        MouseGetPos, xpos, ypos, winid
         FindText().Click(X, Y, "L")
         ;Msgbox, The cursor is at X%xpos% Y%ypos% and is true.
         sleep 100
