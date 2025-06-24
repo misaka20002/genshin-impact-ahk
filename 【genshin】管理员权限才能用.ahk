@@ -24,13 +24,13 @@ ReloadByStartGameFromHere:
   ;用户设定config：
   ;游戏路径
   game_Name=YuanShen.exe ;国际服请修改此处为genshin.exe
-  ; run_exe_local=G:\Program Files\miHoYo Launcher\ ;自动启动exe的路径
-  run_exe_local=G:\XXMI-Launcher-Portable\Resources\Bin\ ;自动启动exe的路径
+  ; run_exe_local=F:\Program Files\miHoYo Launcher\ ;自动启动exe的路径
+  run_exe_local=F:\XXMI-Launcher-Portable\Resources\Bin\ ;自动启动exe的路径
   ; run_exe_name=launcher.exe ;自动启动exe 米哈游启动器
   run_exe_name="XXMI Launcher.exe" ;自动启动exe
   run_exe_para= --nogui --xxmi GIMI ;自动启动exe 启动参数
   ;3DMigoto
-  ; 3DMigotoLocal=G:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
+  ; 3DMigotoLocal=F:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
   ;FanHeXie
   ; FanHeXieLocal=F:\desktop\打ち止め\反和谐\ ;反和谐"loader.exe"的路径，如果不需要可不填写，若已运行3DMigoto则不会运行。
   ;游戏内设置
@@ -529,6 +529,14 @@ return
       FindText().Click(3389, 1949, "L")
       sleep 100
       click, %xpos%, %ypos%, 0
+      sleep 500
+
+      t1:=A_TickCount, Text:=X:=Y:=""
+      Text:="|<确定的√>*108$31.zzzztzzzzsTzzzs7zzzs7zzzs7zzzs7zzzs7zzzs7zzzs7zTzs7z7zs7z1zs7z0Ts7zk7s7zw1s7zz0M7zzk07zzw07zzz07zzzk7zzzw7zzzz7zzzzrzzz"
+      if (ok:=FindText(X, Y, 2275-150, 1345-1500, 2275+1500, 1345+1500, 0, 0, Text))
+      {
+        FindText().Click(X, Y, "L")
+      }
       return
     }
     if(bSwitch==1)
@@ -578,22 +586,10 @@ return
           else
           {  ;累了,仅在4k下做了适配
             t1:=A_TickCount, Text:=X:=Y:=""
-            Text:="|<浓缩树脂图标4k>*196$71.zy000CM1zzzxzz008Qk3zzzvzy000xU3zzzrzw001zU7zzzzzk000TUDzzzzy0000T0zzzzzk060061zzzzw0Dy0043zzzzk1zw0003zzzy0Dzs0007zzzwT8000007zzzsy000000Dzzzxs000000Dzzxs0000000TzzvUU00zy00TzzrVzkDzz00zzzjzz1zzzU0zzzTzw7zzzU1zzwzzkzzzzU1zztzy3zzzzU1zzXzU7zzzzU3zz7y0TzzzzU3zwDk1zzzzz03zsT07zzzzz03zUw1zzzzzz03z1"
-            if (b_UseFindText) and (ok:=FindText(X, Y, 1207-100, 1516-100, 1207+100, 1516+100, 0, 0, Text))
+            Text:="|<使用1个浓缩，需要先开启op圣遗物副本左上角的自动跳过领奖动画>*163$71.k1zU0007sTUD01zU060Dkz0Q01zU0S0T3z0s01zk1y0y7y1ly1zk7y1sDw03y0zk7z00zs07w0zs3z01zs6Ds0Ts3z07zkQTk0Ts3y0DzVszU0Dk1w0zzblz007U0E3yzzXy0000007tzz7w000000TlzwDs000001zXzUTk0000s7z3y0zU0001sTy7s1z00007lzw7s3y0000DbzsDs7w0000TzzkDkDs0001zwzUDkTk0003zlz0TkzU000Du3y0Tlz0000TU7w0TXy0000z0DssT7w0003y0TzkT"
+            if (ok:=FindText(X, Y, 1095, 1106, 2738, 1367, 0, 0, Text))
             {
-              MouseGetPos, xpos, ypos, winid
-              FindText().Click(X, Y, "L")
-              sleep 800
-              FindText().Click(X, Y, "L")
-              sleep 950 ;等待副本的 跳过文字 出现时间
-              t1:=A_TickCount, Text:=X:=Y:=""
-              Text:=fubendetiaoguowenzi ;副本的跳过文字
-              if (b_UseFindText) and (ok:=FindText(X, Y, OutWidth-300+OutX, 0+OutY, OutWidth+OutX, 150+OutY, 0, 0, Text))
-              {
-                FindText().Click(X, Y, "L")
-                sleep 100
-                click, %xpos%, %ypos%, 0
-              }
+              FindText().Click(X+967, Y-5, "L")
             }
             else
             {  ;累了,仅在4k下做了适配
