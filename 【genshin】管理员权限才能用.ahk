@@ -723,29 +723,57 @@ return
       send {space down}
       sleep 5
       send {space up}
-
-      return
     }
     t1:=A_TickCount, Text:=X:=Y:=""
     Text:="|<火神头像>*156$42.1zzzzzz1zzzzzz0zzzzzz0zzzzzz0Tzzzzz0Tzzzzz0Dzzzzz07zzzzz07zzzzz03zzzzz0Dzzzzz0zzzzzz3szzzzzD0zzzzzC0zzzzz07zzzzz0zzzzzz0Tzzzzz0Tzzzzz0Nzzzzz0Fzzzzz00bzzzz007zzzz007jzzw0027zzsU"
     if (ok:=FindText(X, Y, 3415, 403, 3838, 694, 0, 0, Text))
     {
-      send {LButton down}
-      sleep 180
-      send {RButton down}
-      sleep 5
+      ; ; 单玛头
+      ; send {LButton down}
+      ; sleep 180
+      ; send {RButton down}
+      ; sleep 5
 
-      send {RButton up}
-      sleep 75
-      send {LButton up}      
+      ; send {RButton up}
+      ; sleep 75
+      ; send {LButton up}
+
+      ; 双玛头
+      send {q down}
+      sleep 50
+      send {q up}
+
+      sleep 1650
+      send {LButton down}
+      sleep 1300
+      send {LButton up}
+
+      loop,3{
+        sleep 520
+        send {LButton down}
+        sleep 200
+        send {RButton down}
+        sleep 50
+        send {RButton up}
+        sleep 70
+        send {LButton up}
+        sleep 50
+        send {LButton down}
+        sleep 200
+        send {RButton down}
+        sleep 50
+        send {RButton up}
+        sleep 1100
+        send {LButton up}
+      }
     }
     else{
       ; 胡桃头像没找到
       send {1 down}
       sleep 5
       send {1 up}
-      return
     }
+  Return
 
   ; 鼠标侧键 1 等于前进，连按两下等于按住 w
   XButton1::
