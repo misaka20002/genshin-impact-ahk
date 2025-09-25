@@ -278,6 +278,24 @@ return
   ;（如果小窗不是最前面重启游戏并进入世界后再试）
   ;（如果小窗不是最前面重启游戏并进入世界后再试）
 
+  ; 圣遗物快速加锁/减锁
+  ~F6::
+    {
+      MouseGetPos, xpos, ypos, winid
+
+      t1:=A_TickCount, Text:=X:=Y:=""
+      Text:="|<圣遗物界面对比字样>*140$71.0Tbzzy0z03y20zDzzw1y07wC1yTzzs3w0Dsy3s03w07zzTnyDk07s0DzyzjwTU0Dk0Tzxzzwz30TU0zzvzzzwT0z01y07znzsy1y03w0Dz7zVy3w07s0Ts7z1y7s0Dk0zU7y1wDk0TU1z0Ds3wTU0z03y0Dk3sz01y07w0zk3ty03w0Ds1zU3nw07s0Tk7zU3bs0Dk0zUDzU0Dk0TU1z0yT00TU0z03y1wT00z01y1rw3kT01y03wTjs70S03w07vzTkA0S07s0DzsTUE0M0Dk0TzUzU0000zU1zw1zz"
+      if (ok:=FindText(X, Y, 3276, 37, 3592, 147, 0, 0, Text))
+      {
+        FindText().Click(X+171, Y+284, "L")
+      }
+
+      sleep 100
+      click, %xpos%, %ypos%, 0
+
+    }
+  return
+
   ;按着下面那个键不停输入f；双击F则开启/关闭连点鼠标，连点鼠标后也可以按鼠标左键或空格键取消
   ~f::
     ;if WinActive("原神") or WinActive("幻塔")
@@ -586,10 +604,10 @@ return
           else
           {  ;累了,仅在4k下做了适配
             t1:=A_TickCount, Text:=X:=Y:=""
-            Text:="|<使用1个浓缩，需要先开启op圣遗物副本左上角的自动跳过领奖动画>*163$71.k1zU0007sTUD01zU060Dkz0Q01zU0S0T3z0s01zk1y0y7y1ly1zk7y1sDw03y0zk7z00zs07w0zs3z01zs6Ds0Ts3z07zkQTk0Ts3y0DzVszU0Dk1w0zzblz007U0E3yzzXy0000007tzz7w000000TlzwDs000001zXzUTk0000s7z3y0zU0001sTy7s1z00007lzw7s3y0000DbzsDs7w0000TzzkDkDs0001zwzUDkTk0003zlz0TkzU000Du3y0Tlz0000TU7w0TXy0000z0DssT7w0003y0TzkT"
-            if (ok:=FindText(X, Y, 1095, 1106, 2738, 1367, 0, 0, Text))
+            Text:="|<使用1个浓缩，需要先开启op圣遗物副本左上角的自动跳过领奖动画>*164$71.0zk0Tw01U3wC7z00Tw07U7sQTw00Tw0TkDktzUTkDw0zkS3ry0zUDy0zk07zs1z0Dy0zk0Tz03y07z0zs0zw07w03z0Tk3zU0Ds01y0DU7s00Tk00s060TU00zU000001y001z0000007w003y000000Ts007w000061zk00Ds0000T7zU00Tk0000yTz000zU0001xzy001z00007zzw003y0000Dzbs007w0000zwDk00Ds0001y0TU00Tk0003w0z000zU000Ds1y001z0000TU3z003y0001z07z"
+            if (ok:=FindText(X, Y, 1316, 1104, 1737, 1374, 0, 0, Text))
             {
-              FindText().Click(X+967, Y-5, "L")
+              FindText().Click(X+1029, Y+0, "L")
             }
             else
             {  ;累了,仅在4k下做了适配
@@ -687,7 +705,6 @@ return
     ; 仅搜索 1 号位置
     if (ok:=FindText(X, Y, 3225, 414, 3838, 582, 0, 0, Text))
     {
-      ; 我写的
       send {LButton down}
       sleep 5
       send {LButton up}
@@ -708,6 +725,19 @@ return
       send {space up}
 
       return
+    }
+    t1:=A_TickCount, Text:=X:=Y:=""
+    Text:="|<火神头像>*156$42.1zzzzzz1zzzzzz0zzzzzz0zzzzzz0Tzzzzz0Tzzzzz0Dzzzzz07zzzzz07zzzzz03zzzzz0Dzzzzz0zzzzzz3szzzzzD0zzzzzC0zzzzz07zzzzz0zzzzzz0Tzzzzz0Tzzzzz0Nzzzzz0Fzzzzz00bzzzz007zzzz007jzzw0027zzsU"
+    if (ok:=FindText(X, Y, 3415, 403, 3838, 694, 0, 0, Text))
+    {
+      send {LButton down}
+      sleep 180
+      send {RButton down}
+      sleep 5
+
+      send {RButton up}
+      sleep 75
+      send {LButton up}      
     }
     else{
       ; 胡桃头像没找到
