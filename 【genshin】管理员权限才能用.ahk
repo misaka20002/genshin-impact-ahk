@@ -24,16 +24,27 @@ ReloadByStartGameFromHere:
   ;用户设定config：
   ;游戏路径
   game_Name=YuanShen.exe ;国际服请修改此处为genshin.exe
+
+  ; 原神 原生
   ; run_exe_local=F:\Program Files\miHoYo Launcher\ ;自动启动exe的路径
-  run_exe_local=F:\XXMI-Launcher-Portable\Resources\Bin\ ;自动启动exe的路径
-  ; run_exe_name=launcher.exe ;自动启动exe 米哈游启动器
-  run_exe_name="XXMI Launcher.exe" ;自动启动exe
-  run_exe_para= --nogui --xxmi GIMI ;自动启动exe 启动参数
-  ;3DMigoto
-  ; 3DMigotoLocal=F:\3dm\ ;3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
-  ;FanHeXie
+  ; run_exe_name=launcher.exe ;自动启动exe ; 米哈游启动器
+
+  ; XXMI
+  ; run_exe_local=F:\XXMI-Launcher-Portable\Resources\Bin\ ;自动启动exe的路径
+  ; run_exe_name="XXMI Launcher.exe" ;自动启动exe
+  ; run_exe_para= --nogui --xxmi GIMI ;自动启动exe 启动参数
+
+  ; 原神 Mod 启动器 https://github.com/CHN-HelloWorld/GIML
+  run_exe_local=F:\GenshinModLauncher\ ;自动启动exe的路径;
+  run_exe_name="GIML.exe" ;自动启动exe ;
+  run_exe_para= --auto-launch ;自动启动exe 启动参数;
+
+  ; 3DMigoto
+  ; 3DMigotoLocal=F:\3dm\ ; 3DMigoto的"3DMigoto Loader.exe",的路径，如果不需要可不填写或注释掉。
+  ; FanHeXie
   ; FanHeXieLocal=F:\desktop\打ち止め\反和谐\ ;反和谐"loader.exe"的路径，如果不需要可不填写，若已运行3DMigoto则不会运行。
-  ;游戏内设置
+
+  ; 游戏内设置
   b_UseFindText=1  ;启用智能判断是否触发按键功能，使用findtext函数，遇到bug自行关闭
   ChangAnX=0    ;启动长按X键为触发一次x，0禁用/1启用，用于下落；建议在游戏内把下落键改为n，（其他时候下落使用S+Space跳的更高）
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -271,7 +282,8 @@ return
   return
 
   ;禁用抽卡界面
-  F3::Media_Play_Pause
+  F3::
+    send {Media_Play_Pause}
   return
   ;功能同键盘上的Fn+F5,F6,F7分别为上一个、下一个、暂停
   ;（如果小窗不是最前面重启游戏并进入世界后再试）
@@ -332,16 +344,16 @@ return
       {
         If Not GetKeyState("f", "P")
           Break
-        if WinActive("崩坏：星穹铁道")
-        {
-          Send {f down}
-          send {lbutton down}
-          Sleep 10 ; try various milliseconds
-          Send {f up}
-          send {lbutton up}
-          Sleep 100
-        }
-        else
+        ; if WinActive("崩坏：星穹铁道")
+        ; {
+        ;   Send {f down}
+        ;   send {lbutton down}
+        ;   Sleep 10 ; try various milliseconds
+        ;   Send {f up}
+        ;   send {lbutton up}
+        ;   Sleep 100
+        ; }
+        ; else
         {
           Send {f down}
           Sleep 10 ; try various milliseconds
@@ -544,17 +556,34 @@ return
   tab::
     MouseGetPos, xpos, ypos, winid
     if WinActive("崩坏：星穹铁道"){
-      FindText().Click(3389, 1949, "L")
-      sleep 100
-      click, %xpos%, %ypos%, 0
-      sleep 500
-
       t1:=A_TickCount, Text:=X:=Y:=""
       Text:="|<确定的√>*108$31.zzzztzzzzsTzzzs7zzzs7zzzs7zzzs7zzzs7zzzs7zzzs7zTzs7z7zs7z1zs7z0Ts7zk7s7zw1s7zz0M7zzk07zzw07zzz07zzzk7zzzw7zzzz7zzzzrzzz"
       if (ok:=FindText(X, Y, 2275-150, 1345-1500, 2275+1500, 1345+1500, 0, 0, Text))
       {
         FindText().Click(X, Y, "L")
+        sleep 200
       }
+
+      Text:="|<跳过按键>*130$53.1zU1zzzz03zU0zzzy07zk0Tzzw0Dzs0Tzzs0Tzs07zzk0zzk07zzU1zzU03zz03zz001zy07zy001zw0Dzw001zs0Tzs003zk0zzk007zU1zzU00Dz03zz000zy07zy007zw0Dzw00Tzs0Tzs03zzk0zzk0TzzU1zy03zzz03zs0Tzzy07z01zzzw0Ds0Dzzzs0TU0zzzzk0w0DzzzzU1U0zzzzz1|<跳过按键>*140$69.w3w01zzzw3zzUTk01zzzUTzw3zU07zzw3zzUTz007zzUTzw3zy00Tzw3zzUTzk00zzUTzw3zy001zw3zzUTzk007zUTzw3zy000Dw3zzUTzk001zUTzw3zy000Dw3zzUTzs001zUTzw3zz000Dw3zzUTzs001zUTzw3zz000zw3zzUTzs00DzUTzw3zz007zw3zzUTzk03zzUTzw3zs00zzw3zzUTy00zzzUTzw3z007zzw3zzUTU07zzzUTzw1k01zzzw3zw|<跳过按键>*74$53.3y3zzzzz07w1zzzzy0Ds1zzzzw0Ts0zzzzs0zs0Tzzzk0zs0DzzzU1zw07zzz03zy07zzy07zy01zzw0Dzw01zzs0Tzs00zzk0zzk00TzU1zzU00Tz03zz000Ty07zy000zw0Dzw001zs0Tzs003zk0zzk00DzU1zzU00zz03zz007zy07zy00zzw0Dzw07zzs0TzU0zzzk0zy07zzzU1zk0Tzzz1|<跳过按键>*201$54.0y07zzzzU0z01zzzzU0zU0zzzzU0zk0DzzzU0zy03zzzU0zz01zzzU0zzk0DzzU0zzk07zzU0zzk01zzU0zzk00zzU0zzk00DzU0zzk007zU0zzk007zU0zzk007zU0zzk007zU0zzk00DzU0zzk00zzU0zzk01zzU0zzk07zzU0zzk0TzzU0zz01zzzU0zy03zzzU0zk0DzzzU0zU0zzzzU0y01zzzzUU|<跳过按键>*166$53.1zk0Tzzz03zs0Dzzy07zs0Dzzw0Dzw03zzs0Tzs03zzk0zzk01zzU1zzU01zz03zz000zy07zy000zw0Dzw001zs0Tzs003zk0zzk007zU1zzU00Tz03zz003zy07zy00Dzw0Dzw01zzs0Tzs0Dzzk0zz01zzzU1zw07zzz03zU0zzzy07w07zzzw0Dk0Tzzzs0Q07zzzzk0k0TzzzzU003zzzzz1"
+      if (ok:=FindText(X, Y, 3158-150, 121-150, 3158+150, 121+150, 0.2, 0.2, Text))
+      {
+        FindText().Click(X, Y, "L")
+        sleep 200
+      } else{
+        ; 点击右下角的 传送的位置
+        FindText().Click(3389, 1949, "L")
+        sleep 200
+        FindText().Click(2353, 1342, "L")
+        sleep 200
+        ; click, %xpos%, %ypos%, 0
+        ; sleep 400
+        ; ; 点击确定的√
+        ; if (ok:=FindText(X, Y, 2275-150, 1345-1500, 2275+1500, 1345+1500, 0, 0, Text))
+        ; {
+        ;   FindText().Click(X, Y, "L")
+        ; }
+      }
+      click, %xpos%, %ypos%, 0
       return
     }
     if(bSwitch==1)
@@ -705,24 +734,62 @@ return
     ; 仅搜索 1 号位置
     if (ok:=FindText(X, Y, 3225, 414, 3838, 582, 0, 0, Text))
     {
-      send {LButton down}
-      sleep 5
-      send {LButton up}
-      sleep 180
+      ; 0命胡桃
+      ; send {LButton down}
+      ; sleep 5
+      ; send {LButton up}
+      ; sleep 180
 
-      send {LButton down}
-      sleep 5
-      send {LButton up}
-      sleep 150
+      ; send {LButton down}
+      ; sleep 5
+      ; send {LButton up}
+      ; sleep 150
 
-      send {LButton down}
+      ; send {LButton down}
+      ; sleep 300
+      ; send {LButton up}
+      ; sleep 20
+
+      ; send {space down}
+      ; sleep 5
+      ; send {space up}
+
+      ; 1命胡桃
+
+      send {e down}
+      sleep 5
+      send {e up}
       sleep 300
-      send {LButton up}
-      sleep 20
 
-      send {space down}
-      sleep 5
-      send {space up}
+      loop,11{
+        send {LButton down}
+        sleep 5
+        send {LButton up}
+        sleep 150
+        send {LButton down}
+        sleep 5
+        send {LButton up}
+        sleep 150
+        send {LButton down}
+        sleep 260
+        send {LButton up}
+        sleep 5
+
+        send {RButton down}
+        sleep 5
+        send {s down}
+        sleep 5
+        send {s up}
+        sleep 5
+        send {w down}
+        sleep 5
+        send {w up}
+        sleep 5
+        send {RButton up}
+        sleep 286
+      }
+
+
     }
     t1:=A_TickCount, Text:=X:=Y:=""
     Text:="|<火神头像>*156$42.1zzzzzz1zzzzzz0zzzzzz0zzzzzz0Tzzzzz0Tzzzzz0Dzzzzz07zzzzz07zzzzz03zzzzz0Dzzzzz0zzzzzz3szzzzzD0zzzzzC0zzzzz07zzzzz0zzzzzz0Tzzzzz0Tzzzzz0Nzzzzz0Fzzzzz00bzzzz007zzzz007jzzw0027zzsU"
